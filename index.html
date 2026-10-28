@@ -6,24 +6,59 @@
 <title>09 · 刮刮乐</title> <!-- 页面标题 -->
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; } /* 全局重置 */
-  body { /* 页面主体（浅色米白主题） */
-    min-height: 100vh; /* 至少占满一屏 */
-    background: #f5f0e4; /* 米白纸感底 */
+  html { /* 根元素：承载兜底底色（真正的背景层放在 body 伪元素上） */
+    height: 100%; /* 撑满视口高度 */
+    background: #efe7d4; /* 兜底纯色，避免加载瞬间闪白 */
+  }
+  body { /* 页面主体：固定一屏的纵向弹性布局，整页禁止滚动 */
+    height: 100vh; /* 视口高度（兼容旧内核兜底） */
+    height: 100dvh; /* 动态视口高度，兼容移动端地址栏收缩 */
+    overflow: hidden; /* 禁止整页滚动：内容超高时由 .view 内部滚动 */
+    display: flex; /* 纵向弹性布局：顶栏 + 内容区 */
+    flex-direction: column; /* 自上而下排列 */
+    background: transparent; /* 底色交给伪元素背景层绘制 */
     color: #2c2a26; /* 深色文字 */
     font-family: "PingFang SC", "Microsoft YaHei", sans-serif; /* 中文字体栈 */
+    position: relative; /* 作为伪元素定位参考 */
   }
-  header { /* 顶栏 */
-    display: flex; /* 弹性布局 */
+  body::before { /* 背景层一：柔和彩色光斑（液态玻璃的折射素材，缺了它玻璃就是一片死白） */
+    content: ""; /* 伪元素必需声明 */
+    position: fixed; inset: 0; /* 固定铺满视口，不随内容滚动 */
+    z-index: -3; /* 沉到最底层 */
+    background: /* 多层径向渐变叠加，模拟柔光环境 */
+      radial-gradient(640px 420px at 10% 6%, rgba(246, 199, 117, .62), transparent 66%), /* 左上金色光斑 */
+      radial-gradient(560px 380px at 92% 12%, rgba(255, 208, 150, .52), transparent 68%), /* 右上暖橙光斑 */
+      radial-gradient(680px 460px at 82% 94%, rgba(178, 214, 186, .48), transparent 70%), /* 右下青绿光斑 */
+      radial-gradient(520px 380px at 16% 92%, rgba(255, 232, 176, .58), transparent 68%), /* 左下鹅黄光斑 */
+      linear-gradient(158deg, #fbf6e9 0%, #f4edda 42%, #efe6d2 72%, #ece2cd 100%); /* 米白主渐变 */
+    pointer-events: none; /* 不拦截任何交互 */
+  }
+  body::after { /* 背景层二：细网格纹理（被玻璃折射后会产生流动的波纹质感） */
+    content: ""; /* 伪元素必需声明 */
+    position: fixed; inset: 0; /* 固定铺满视口 */
+    z-index: -2; /* 位于光斑之上、内容之下 */
+    background-image: /* 两组正交细线构成网格 */
+      linear-gradient(rgba(124, 104, 62, .075) 1px, transparent 1px), /* 横向细线 */
+      linear-gradient(90deg, rgba(124, 104, 62, .075) 1px, transparent 1px); /* 纵向细线 */
+    background-size: 64px 64px; /* 网格单元尺寸（偏大一些，玻璃折射的波纹才看得清） */
+    pointer-events: none; /* 不拦截任何交互 */
+  }
+  header { /* 顶栏（压缩高度 + 液态玻璃材质） */
+    flex: 0 0 auto; /* 固定自身高度，不参与伸缩 */
+    display: flex; /* 弹性排列 */
     align-items: center; /* 垂直居中 */
-    gap: 14px; /* 间距 */
-    flex-wrap: wrap; /* 可换行 */
-    padding: 14px 22px; /* 内边距 */
-    background: #fffdf8; /* 米白栏底 */
-    border-bottom: 1px solid #e4ddcc; /* 分隔线 */
-    position: sticky; top: 0; /* 吸顶 */
-    z-index: 50; /* 最上层 */
+    gap: 10px; /* 元素间距 */
+    flex-wrap: nowrap; /* 桌面窗口不换行，保证单行紧凑 */
+    padding: 8px 18px; /* 紧凑内边距 */
+    background: rgba(255, 252, 244, .40); /* 半透明玻璃底 */
+    backdrop-filter: blur(22px) saturate(175%); /* 背景模糊 + 饱和度提升 */
+    -webkit-backdrop-filter: blur(22px) saturate(175%); /* Safari 前缀兼容 */
+    border-bottom: 1px solid rgba(255, 255, 255, .62); /* 玻璃分界线 */
+    box-shadow: 0 2px 14px rgba(74, 52, 5, .07), inset 0 1px 0 rgba(255, 255, 255, .85); /* 轻投影 + 顶部高光 */
+    position: relative; /* 一屏布局中无需吸顶，用普通流 */
+    z-index: 50; /* 层级高于内容区 */
   }
-  h1 { font-size: 20px; letter-spacing: 3px; margin-right: 6px; } /* 标题 */
+  h1 { font-size: 18px; letter-spacing: 2px; margin-right: 4px; white-space: nowrap; } /* 标题（压缩字号，保持单行） */
   .balance { /* 余额胶囊 */
     position: relative; /* 供浮动增减额定位 */
     background: #f6c775; /* 金底 */
@@ -76,12 +111,130 @@
   }
   button:disabled { opacity: 0.4; cursor: not-allowed; } /* 禁用态 */
   button:hover:not(:disabled) { background: #f1ead9; } /* 悬停 */
-  .view { display: none; padding: 26px 22px 40px; max-width: 980px; margin: 0 auto; } /* 视图容器 */
-  .view.show { display: block; } /* 显示当前视图 */
-  .step { font-size: 12px; color: #8a8474; letter-spacing: 2px; margin-bottom: 14px; } /* 步骤标签 */
-  h2 { font-size: 19px; margin-bottom: 18px; } /* 视图标题 */
-  .panel { background: #fffdf8; border: 1px solid #e7e0cf; border-radius: 16px; padding: 20px 22px; margin-bottom: 18px; } /* 面板卡片 */
-  .panel h3 { font-size: 14px; color: #6f6a5c; margin-bottom: 12px; } /* 面板小标题 */
+  .view { /* 视图容器：占据顶栏以下的全部剩余空间 */
+    display: none; /* 默认隐藏 */
+    flex: 1 1 auto; /* 占满剩余高度 */
+    min-height: 0; /* 关键：允许 flex 子项收缩，否则内部滚动失效 */
+    overflow-y: auto; /* 内容超高时在内部滚动，整页不滚动 */
+    overflow-x: hidden; /* 禁止横向滚动 */
+    padding: 12px 18px 92px; /* 底部 92px 留白，避让悬浮 Tab 不遮挡内容 */
+    max-width: 1180px; /* 内容最大宽度（大屏不拉得过宽） */
+    width: 100%; /* 占满可用宽度 */
+    margin: 0 auto; /* 水平居中 */
+    scrollbar-width: none; /* Firefox 隐藏滚动条，保持画面干净 */
+  }
+  .view::-webkit-scrollbar { display: none; } /* Chrome/Edge 隐藏滚动条 */
+  .view.show { display: block; animation: viewIn .42s cubic-bezier(.22, 1, .36, 1); } /* 显示当前视图 + 上浮淡入 */
+  @keyframes viewIn { /* 视图入场动画 */
+    from { opacity: 0; transform: translateY(10px) scale(.994); } /* 起始：下方略缩、透明 */
+    to { opacity: 1; transform: none; } /* 结束：原位、不透明 */
+  }
+  .step { font-size: 11px; color: #8a8474; letter-spacing: 2px; margin-bottom: 10px; } /* 步骤标签（压缩） */
+  h2 { font-size: 17px; margin-bottom: 12px; } /* 视图标题（压缩） */
+  /* ================= 液态玻璃卡片组件（Liquid Glass） ================= */
+  .panel, .liquid-glass { /* 玻璃卡片基础：位置与投影 */
+    position: relative; /* 供伪元素层定位 */
+    isolation: isolate; /* 创建独立层叠上下文，让折射层的 z-index:-1 只沉到卡片内部 */
+    border-radius: 18px; /* 卡片圆角 */
+    background: none; /* 不用实色底，材质交给两层伪元素 */
+    border: none; /* 不用硬描边，边缘由内高光勾勒 */
+    box-shadow: 0 6px 22px rgba(74, 52, 5, .13), 0 1px 3px rgba(74, 52, 5, .07); /* 落地投影，形成悬浮层次 */
+    padding: 15px 17px; /* 卡片内边距（紧凑版） */
+    margin-bottom: 12px; /* 卡片间距 */
+  }
+  .panel > *, .liquid-glass > * { position: relative; z-index: 1; } /* 卡片内所有内容抬到折射层之上，保证可读可点 */
+  .panel::before, .liquid-glass::before { /* 第一层：玻璃薄雾 + 内高光（视觉主体） */
+    content: ""; /* 伪元素必需声明 */
+    position: absolute; inset: 0; /* 铺满卡片 */
+    z-index: 0; /* 位于内容之下、折射层之上 */
+    border-radius: inherit; /* 继承卡片圆角 */
+    background: linear-gradient(158deg, rgba(255,255,255,.36) 0%, rgba(255,255,255,.10) 44%, rgba(255,255,255,.22) 100%); /* 斜向玻璃薄雾（更通透，让背后光斑透出来） */
+    box-shadow: /* 内嵌高光：模拟玻璃厚边受光 */
+      inset 0 0 15px -5px #ffffff, /* 四周柔和内泛光 */
+      inset 0 1px 0 rgba(255,255,255,.92), /* 顶部亮线 */
+      inset 0 -1px 0 rgba(255,255,255,.45), /* 底部反光 */
+      inset 1px 0 0 rgba(255,255,255,.55), /* 左侧亮边 */
+      inset -1px 0 0 rgba(255,255,255,.55); /* 右侧亮边 */
+    pointer-events: none; /* 不拦截交互 */
+  }
+  .panel::after, .liquid-glass::after { /* 第二层：折射层（SVG 湍流位移 + 背景模糊） */
+    content: ""; /* 伪元素必需声明 */
+    position: absolute; inset: 0; /* 铺满卡片 */
+    z-index: -1; /* 沉到卡片内容与薄雾层之下 */
+    border-radius: inherit; /* 继承卡片圆角 */
+    backdrop-filter: blur(9px) saturate(170%) brightness(1.04); /* 先捕获并模糊背后内容，提亮营造透光感 */
+    -webkit-backdrop-filter: blur(9px) saturate(170%) brightness(1.04); /* Safari 前缀兼容 */
+    filter: url(#glass-distortion); /* 关键：用 SVG 湍流位移把背景扭出液态折射感 */
+    -webkit-filter: url(#glass-distortion); /* Safari 前缀兼容 */
+    pointer-events: none; /* 不拦截交互 */
+  }
+  .panel h3 { font-size: 12.5px; color: #6f6a5c; margin-bottom: 9px; letter-spacing: .3px; } /* 面板小标题（压缩） */
+
+  /* ===== 商店页专属：双列网格，一屏排完全部模块（免滚动） ===== */
+  #viewShop.show { /* 覆盖 .view.show 的 block，改为网格 */
+    display: grid; /* 网格布局 */
+    grid-template-columns: 1fr 1fr; /* 等宽两列 */
+    grid-template-rows: auto auto minmax(150px, 1fr); /* 前两行按内容，末行拉伸填满剩余高度 */
+    gap: 11px; /* 模块间距 */
+    align-content: safe center; /* 高窗口时整体垂直居中；内容超高时自动回退到靠上，避免顶部被裁 */
+  }
+  #viewShop.show > .step, /* 步骤标签 */
+  #viewShop.show > h2, /* 主标题 */
+  #viewShop.show > #resumableBar { /* 上批暂存提示条 */
+    grid-column: 1 / -1; /* 横跨两列 */
+    margin-bottom: 0; /* 间距交由 grid gap 统一控制 */
+  }
+  #viewShop.show > .panel { margin-bottom: 0; } /* 网格内取消额外外边距，避免行高不齐 */
+  #viewShop .panel h3 { /* 商店页小标题更紧凑 */
+    font-size: 12px; /* 小字号 */
+    margin-bottom: 7px; /* 紧凑下间距 */
+    white-space: nowrap; /* 单行显示，避免标题换行撑高卡片 */
+    overflow: hidden; /* 超长裁剪 */
+    text-overflow: ellipsis; /* 以省略号收尾 */
+  }
+  #viewShop .panel p { font-size: 12px; margin: 0; } /* 商店页面板说明文字（压缩） */
+  #viewShop .arow { margin: 6px 0; } /* 商店页信息行间距压缩 */
+  #viewShop > .buyArea.panel { /* 立即购买卡片 */
+    display: flex; /* 弹性布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    padding: 15px 17px; /* 与其他卡片一致的内边距 */
+    margin-bottom: 0; /* 取消外边距 */
+  }
+  #viewShop > .buyArea.panel button { /* 购买主按钮 */
+    width: 100%; /* 撑满卡片宽度 */
+    padding: 13px 18px; /* 加大点击热区 */
+    font-size: 15px; /* 主按钮字号 */
+    font-weight: 600; /* 加粗 */
+    letter-spacing: 1px; /* 字距 */
+    background: linear-gradient(160deg, #2f2c26, #4a4033); /* 深墨渐变，形成视觉焦点 */
+    color: #f6c775; /* 金字 */
+    border: 1px solid rgba(255, 255, 255, .28); /* 内侧亮边 */
+    box-shadow: 0 6px 18px rgba(44, 42, 38, .3), inset 0 1px 0 rgba(255, 255, 255, .3); /* 投影 + 顶部高光 */
+    transition: transform .22s cubic-bezier(.22, 1.4, .36, 1), box-shadow .22s ease; /* 弹性反馈过渡 */
+  }
+  #viewShop > .buyArea.panel button:hover:not(:disabled) { /* 悬停 */
+    transform: translateY(-1px) scale(1.015); /* 轻微上浮放大 */
+    box-shadow: 0 10px 24px rgba(44, 42, 38, .34), inset 0 1px 0 rgba(255, 255, 255, .38); /* 投影加深 */
+  }
+  #viewShop > .buyArea.panel button:active:not(:disabled) { /* 按下 */
+    transform: scale(.985); /* 轻微内缩 */
+  }
+  @media (max-height: 780px) { /* 矮窗口（exe 小窗模式）进一步紧凑，确保一屏放得下 */
+    .view { padding: 10px 16px 88px; } /* 视图上下留白压缩 */
+    #viewShop.show { gap: 9px; grid-template-rows: auto auto minmax(112px, 1fr); } /* 间距与末行下限压缩 */
+    #viewShop .panel { padding: 11px 14px; } /* 卡片内边距压缩 */
+    #viewShop .panel h3 { font-size: 11.5px; margin-bottom: 5px; } /* 小标题压缩 */
+    #viewShop .arow { margin: 4px 0; font-size: 12.5px; } /* 信息行压缩 */
+    #viewShop .qty { gap: 10px; } /* 步进行间距压缩 */
+    #viewShop .qty button { width: 32px; height: 32px; font-size: 16px; border-radius: 10px; } /* 步进按钮压缩 */
+    #viewShop #qtyVal { font-size: 22px; min-width: 44px; } /* 数值字号压缩 */
+    .mlabel { padding: 7px 0; font-size: 13px; } /* 果冻开关标签压缩 */
+    #viewShop .tlabel b { font-size: 13px; } /* 价位档名压缩 */
+    #viewShop .tlabel i { font-size: 10px; } /* 单价字号压缩 */
+    #viewShop > .buyArea.panel button { padding: 11px 18px; font-size: 14px; } /* 购买按钮压缩 */
+    #viewShop .buyArea button { padding: 9px 26px; } /* 爽刮按钮压缩 */
+  }
   .mswitch { /* 果冻三档开关 */
     position: relative; /* 供滑块定位 */
     display: flex; /* 三个标签均分 */
@@ -232,10 +385,13 @@
   #viewHall h2 { margin-top: 20px; } /* 标题间距 */
   #hallStats { font-size: 13px; color: #8a8474; margin-bottom: 14px; } /* 统计 */
   .bgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; } /* 徽章网格 */
-  .badge { /* 单枚徽章 */
+  .badge { /* 单枚徽章（轻量玻璃：数量多达 50 枚，只做模糊不加 SVG 折射，保证流畅） */
     border-radius: 14px; padding: 10px 6px; text-align: center; /* 卡片 */
-    background: #fffdf8; border: 1px solid #e7e0cf; /* 外观 */
+    background: rgba(255, 253, 248, .44); border: 1px solid rgba(255, 255, 255, .62); /* 半透玻璃外观 */
+    backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(10px) saturate(160%); /* 背景模糊 */
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 3px 10px rgba(74,52,5,.07); /* 顶部高光 + 轻投影 */
   }
+  .badge.on { background: rgba(255, 253, 248, .68); border-color: rgba(255, 255, 255, .85); } /* 点亮后更实一些，突出成就感 */
   .badge .core { /* 徽章核心圆 */
     width: 52px; height: 52px; margin: 0 auto 6px; border-radius: 50%; /* 圆形 */
     display: flex; align-items: center; justify-content: center; /* 居中 */
@@ -273,16 +429,145 @@
   #tknob.rainbow { background: linear-gradient(115deg, #ff6b6b, #ffb84c, #f6c775, #7ee787, #6fc7ff, #b28aff, #ff6b6b); background-size: 340% 100%; animation: rainbowFlow 3.8s linear infinite; box-shadow: 0 0 12px rgba(255,130,90,.5), 0 0 26px rgba(120,150,255,.35); } /* 滑到鸿运卡：彩虹渐变光晕 */
   @keyframes rainbowFlow { 0% { background-position: 0% 50%; } 100% { background-position: 340% 50%; } } /* 光晕缓缓流动 */
   /* ===== 顶部导航条 ===== */
-  #mainNav { width: 100%; display: flex; gap: 10px; margin-top: 6px; } /* 导航行（占满 header 第二行） */
-  .navItem { flex: 1; text-align: center; padding: 8px 0; border-radius: 999px; background: #f1ead9; color: #8a8474; font-size: 13px; cursor: pointer; user-select: none; transition: all .25s ease; } /* 导航胶囊 */
-  .navItem.on { background: #2c2a26; color: #fffdf8; font-weight: 600; } /* 选中深色高亮 */
+  /* ================= 底部悬浮 Tab 切换器（Liquid Glass 液态玻璃） ================= */
+  #mainNav { /* 外层：固定在视口底部居中的玻璃胶囊 */
+    position: fixed; /* 固定定位，脱离文档流，不随内容滚动 */
+    left: 50%; /* 水平居中基准点 */
+    bottom: calc(18px + env(safe-area-inset-bottom)); /* 距底部 18px，并避让全面屏安全区 */
+    transform: translateX(-50%); /* 以自身宽度的一半左移，实现真正居中 */
+    z-index: 150; /* 层级：高于顶栏(50)，低于密码遮罩(200) */
+    width: min(520px, calc(100vw - 32px)); /* 宽度：最大 520px，小屏两侧各留 16px */
+    display: flex; /* 四个 Tab 一行均分 */
+    align-items: stretch; /* 子项纵向拉伸，保证等高手感 */
+    padding: 6px; /* 内边距，为内部滑块留出呼吸空间 */
+    border-radius: 26px; /* 大圆角胶囊外形 */
+    background: rgba(255, 252, 244, .30); /* 低不透明度玻璃底：让背后内容真正透出来，才有液态玻璃的透明感 */
+    backdrop-filter: blur(30px) saturate(200%) brightness(1.08); /* 核心材质：强模糊 + 提饱和 + 提亮，模拟玻璃折射光线 */
+    -webkit-backdrop-filter: blur(30px) saturate(200%) brightness(1.08); /* Safari / iOS 前缀兼容 */
+    border: 1px solid rgba(255, 255, 255, .82); /* 半透明白描边，模拟玻璃边缘厚度 */
+    box-shadow: /* 多层阴影塑造立体感与内反光 */
+      0 12px 34px rgba(74, 52, 5, .18), /* 外部落地投影（悬浮感） */
+      0 3px 10px rgba(74, 52, 5, .08), /* 近距离紧贴投影（贴地感） */
+      inset 0 1px 0 rgba(255, 255, 255, 1), /* 顶部内高光（受光的玻璃上沿） */
+      inset 0 -1px 0 rgba(255, 255, 255, .45), /* 底部内反光（透光的下沿） */
+      inset 1px 0 0 rgba(255, 255, 255, .55), /* 左侧亮边 */
+      inset -1px 0 0 rgba(255, 255, 255, .55), /* 右侧亮边 */
+      inset 0 0 30px rgba(255, 255, 255, .42); /* 内部柔光雾面（朦胧质感） */
+    transition: transform .38s cubic-bezier(.22, 1, .36, 1), opacity .3s ease; /* 滚动收缩与透明度过渡 */
+    will-change: transform; /* 提前提升为合成层，滚动更顺滑 */
+  }
+  #mainNav::before { /* 顶部弧形高光：模拟玻璃受光折射的亮带 */
+    content: ""; /* 伪元素必须声明内容 */
+    position: absolute; inset: 0; /* 铺满整个胶囊 */
+    border-radius: inherit; /* 继承父级圆角，避免高光溢出 */
+    background: linear-gradient(180deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.14) 36%, rgba(255,255,255,0) 64%); /* 上亮下透的渐变 */
+    pointer-events: none; /* 不拦截任何点击 */
+    z-index: 0; /* 位于内容之下 */
+  }
+  #mainNav .dockGlow { /* 液体指示器：随选中项滑动的玻璃块 */
+    position: absolute; /* 相对胶囊绝对定位 */
+    top: 6px; bottom: 6px; left: 6px; /* 与胶囊内边距严格对齐 */
+    width: calc((100% - 12px) / 4); /* 四等分：扣除左右各 6px 内边距后均分 */
+    border-radius: 20px; /* 胶囊圆角（比外框略小，形成内嵌层次） */
+    background: linear-gradient(160deg, rgba(255,255,255,.96), rgba(255,255,255,.70)); /* 玻璃滑块：上亮下实，产生厚度 */
+    backdrop-filter: blur(8px) saturate(185%); /* 滑块自身也折射背后内容，避免"贴纸感" */
+    -webkit-backdrop-filter: blur(8px) saturate(185%); /* Safari 前缀兼容 */
+    box-shadow: /* 凸起质感 */
+      0 4px 14px rgba(74, 52, 5, .16), /* 外部投影，浮起 */
+      inset 0 1px 0 rgba(255, 255, 255, 1), /* 顶部内高光 */
+      inset 0 -3px 8px rgba(246, 199, 117, .30); /* 底部金色余晖（呼应页面主色） */
+    transform: translateX(calc(var(--dockIdx, 0) * 100%)); /* 位移：索引 × 自身宽度，逐格滑动 */
+    transition: transform .58s cubic-bezier(.34, 1.42, .64, 1), /* 位移用过冲弹簧曲线：滑到位会"弹一下" */
+                scale .45s cubic-bezier(.34, 1.6, .64, 1); /* 缩放独立过渡，与位移互不干扰 */
+    scale: 1 1; /* 独立缩放属性（Chrome 104+），供弹性动画调用 */
+    pointer-events: none; /* 不阻挡 Tab 点击 */
+    z-index: 1; /* 位于高光层之上、文字之下 */
+  }
+  #mainNav .dockGlow.pop { /* 切换瞬间的液体挤压 */
+    animation: glowPop .62s cubic-bezier(.34, 1.5, .64, 1); /* 一次性弹性动画 */
+  }
+  @keyframes glowPop { /* 液体挤压关键帧：横撑 → 纵压 → 反向回弹 → 复位 */
+    0% { scale: 1 1; } /* 起始：正常比例 */
+    28% { scale: 1.18 .80; } /* 横向被"甩"开、纵向压扁（液体惯性） */
+    55% { scale: .93 1.09; } /* 反向回弹 */
+    78% { scale: 1.04 .97; } /* 幅度衰减 */
+    100% { scale: 1 1; } /* 完全复位 */
+  }
+  #mainNav .navItem { /* 单个 Tab（图标 + 文字） */
+    position: relative; /* 供内部层叠定位 */
+    z-index: 2; /* 保证文字始终在玻璃滑块之上 */
+    flex: 1 1 0; /* 四等分且允许收缩 */
+    min-width: 0; /* 允许窄屏压缩，防止溢出 */
+    display: flex; flex-direction: column; /* 纵向排列：图标在上、文字在下 */
+    align-items: center; justify-content: center; /* 双向居中 */
+    gap: 2px; /* 图标与文字间距 */
+    padding: 7px 2px 6px; /* 上下内边距，撑起触控热区（≥44px 高） */
+    border-radius: 20px; /* 与滑块圆角一致 */
+    font-size: 11.5px; /* 标签字号 */
+    line-height: 1.15; /* 紧凑行高 */
+    color: #8a8474; /* 未选中：灰褐色 */
+    cursor: pointer; /* 手型光标 */
+    user-select: none; /* 禁止选中文字 */
+    -webkit-tap-highlight-color: transparent; /* 移动端去除点击蓝色高亮 */
+    transition: color .3s ease, transform .3s cubic-bezier(.22, 1.4, .36, 1); /* 颜色与按压缩放过渡 */
+  }
+  #mainNav .navItem .ico { /* Tab 图标 */
+    display: block; /* 独立成行 */
+    font-size: 16px; /* 图标尺寸 */
+    line-height: 1; /* 行高归一，避免上下留白 */
+    transition: transform .42s cubic-bezier(.22, 1.5, .36, 1), filter .3s ease; /* 弹跳上浮与投影过渡 */
+  }
+  #mainNav .navItem .lbl { /* Tab 文字 */
+    white-space: nowrap; /* 禁止换行，保持单行 */
+    letter-spacing: .5px; /* 轻微字距，提升小字号可读性 */
+  }
+  #mainNav .navItem.on { /* 选中态 */
+    color: #2c2a26; /* 深墨色文字，对比度充足 */
+    font-weight: 600; /* 加粗强调 */
+  }
+  #mainNav .navItem.on .ico { /* 选中态图标 */
+    transform: translateY(-1px) scale(1.16); /* 上浮并放大，形成物理抬升感 */
+    filter: drop-shadow(0 2px 4px rgba(74, 52, 5, .22)); /* 图标投影，强化悬浮 */
+    animation: icoPop .62s cubic-bezier(.34, 1.6, .64, 1); /* 切换时图标弹跳 */
+  }
+  @keyframes icoPop { /* 图标弹跳关键帧 */
+    0% { transform: translateY(0) scale(1); } /* 起始：原位原尺寸 */
+    32% { transform: translateY(-6px) scale(1.34); } /* 上冲并放大到最大 */
+    58% { transform: translateY(2px) scale(.92); } /* 落回并轻微压扁 */
+    80% { transform: translateY(-2px) scale(1.2); } /* 二次小弹 */
+    100% { transform: translateY(-1px) scale(1.16); } /* 停在选中态基准位置 */
+  }
+  #mainNav .navItem:active { /* 按下瞬间的反馈 */
+    transform: scale(.94); /* 轻微内缩，模拟按压 */
+  }
+  #mainNav.dockTuck { /* 页面滚动中：胶囊轻微下沉收缩（iOS 26 边缘感知效果） */
+    transform: translateX(-50%) translateY(6px) scale(.965); /* 保持居中前提下下沉缩小 */
+    opacity: .93; /* 略降不透明度，让内容更突出 */
+  }
+  #mainNav.dockBump { /* 切换 Tab 时的整体挤压回弹 */
+    animation: dockBump .52s cubic-bezier(.22, 1.5, .36, 1); /* 一次性弹性动画 */
+  }
+  @keyframes dockBump { /* 弹性形变关键帧 */
+    0%, 100% { transform: translateX(-50%) scale(1, 1); } /* 起始与结束：原样 */
+    38% { transform: translateX(-50%) scale(1.035, .955); } /* 横向撑开、纵向压扁 */
+    70% { transform: translateX(-50%) scale(.99, 1.008); } /* 轻微反向回弹 */
+  }
+  @media (max-width: 420px) { /* 小屏适配 */
+    #mainNav { width: calc(100vw - 20px); bottom: calc(12px + env(safe-area-inset-bottom)); padding: 5px; } /* 更贴近屏幕边缘 */
+    #mainNav .navItem { font-size: 10.5px; padding: 6px 1px 5px; gap: 1px; } /* 缩小字号与内边距 */
+    #mainNav .navItem .ico { font-size: 15px; } /* 缩小图标 */
+    #mainNav .dockGlow { top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / 4); } /* 滑块跟随内边距同步调整 */
+  }
+  @media (prefers-reduced-motion: reduce) { /* 尊重系统「减少动态效果」偏好 */
+    #mainNav, #mainNav .dockGlow, #mainNav .navItem, #mainNav .navItem .ico { transition: none; animation: none; } /* 关闭全部过渡与动画 */
+  }
   /* ===== 两档果冻开关（彩票发行方） ===== */
   .mswitch.two .knob { width: calc((100% - 8px) / 2); } /* 两档滑块宽度 */
   /* ===== 刮票历史页 ===== */
-  #hSummary { border-radius: 16px; padding: 16px 20px; margin-bottom: 16px; } /* 总盈亏汇总卡 */
-  #hSummary.lose { background: #fcecec; border: 1px solid #f2c6c6; } /* 总亏损红底 */
-  #hSummary.win { background: #eaf6ec; border: 1px solid #bfe3c8; } /* 总盈利绿底 */
-  #hSummary.even { background: #f1efe8; border: 1px solid #ddd8c8; } /* 打平灰底 */
+  #hSummary { border-radius: 16px; padding: 16px 20px; margin-bottom: 16px; backdrop-filter: blur(12px) saturate(165%); -webkit-backdrop-filter: blur(12px) saturate(165%); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 4px 14px rgba(74,52,5,.08); } /* 总盈亏汇总卡（轻量玻璃，不叠 SVG 折射以免开销过大） */
+  #hSummary.lose { background: rgba(252,236,236,.52); border: 1px solid rgba(242,198,198,.68); } /* 总亏损：红调玻璃 */
+  #hSummary.win { background: rgba(234,246,236,.52); border: 1px solid rgba(191,227,200,.68); } /* 总盈利：绿调玻璃 */
+  #hSummary.even { background: rgba(255,253,248,.45); border: 1px solid rgba(255,255,255,.62); } /* 打平：暖白玻璃 */
   #hSummary .net { font-size: 24px; font-weight: 600; margin: 4px 0; } /* 净盈亏大字 */
   #hSummary.lose .net { color: #c0392b; } /* 亏红色 */
   #hSummary.win .net { color: #2f8f4e; } /* 赚绿色 */
@@ -299,10 +584,10 @@
   #careerCard .cBar { grid-column: 1 / -1; } /* 徽章进度条跨两列 */
   #careerCard .cBarTrack { height: 8px; background: #efe9da; border-radius: 99px; overflow: hidden; margin-top: 6px; } /* 进度槽 */
   #careerCard .cBarFill { height: 100%; border-radius: 99px; transition: width .6s ease; } /* 进度填充（颜色随徽章等级） */
-  .hrec { border-radius: 14px; padding: 12px 16px; margin-bottom: 12px; } /* 单条历史卡 */
-  .hrec.lose { background: #fcecec; border: 1px solid #f2c6c6; } /* 亏损红条 */
-  .hrec.win { background: #eaf6ec; border: 1px solid #bfe3c8; } /* 盈利绿条 */
-  .hrec.even { background: #f1efe8; border: 1px solid #ddd8c8; } /* 打平灰条 */
+  .hrec { border-radius: 14px; padding: 12px 16px; margin-bottom: 12px; backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(10px) saturate(160%); box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 3px 10px rgba(74,52,5,.07); } /* 单条历史卡（轻量玻璃） */
+  .hrec.lose { background: rgba(252,236,236,.52); border: 1px solid rgba(242,198,198,.68); } /* 亏损红条 */
+  .hrec.win { background: rgba(234,246,236,.52); border: 1px solid rgba(191,227,200,.68); } /* 盈利绿条 */
+  .hrec.even { background: rgba(255,253,248,.45); border: 1px solid rgba(255,255,255,.62); } /* 打平灰条 */
   .hrec .top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 12px; color: #6f6a5c; } /* 概要行 */
   .hrec .amounts { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; margin-top: 6px; font-size: 13px; color: #4a3a18; } /* 金额行 */
   .hrec .profit { font-size: 17px; font-weight: 600; } /* 盈亏大字 */
@@ -317,6 +602,23 @@
 </style>
 </head>
 <body data-page-node-id="MlQ3xUotTEXim5qdBbjOuF">
+
+<!-- ===== 液态玻璃折射滤镜定义（隐藏 SVG，供 CSS filter 引用） ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"> <!-- 隐藏容器：只提供滤镜供 CSS 调用，不参与布局 -->
+  <defs> <!-- 定义区：滤镜、渐变等可复用资源 -->
+    <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%"> <!-- 液态折射滤镜：把背景内容扭出玻璃波纹 -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise" /> <!-- 生成分形噪声，作为位移的驱动源 -->
+      <feGaussianBlur in="noise" stdDeviation="2" result="blurred" /> <!-- 把噪声柔化，避免折射边缘过于锐利 -->
+      <feDisplacementMap in="SourceGraphic" in2="blurred" scale="45" xChannelSelector="R" yChannelSelector="G" /> <!-- 用噪声通道位移像素：scale 越大扭曲越猛，40~50 之间最像液态玻璃 -->
+    </filter> <!-- 滤镜定义结束 -->
+    <filter id="glass-distortion-soft" x="0%" y="0%" width="100%" height="100%"> <!-- 弱化版折射：用于大面积卡片，减少性能开销 -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" seed="37" result="noise" /> <!-- 更细更省的噪声 -->
+      <feGaussianBlur in="noise" stdDeviation="1.5" result="blurred" /> <!-- 柔化 -->
+      <feDisplacementMap in="SourceGraphic" in2="blurred" scale="28" xChannelSelector="R" yChannelSelector="G" /> <!-- 小幅位移，保留平整观感 -->
+    </filter> <!-- 滤镜定义结束 -->
+  </defs> <!-- 定义区结束 -->
+</svg> <!-- 隐藏 SVG 结束 -->
+
 <header data-page-node-id="iRwujDE6YfglOhESwDrxqP"> <!-- 顶栏 -->
   <h1 data-page-node-id="dVgJ5GSpWkGzZ1HYZGM3RF">🏮 刮刮乐</h1> <!-- 标题 -->
   <div class="balance" id="balPill" data-page-node-id="n7QI1rh4zIRJqWjsIFCC9r">💰 余额 <span id="balNum" data-page-node-id="3H3VUvp4uboyhpztvmCd5w">20.00</span> 元</div> <!-- 余额胶囊 -->
@@ -325,12 +627,6 @@
   <button id="btnBorrow" data-page-node-id="TcRU6NnvdyV2bYD4Cb1Lr2">借钱 ¥5</button> <!-- 借钱 -->
   <span style="font-size:12px;color:#8a8474;margin-left:auto" data-page-node-id="bskyAsqBEp74lPBlDfZnpV">最多借 <b id="maxDebtNum">10</b> 元 · 中奖优先自动还债 · <button class="reset" id="btnReset" data-page-node-id="HoDqpZ2pbDkTGdZ8aGRbAY">重置账本</button></span> <!-- 说明 -->
   <button id="btnAdmin" data-page-node-id="BtnAdmin001">⚙ 管理员</button> <!-- 管理员系统入口（右上角） -->
-  <nav id="mainNav" data-page-node-id="MainNav001"> <!-- 主导航条 -->
-    <span class="navItem on" data-view="Shop" data-v="0" data-page-node-id="NavShop001">🎰 刮票大厅</span> <!-- 大厅 -->
-    <span class="navItem" data-view="History" data-v="1" data-page-node-id="NavHist001">📜 刮票历史</span> <!-- 历史 -->
-    <span class="navItem" data-view="Hall" data-v="2" data-page-node-id="NavHall001">🏅 荣誉殿堂</span> <!-- 殿堂 -->
-    <span class="navItem" data-view="Withdraw" data-v="3" data-page-node-id="NavWithdraw001">💰 提现</span> <!-- 提现（敬请期待） -->
-  </nav>
 </header>
 
 <!-- 视图一：商店 -->
@@ -338,7 +634,7 @@
   <div id="resumableBar" data-page-node-id="ResumBar001"><span id="resumeText"></span><button id="btnResume">继续这批</button><button id="btnAbandon" style="color:#c0392b">作废这批</button></div> <!-- 上批暂存提示 -->
   <p class="step" data-page-node-id="O4Y7YvFsxUKUVeLWL2DDAH">STEP 1 · 挑商家选数量</p> <!-- 步骤 -->
   <h2 data-page-node-id="tAgUhZQcFXlfbfUIBX5DBm">今天去哪家刮？</h2> <!-- 标题 -->
-  <div class="panel" data-page-node-id="PanelIssuer001"> <!-- 发行方面板（纯玩乐） -->
+  <div class="panel liquid-glass" data-page-node-id="PanelIssuer001"> <!-- 发行方面板（纯玩乐） -->
     <h3 data-page-node-id="IssuerH001">彩票发行方（两家独立库存，售完即止）</h3> <!-- 小标题 -->
     <div class="mswitch two" id="iswitch" data-page-node-id="ISwitch001"> <!-- 两档果冻开关 -->
       <div class="knob" id="iknob" data-page-node-id="IKnob001"></div> <!-- 滑块 -->
@@ -347,7 +643,7 @@
     </div>
     <p id="iDesc" data-page-node-id="IDesc001"></p> <!-- 发行方描述 -->
   </div>
-  <div class="panel" data-page-node-id="YulO3i66kP1yjhosgpsfdt"> <!-- 商家面板 -->
+  <div class="panel liquid-glass" data-page-node-id="YulO3i66kP1yjhosgpsfdt"> <!-- 商家面板 -->
     <h3 data-page-node-id="du3WiNP2GsL5DFHM2jb6JS">商家风气（点一下切换）</h3> <!-- 小标题 -->
     <div class="mswitch" id="mswitch" data-page-node-id="9VDgGrGirxoQ8htWfBMcd3"> <!-- 果冻开关 -->
       <div class="knob" id="knob" data-page-node-id="1nqg3gOUNFDQhUKnIAANQN"></div> <!-- 滑块 -->
@@ -357,7 +653,7 @@
     </div>
     <p id="mDesc" data-page-node-id="D7YN7ZQ76VsLhpW8Vw0gQS"></p> <!-- 描述（不标中奖率） -->
   </div>
-  <div class="panel" data-page-node-id="UCgxsA1UwYMpEth62A2nbB"> <!-- 价位面板 -->
+  <div class="panel liquid-glass" data-page-node-id="UCgxsA1UwYMpEth62A2nbB"> <!-- 价位面板 -->
     <h3 data-page-node-id="I9hbz0QNtCniDcDsaRdmTE">彩票价位（奖池保密，刮开见分晓）</h3> <!-- 不标奖池 -->
     <div class="mswitch" id="tswitch" data-page-node-id="K8Jn9Z6u1GR3JbfqadWFZh"> <!-- 果冻价位开关 -->
       <div class="knob" id="tknob" data-page-node-id="Kn0bTier001"></div> <!-- 价位滑块 -->
@@ -366,7 +662,7 @@
       <span class="mlabel tlabel" data-i="2" data-page-node-id="Tl2Hongyun001"><b>鸿运卡</b><i>¥10 / 张</i></span> <!-- 档三 -->
     </div>
   </div>
-  <div class="panel" data-page-node-id="Ci1N3UtoYU6C28Zt8kDrkB"> <!-- 数量面板 -->
+  <div class="panel liquid-glass" data-page-node-id="Ci1N3UtoYU6C28Zt8kDrkB"> <!-- 数量面板 -->
     <h3 data-page-node-id="9UCjTmiMzcINBznTHohoaw">购买数量（数量不限，售完即止；超 100 张自动分批上桌）</h3> <!-- 说明（含分批规则） -->
     <div class="arow" style="margin:2px 0 12px" id="stockRow" data-page-node-id="StockRow001">📦 <span id="stockIssuer" data-page-node-id="StockIssuer001">中国福利彩票</span> 当前库存：<b id="stockNum" data-page-node-id="StockNum001">100,000</b> 张</div> <!-- 当前发行方库存 -->
     <div class="arow" style="margin:0 0 12px" id="shardRow" data-page-node-id="ShardRow001">🧩 废票碎片：<b id="shardNum" data-page-node-id="ShardNum001">0</b> / 100<button id="btnSynth" data-page-node-id="BtnSynth001" disabled>合成免费福卡</button><span style="font-size:12px;color:#8a8474" data-page-node-id="ShardTip001">每张未中奖票回收 1 片碎片</span></div> <!-- 碎票回收与合成 -->
@@ -377,12 +673,12 @@
       <span id="costPreview" data-page-node-id="8WtzWlIT1QgK4CwOiQYaBp"></span> <!-- 合计 -->
     </div>
   </div>
-  <div class="panel" data-page-node-id="PanelHappy001"> <!-- 一键爽刮面板 -->
+  <div class="panel liquid-glass" data-page-node-id="PanelHappy001"> <!-- 一键爽刮面板 -->
     <h3 data-page-node-id="HdHappy001">⚡ 一键爽刮（快进抽卡 → 自动逐张刮开）</h3> <!-- 小标题 -->
     <p style="font-size:12px;color:#8a8474;margin-bottom:4px" data-page-node-id="HappyDesc001">按上面的商家风气、彩票价位与购买数量一键完成；超过 30 张时刮开过程自动加速，涂层与金币动画照常保留。</p> <!-- 规则说明 -->
     <div class="buyArea" style="padding:12px 0 0" data-page-node-id="BuyHappy001"><button id="btnHappy" data-page-node-id="BtnHappy001">⚡ 一键爽刮</button></div> <!-- 按钮 -->
   </div>
-  <div class="buyArea" data-page-node-id="ZgTNpdvX7vgzF2de6uDAF5"><button id="btnBuy" data-page-node-id="UQqUPT6hQuveqYCvjHfSYU">🎫 立即购买</button></div> <!-- 磁力按钮 -->
+  <div class="buyArea panel liquid-glass" data-page-node-id="ZgTNpdvX7vgzF2de6uDAF5"><button id="btnBuy" data-page-node-id="UQqUPT6hQuveqYCvjHfSYU">🎫 立即购买</button></div> <!-- 磁力按钮 -->
 </section>
 
 <!-- 视图二：百张叠票抽取 -->
@@ -415,18 +711,18 @@
 <section id="viewAdmin" class="view" data-page-node-id="ViewAdmin001">
   <p class="step" data-page-node-id="AdmStep001">ADMIN · 改动仅存于本机，实时生效</p> <!-- 步骤 -->
   <h2 data-page-node-id="AdmH2-001">⚙ 管理员系统</h2> <!-- 标题 -->
-  <div class="panel" data-page-node-id="AdmMoney001"> <!-- 资金面板 -->
+  <div class="panel liquid-glass" data-page-node-id="AdmMoney001"> <!-- 资金面板 -->
     <h3 data-page-node-id="AdmMoneyH">资金调整</h3> <!-- 小标题 -->
     <div class="arow" data-page-node-id="AdmBalRow">当前余额 ¥<input id="admBal" type="number" step="0.01" min="0" data-page-node-id="AdmBalInp"><button id="admBalSet" data-page-node-id="AdmBalBtn">设置余额</button></div> <!-- 余额调整 -->
     <div class="arow" data-page-node-id="AdmDebtRow">最多可借 ¥<input id="admDebt" type="number" step="1" min="0" data-page-node-id="AdmDebtInp"><button id="admDebtSet" data-page-node-id="AdmDebtBtn">设置借款上限</button></div> <!-- 借款上限 -->
     <div class="arow" data-page-node-id="AdmJackRow">🎁 头奖池：当前 <b id="admJackNum" data-page-node-id="AdmJackNum001">0</b> 元 · 设 <input id="admJack" type="number" step="1" min="0" style="width:110px" data-page-node-id="AdmJackInp"> 元<button id="admJackSet" data-page-node-id="AdmJackBtn">设置滚存</button></div> <!-- 头奖池设置 -->
   </div>
-  <div class="panel" data-page-node-id="AdmStockPanel"> <!-- 库存管理面板 -->
+  <div class="panel liquid-glass" data-page-node-id="AdmStockPanel"> <!-- 库存管理面板 -->
     <h3 data-page-node-id="AdmStockH">📦 库存管理（两家初始各 100,000 张，售罄需补仓）</h3> <!-- 小标题 -->
     <div class="arow" data-page-node-id="AdmStockRow0">❤️ 中国福利彩票：当前 <b id="admStock0" data-page-node-id="AdmStock0Num">100,000</b> 张 · 补 <input id="admAdd0" type="number" step="1000" min="1" placeholder="补仓张数" style="width:110px" data-page-node-id="AdmAdd0Inp"> 张<button id="admStockAdd0" data-page-node-id="AdmStockAdd0Btn">补仓</button></div> <!-- 福利库存 -->
     <div class="arow" data-page-node-id="AdmStockRow1">🏅 中国体育彩票：当前 <b id="admStock1" data-page-node-id="AdmStock1Num">100,000</b> 张 · 补 <input id="admAdd1" type="number" step="1000" min="1" placeholder="补仓张数" style="width:110px" data-page-node-id="AdmAdd1Inp"> 张<button id="admStockAdd1" data-page-node-id="AdmStockAdd1Btn">补仓</button></div> <!-- 体育库存 -->
   </div>
-  <div class="panel" data-page-node-id="AdmPoolPanel"> <!-- 奖池编辑面板 -->
+  <div class="panel liquid-glass" data-page-node-id="AdmPoolPanel"> <!-- 奖池编辑面板 -->
     <h3 data-page-node-id="AdmPoolH">奖池编辑（商家风气 × 卡类型：各金额档占刮 100 张的百分比）</h3> <!-- 小标题 -->
     <div class="arow" data-page-node-id="AdmSelRow"> <!-- 选择行 -->
       <select id="admMer" data-page-node-id="AdmMerSel"></select> <!-- 商家选择 -->
@@ -436,7 +732,7 @@
     <table id="admPool" data-page-node-id="AdmPoolTbl"></table> <!-- 编辑表 -->
     <div class="arow" data-page-node-id="AdmAddRow"><button id="admAddRow" data-page-node-id="AdmAddBtn">＋ 添加金额档</button><span style="font-size:12px;color:#8a8474" data-page-node-id="AdmPoolTip">填的数字 = 每刮 100 张里该金额出现的张数（%），建议所有档加起来 = 100；实际中奖率 = 该档占比 ÷ 总占比，改动即时生效</span></div> <!-- 添加与说明 -->
   </div>
-  <div class="panel center" data-page-node-id="AdmFooter"> <!-- 底部操作 -->
+  <div class="panel liquid-glass center" data-page-node-id="AdmFooter"> <!-- 底部操作 -->
     <button id="admResetAll" data-page-node-id="AdmResetAllBtn">恢复全部默认奖池</button> <!-- 全部恢复 -->
     <button id="btnAdminBack" data-page-node-id="AdmBackBtn">返回商店</button> <!-- 返回 -->
   </div>
@@ -454,7 +750,7 @@
 <section id="viewWithdraw" class="view" data-page-node-id="ViewWithdraw001">
   <p class="step" data-page-node-id="WdStep001">WITHDRAW · 余额提现</p> <!-- 步骤 -->
   <h2 data-page-node-id="WdH2-001">💰 提现</h2> <!-- 标题 -->
-  <div class="panel center" style="padding:70px 20px" data-page-node-id="WdPanel001"> <!-- 占位面板 -->
+  <div class="panel liquid-glass center" style="padding:70px 20px" data-page-node-id="WdPanel001"> <!-- 占位面板 -->
     <div style="font-size:46px;margin-bottom:16px" data-page-node-id="WdIcon001">🏦</div> <!-- 图标 -->
     <p style="font-size:19px;font-weight:600;margin-bottom:10px" data-page-node-id="WdTitle001">提现功能敬请期待</p> <!-- 主文案 -->
     <p style="font-size:13px;color:#8a8474" data-page-node-id="WdSub001">余额先在账本里攒着，功能开通后第一时间通知你～</p> <!-- 副文案 -->
@@ -479,6 +775,27 @@
 </section>
 
 <div id="toast" data-page-node-id="E5FP1Acy56F8Duz2sF6RIG"></div> <!-- 提示条 -->
+
+<!-- ===== 底部悬浮 Tab 切换器（Liquid Glass 液态玻璃） ===== -->
+<nav id="mainNav" role="tablist" aria-label="主导航" data-page-node-id="MainNav001"> <!-- 悬浮导航容器：固定于视口底部居中 -->
+  <span class="dockGlow" aria-hidden="true" data-page-node-id="DockGlow001"></span> <!-- 液体指示器：随选中项滑动的玻璃块 -->
+  <span class="navItem on" data-view="Shop" data-v="0" role="tab" aria-selected="true" tabindex="0" data-page-node-id="NavShop001"> <!-- 大厅 Tab -->
+    <span class="ico" aria-hidden="true">🎰</span> <!-- 图标 -->
+    <span class="lbl">刮票大厅</span> <!-- 文字 -->
+  </span>
+  <span class="navItem" data-view="History" data-v="1" role="tab" aria-selected="false" tabindex="0" data-page-node-id="NavHist001"> <!-- 历史 Tab -->
+    <span class="ico" aria-hidden="true">📜</span> <!-- 图标 -->
+    <span class="lbl">刮票历史</span> <!-- 文字 -->
+  </span>
+  <span class="navItem" data-view="Hall" data-v="2" role="tab" aria-selected="false" tabindex="0" data-page-node-id="NavHall001"> <!-- 殿堂 Tab -->
+    <span class="ico" aria-hidden="true">🏅</span> <!-- 图标 -->
+    <span class="lbl">荣誉殿堂</span> <!-- 文字 -->
+  </span>
+  <span class="navItem" data-view="Withdraw" data-v="3" role="tab" aria-selected="false" tabindex="0" data-page-node-id="NavWithdraw001"> <!-- 提现 Tab -->
+    <span class="ico" aria-hidden="true">💰</span> <!-- 图标 -->
+    <span class="lbl">提现</span> <!-- 文字 -->
+  </span>
+</nav>
 
 <script>
 // ================= 数据与常量 =================
@@ -862,15 +1179,49 @@ function pickPrize(tier, merch) { // 按管理员奖池随机奖额（tier 卡�
 function showView(name) { // 切视图
   ["viewShop", "viewWheel", "viewScratch", "viewAdmin", "viewHall", "viewHistory", "viewWithdraw"].forEach(function (id) { $(id).classList.remove("show"); }); // 隐藏全部
   $("view" + name).classList.add("show"); // 显示目标
-  const navMap = { Shop: 0, Wheel: 0, Scratch: 0, Admin: 0, History: 1, Hall: 2, Withdraw: 3 }; // 视图 → 导航高亮映射（流程页归属大厅）
-  document.querySelectorAll("#mainNav .navItem").forEach(function (el) { el.classList.toggle("on", +el.dataset.v === navMap[name]); }); // 同步导航高亮
+  const navMap = { Shop: 0, Wheel: 0, Scratch: 0, Admin: 0, History: 1, Hall: 2, Withdraw: 3 }; // 视图 → Tab 索引映射（流程页归属大厅）
+  const idx = navMap[name] !== undefined ? navMap[name] : 0; // 兜底：未定义的视图回落到第一个 Tab
+  document.querySelectorAll("#mainNav .navItem").forEach(function (el) { // 遍历全部 Tab
+    const on = +el.dataset.v === idx; // 判断是否命中当前索引
+    el.classList.toggle("on", on); // 切换选中样式
+    el.setAttribute("aria-selected", on ? "true" : "false"); // 同步无障碍选中状态
+  }); // 结束 Tab 同步
+  const dock = $("mainNav"); // 取底部悬浮 Tab 容器
+  dock.style.setProperty("--dockIdx", idx); // 写入索引，驱动液体指示器滑到目标格
+  dock.classList.remove("dockBump"); // 先移除类名，确保连续点击时动画可重放
+  void dock.offsetWidth; // 读取布局属性强制回流，重置动画状态
+  dock.classList.add("dockBump"); // 触发整体挤压回弹（物理质感）
+  const glow = dock.querySelector(".dockGlow"); // 取液体指示器节点
+  if (glow) { // 节点存在才操作，避免报错
+    glow.classList.remove("pop"); // 移除旧动画类，保证连续切换也能重放
+    void glow.offsetWidth; // 强制回流，重置动画播放状态
+    glow.classList.add("pop"); // 触发指示器的液体挤压弹性
+  } // 结束指示器弹性
   window.scrollTo(0, 0); // 回顶
   if (name === "History") { renderHistory(); } // 进历史页刷新统计
   if (name === "Hall") { renderHall(); } // 进殿堂页刷新
 } // 结束 showView
 document.querySelectorAll("#mainNav .navItem").forEach(function (el) { // 绑定导航点击
   el.addEventListener("click", function () { showView(el.dataset.view); }); // 切换目标视图
+  el.addEventListener("keydown", function (e) { // 键盘无障碍支持
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showView(el.dataset.view); } // 回车或空格等同点击
+  }); // 结束键盘绑定
 }); // 结束绑定
+
+// ================= 底部 Tab 滚动感知（iOS 26 边缘效果） =================
+(function dockScrollTuck() { // 自执行函数，隔离作用域避免污染全局
+  const dock = $("mainNav"); // 取底部悬浮 Tab 容器
+  if (!dock) { return; } // 节点缺失时直接退出，避免报错
+  let lastY = window.scrollY; // 记录上一次滚动位置
+  let restTimer = null; // 停止滚动的复位计时器
+  window.addEventListener("scroll", function () { // 监听页面滚动
+    const y = window.scrollY; // 当前滚动位置
+    if (Math.abs(y - lastY) > 3) { dock.classList.add("dockTuck"); } // 有效位移才收缩，避免抖动
+    lastY = y; // 更新记录
+    clearTimeout(restTimer); // 清除上一轮计时器
+    restTimer = setTimeout(function () { dock.classList.remove("dockTuck"); }, 220); // 停手 220ms 后复位
+  }, { passive: true }); // 被动监听，不阻塞滚动性能
+})(); // 立即执行
 
 // ================= 购买 =================
 btnBuy.addEventListener("click", function () { // 立即购买
