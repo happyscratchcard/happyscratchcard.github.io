@@ -36,12 +36,17 @@
 
 ## 快速开始
 
-### 方式一：直接玩（推荐，零依赖）
+### 方式一：在线试玩（零安装）
+
+直接打开 **<https://happyscratchcard.github.io/>**，桌面与手机浏览器均可。断网后请改用方式二。
+
+### 方式二：本地直接玩（离线）
 
 仓库已附带 `dist/彩票模拟器_单文件版.html`（1.5 MB，由源码构建），**双击即可玩**，断网也能用，手机浏览器同样能打开。
-改了源码后重跑 `python tools/pack_single.py` 即可更新这一份。
+根目录的 `index.html` 与它是同一份文件（供 GitHub Pages 作站点入口）；改完源码重跑
+`python tools/pack_single.py` 会把两者一并更新，无需手动同步。
 
-### 方式二：跑源码（改代码用这个）
+### 方式三：跑源码（改代码用这个）
 
 ```bash
 # 任意静态服务器都行，不能直接双击 index.html（浏览器会拦 file:// 的模块加载）
@@ -49,7 +54,7 @@ python -m http.server 8000 --directory src
 # 打开 http://localhost:8000
 ```
 
-### 方式三：桌面版 exe
+### 方式四：桌面版 exe
 
 ```bash
 pip install -r requirements.txt
@@ -68,11 +73,14 @@ python tools/build_exe.py --target all
 ```bash
 python tools/pack_single.py
 # 输出 dist/彩票模拟器_单文件版.html
+# 同时把同一份内容复制为根目录 index.html（GitHub Pages 站点入口）
 ```
 
 `pack_single.py` 做的事很简单：读 `src/index.html`，把里面的 `<link rel="stylesheet">` 和
 `<script src>` 全部替换成内联内容。**不做压缩、不改写代码**，产物与源码逐字对应 —— 所以你改完
 `src/js/**` 直接重跑这条命令，就能得到新的单文件版。
+
+根目录 `index.html` 是站点入口，默认随打包自动同步；只想更新 `dist/`、不想动线上入口时加 `--no-site`。
 
 ### 第二步：HTML → exe
 
@@ -128,6 +136,7 @@ scratch-lottery/
 ├─ tools/
 │  ├─ pack_single.py          # src/ → 单文件 HTML
 │  └─ build_exe.py            # → exe
+├─ index.html                 # GitHub Pages 站点入口（由打包脚本同步，勿手改）
 ├─ dist/                      # 构建产物（已附带可直接玩的单文件版 HTML）
 ├─ backend/server.py          # 可选：桌宠聊天代理（填自己的 API Key）
 ├─ docs/变更清单.md            # 逐轮改动记录（需求 → 实现 → 验证）
