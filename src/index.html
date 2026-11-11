@@ -1,0 +1,725 @@
+<!DOCTYPE html> <!-- 文档类型声明 -->
+<html lang="zh-CN" data-page-node-id="iAO77eNPFJ0O9pGAGqftbQ"> <!-- 网页根元素，声明中文 -->
+<head data-page-node-id="MHzBDVmTaEGCZPtb9BJHZ0">
+<meta charset="UTF-8" data-page-node-id="JsPkheA5asC2a6NDuLqDqP"> <!-- 字符编码 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="tdwhPxlNEBYzuhGLEAunEd"> <!-- 移动端适配 -->
+<title>刮彩票模拟器 Beta</title> <!-- 页面标题 -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/upgrade.css">
+</head>
+<body data-page-node-id="MlQ3xUotTEXim5qdBbjOuF"><svg id="lineSprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="li-amulet" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 6.4c3.2 0 5.4 2.5 5.4 5.6s-2.2 5.6-5.4 5.6-5.4-2.5-5.4-5.6S8.8 6.4 12 6.4z"/><circle cx="12" cy="12" r="1.4"/></symbol><symbol id="li-angel" viewBox="0 0 24 24"><ellipse cx="12" cy="4" rx="3.6" ry="1.2"/><circle cx="12" cy="13.4" r="7.2"/><path d="M9.2 15.4a3.6 3.6 0 0 0 5.6 0"/><path d="M9.6 11v.01M14.4 11v.01"/></symbol><symbol id="li-arrowsH" viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M7.6 8.4L4 12l3.6 3.6M16.4 8.4L20 12l-3.6 3.6"/></symbol><symbol id="li-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M5.8 18.2L18.2 5.8"/></symbol><symbol id="li-bank" viewBox="0 0 24 24"><path d="M3.4 9.6L12 4.4l8.6 5.2"/><path d="M5.6 9.8v8.6M9.8 9.8v8.6M14.2 9.8v8.6M18.4 9.8v8.6"/><path d="M3.4 18.6h17.2"/></symbol><symbol id="li-bear" viewBox="0 0 24 24"><circle cx="6.6" cy="7" r="2.6"/><circle cx="17.4" cy="7" r="2.6"/><circle cx="12" cy="13.6" r="6.2"/><path d="M9.6 13v.01M14.4 13v.01"/><path d="M12 15.4v1.2M10.6 17c.4.5 2.4.5 2.8 0"/></symbol><symbol id="li-bento" viewBox="0 0 24 24"><rect x="3.6" y="6" width="16.8" height="12.4" rx="1.8"/><path d="M12 6v12.4M3.6 12.2H12"/><path d="M7.4 8.2v.01M8.6 15v.01M15.2 9.2v.01M16.4 15.6v.01"/></symbol><symbol id="li-bolt" viewBox="0 0 24 24"><path d="M13.6 2.6L5 13.8h5.4L10 21.4l8.8-11.6h-5.6z"/></symbol><symbol id="li-book" viewBox="0 0 24 24"><path d="M12 6.6C9.9 4.9 6.8 4.4 3.8 4.7v13.2c3-.3 6.1.2 8.2 1.9 2.1-1.7 5.2-2.2 8.2-1.9V4.7c-3-.3-6.1.2-8.2 1.9z"/><path d="M12 6.6v13.2"/></symbol><symbol id="li-bow" viewBox="0 0 24 24"><path d="M12 11.6C10.4 8.2 8 6.8 6.6 8.2s.2 3.4 5.4 3.4zM12 11.6c1.6-3.4 4-4.8 5.4-3.4s-.2 3.4-5.4 3.4z"/><circle cx="12" cy="11.6" r="1.2"/><path d="M11.4 12.6L9.6 20M12.6 12.6L14.4 20"/></symbol><symbol id="li-box" viewBox="0 0 24 24"><path d="M12 3.2l8.4 4.6v8.4L12 20.8 3.6 16.2V7.8z"/><path d="M3.6 7.8L12 12.4l8.4-4.6M12 12.4v8.4"/></symbol><symbol id="li-briefcase" viewBox="0 0 24 24"><rect x="3.2" y="7.4" width="17.6" height="12.2" rx="2.2"/><path d="M8.8 7.4V5.6a1.8 1.8 0 0 1 1.8-1.8h2.8a1.8 1.8 0 0 1 1.8 1.8v1.8"/><path d="M3.2 12.6h17.6M12 12.6v2.4"/></symbol><symbol id="li-cake" viewBox="0 0 24 24"><path d="M3.6 20.6h16.8"/><path d="M5.4 20.6v-6.8a2 2 0 0 1 2-2h9.2a2 2 0 0 1 2 2v6.8"/><path d="M5 15.2c1.4 1.4 2.9 1.4 4.3 0s2.9-1.4 4.3 0 2.9 1.4 4.3 0"/><path d="M12 11.4V8.2"/><path d="M12 6.2v.01"/></symbol><symbol id="li-cards" viewBox="0 0 24 24"><rect x="3.6" y="3.8" width="10.4" height="14.4" rx="1.8" transform="rotate(-9 8.8 11)"/><rect x="9.6" y="5.6" width="10.4" height="14.4" rx="1.8"/><path d="M14.8 9.6v6.4M12.8 12.8h4"/></symbol><symbol id="li-caretDown" viewBox="0 0 24 24"><path d="M6 8.6h12l-6 8.4z" fill="currentColor" stroke="none"/></symbol><symbol id="li-cart" viewBox="0 0 24 24"><path d="M2.8 4.4h2.4l2.4 10.4h10.2l2.2-7.6H6"/><circle cx="9.6" cy="18.6" r="1.3"/><circle cx="16.8" cy="18.6" r="1.3"/></symbol><symbol id="li-chart" viewBox="0 0 24 24"><path d="M4 19.4h16"/><path d="M4.6 15.8l4.6-4.8 3.4 2.9 6.6-7.6"/><path d="M15.2 6.3h4v4"/></symbol><symbol id="li-chat" viewBox="0 0 24 24"><path d="M20.4 12.2c0 3.6-3.8 6.4-8.2 6.4-1 0-2-.1-2.9-.4L4 21l1.3-3.6c-.9-1.2-1.4-2.7-1.4-4.2C3.9 8.6 7.6 5.8 12.2 5.8s8.2 2.9 8.2 6.4z"/></symbol><symbol id="li-check" viewBox="0 0 24 24"><path d="M4.6 12.4l4.9 4.9L19.4 6.6"/></symbol><symbol id="li-checkCircle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M8 12.4l2.8 2.8L16 9.2"/></symbol><symbol id="li-clover" viewBox="0 0 24 24"><path d="M12 12c-1.4-4.4-4.6-5.4-5.6-4.2S5.4 12 12 12zM12 12c4.4-1.4 5.4-4.6 4.2-5.6S12 5.4 12 12zM12 12c1.4 4.4 4.6 5.4 5.6 4.2S18.6 12 12 12zM12 12c-4.4 1.4-5.4 4.6-4.2 5.6S12 18.6 12 12z"/><path d="M12 12v9.4"/></symbol><symbol id="li-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="6.4"/><path d="M12 9v8M9.8 9l2.2 2.6L14.2 9M9.8 12.6h4.4M9.8 14.6h4.4"/></symbol><symbol id="li-cookie" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><circle cx="9.4" cy="9.6" r="1.1"/><circle cx="14.6" cy="10.2" r="1.1"/><circle cx="10.6" cy="14.8" r="1.1"/><circle cx="15.2" cy="15.2" r="1.1"/></symbol><symbol id="li-cool" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M4.4 10.4h15.2"/><path d="M5.2 10.4c0 2.2 1.1 3 2.9 3s2.7-.8 2.7-3M13.2 10.4c0 2.2.9 3 2.7 3s2.9-.8 2.9-3"/><path d="M9.2 16a4 4 0 0 0 5.6 0"/></symbol><symbol id="li-cross" viewBox="0 0 24 24"><path d="M6.2 6.2l11.6 11.6M17.8 6.2L6.2 17.8"/></symbol><symbol id="li-crossCircle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M8.6 8.6l6.8 6.8M15.4 8.6l-6.8 6.8"/></symbol><symbol id="li-crown" viewBox="0 0 24 24"><path d="M3.6 7.6l3.6 4.2 4.8-6.4 4.8 6.4 3.6-4.2v10.2H3.6z"/></symbol><symbol id="li-crystalBall" viewBox="0 0 24 24"><circle cx="12" cy="14" r="6.4"/><path d="M7.6 20.4h8.8"/><path d="M12 11.2l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></symbol><symbol id="li-dash" viewBox="0 0 24 24"><path d="M4.2 8.2h8.4a3 3 0 1 0-2.8-4.4"/><path d="M4.2 12.6h12.2a3 3 0 1 1-2.8 4.4"/><path d="M4.2 17h5.2"/></symbol><symbol id="li-devil" viewBox="0 0 24 24"><path d="M6.6 4.4l1.8 3M17.4 4.4l-1.8 3"/><circle cx="12" cy="13" r="7.6"/><path d="M8.6 15.2a4.4 4.4 0 0 0 6.8 0"/><path d="M9.2 10.8v.01M14.8 10.8v.01"/></symbol><symbol id="li-dice" viewBox="0 0 24 24"><rect x="3.6" y="3.6" width="16.8" height="16.8" rx="3.2"/><circle cx="8.4" cy="8.4" r="1"/><circle cx="15.6" cy="8.4" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="8.4" cy="15.6" r="1"/><circle cx="15.6" cy="15.6" r="1"/></symbol><symbol id="li-download" viewBox="0 0 24 24"><path d="M12 3.6v10.6"/><path d="M7.6 10L12 14.4l4.4-4.4"/><path d="M4.4 19.6h15.2"/></symbol><symbol id="li-dragon" viewBox="0 0 24 24"><path d="M4 19.6c0-4.6 3-8 7.6-8 2.2 0 3.8.8 4.8 2.2"/><path d="M16.4 13.8c1.6 1.4 3.6.8 4.4-.8"/><path d="M12.4 6.2l1.2-3 2 3.2"/><path d="M13 12.2v.01"/><path d="M5.6 19.6c0-1.6 1-2.6 2.4-2.6"/></symbol><symbol id="li-droplet" viewBox="0 0 24 24"><path d="M12 3.2c3.2 4.2 5.8 6.8 5.8 9.8a5.8 5.8 0 0 1-11.6 0c0-3 2.6-5.6 5.8-9.8z"/></symbol><symbol id="li-drumstick" viewBox="0 0 24 24"><path d="M15.4 3.6a5.4 5.4 0 0 1 3.6 9.2l-4.6 4.6c-1.4 1.4-3.6 1.2-5-.2s-1.6-3.6-.2-5z"/><path d="M9.6 15.6L4 21.2"/></symbol><symbol id="li-egg" viewBox="0 0 24 24"><path d="M12 3.4c3.4 0 5.8 4.6 5.8 8.4a5.8 5.8 0 0 1-11.6 0c0-3.8 2.4-8.4 5.8-8.4z"/><path d="M8 12.6l2-1.6 2 2 2-2 2 1.6"/></symbol><symbol id="li-fear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M7.6 7.6l2.6 1.4M16.4 7.6l-2.6 1.4"/><path d="M9 14.6c1-1.2 5-1.2 6 0"/><path d="M9.2 11.2v.01M14.8 11.2v.01"/></symbol><symbol id="li-flame" viewBox="0 0 24 24"><path d="M12 3.2c.4 3 2 3.8 3.4 5.6a6.4 6.4 0 0 1 1.6 4.2 5 5 0 0 1-10 0c0-1.8.8-3 1.6-4 .3 1.2 1 1.8 1.8 2-.2-3.2.8-6 1.6-7.8z"/></symbol><symbol id="li-flashlight" viewBox="0 0 24 24"><path d="M9.2 3.4h5.6v3.8l1.6 2.6v10.8H7.6V9.8l1.6-2.6z"/><path d="M8.6 9.8h6.8"/><path d="M20.6 8.4v3.4M18.6 10.1v.01"/></symbol><symbol id="li-fog" viewBox="0 0 24 24"><path d="M7.2 9.6h8.2a3.2 3.2 0 1 0-3-4.4"/><path d="M4.4 13.4h11.8a2.6 2.6 0 1 1 0 5.2H7.6"/><path d="M6.4 20.8h5.2"/></symbol><symbol id="li-gamepad" viewBox="0 0 24 24"><rect x="2.6" y="7.6" width="18.8" height="9.6" rx="4.8"/><path d="M7.6 10.4v3.6M5.8 12.2h3.6"/><circle cx="16" cy="11.2" r=".95"/><circle cx="18.2" cy="13.4" r=".95"/></symbol><symbol id="li-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.1"/><path d="M12 2.8v2.4M12 18.8v2.4M4.7 7.4l2.1 1.2M17.2 15.4l2.1 1.2M4.7 16.6l2.1-1.2M17.2 8.6l2.1-1.2"/></symbol><symbol id="li-gift" viewBox="0 0 24 24"><rect x="3.4" y="8.8" width="17.2" height="11.2" rx="1.8"/><path d="M2.4 8.8h19.2M12 8.8v11.2"/><path d="M12 8.8C10.4 4.8 8.4 3.8 7.2 5s.8 3.8 4.8 3.8zM12 8.8c1.6-4 3.6-5 4.8-3.8S16 8.8 12 8.8z"/></symbol><symbol id="li-handshake" viewBox="0 0 24 24"><path d="M2.6 12.6l4.2-4.2 3.6 3.6-2.6 2.6z"/><path d="M21.4 12.6l-4.2-4.2-3.6 3.6 2.6 2.6z"/><path d="M8.2 15.6l2.4 2.4M10.6 13.2l3.2 3.2"/></symbol><symbol id="li-hat" viewBox="0 0 24 24"><path d="M6.2 4.6h11.6l-.9 10.8H7.1z"/><path d="M3.4 18.6h17.2"/><path d="M5.6 15.4h12.8"/></symbol><symbol id="li-heart" viewBox="0 0 24 24"><path d="M12 20.2s-7.6-4.6-7.6-9.4A4.2 4.2 0 0 1 12 8a4.2 4.2 0 0 1 7.6 2.8c0 4.8-7.6 9.4-7.6 9.4z"/></symbol><symbol id="li-image" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2.2"/><circle cx="8.6" cy="10" r="1.5"/><path d="M3.6 16.8l4.9-4.9 3.7 3.7 2.9-2.5 4.9 4.3"/></symbol><symbol id="li-inbox" viewBox="0 0 24 24"><rect x="3.6" y="13" width="16.8" height="7" rx="1.6"/><path d="M3.6 13L6.4 4.6h11.2L20.4 13"/><path d="M12 6.2v4.6M9.6 8.8L12 11.2l2.4-2.4"/></symbol><symbol id="li-joystick" viewBox="0 0 24 24"><circle cx="12" cy="7.6" r="3"/><path d="M12 10.6v4.4"/><path d="M7.6 20.4h8.8l-1.6-5.4h-5.6z"/></symbol><symbol id="li-keyboard" viewBox="0 0 24 24"><rect x="2.5" y="6.5" width="19" height="11" rx="2.2"/><path d="M6 10.2v.01M9.2 10.2v.01M12.4 10.2v.01M15.6 10.2v.01M18.4 10.2v.01M6 13.4v.01M9.2 13.4v.01M12.4 13.4v.01M15.6 13.4v.01M8 16.2h8"/></symbol><symbol id="li-lantern" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="5.2" ry="6.4"/><path d="M9.6 5.6h4.8M9.6 18.4h4.8M12 3.2v1.6M12 19.2v1.8M6.8 9.2h10.4M6.8 14.8h10.4"/></symbol><symbol id="li-lifebuoy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><circle cx="12" cy="12" r="3.4"/><path d="M5.8 5.8l4 4M14.2 14.2l4 4M18.2 5.8l-4 4M9.8 14.2l-4 4"/></symbol><symbol id="li-lock" viewBox="0 0 24 24"><rect x="4.6" y="10.4" width="14.8" height="9.6" rx="2.2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.6 0v2.8"/></symbol><symbol id="li-lockKey" viewBox="0 0 24 24"><rect x="4.2" y="10.8" width="15.6" height="9.2" rx="2.2"/><path d="M8 10.8V7.4a4 4 0 0 1 8 0v3.4"/><circle cx="12" cy="15.2" r="1.4"/><path d="M12 16.6v1.4"/></symbol><symbol id="li-mahjong" viewBox="0 0 24 24"><rect x="5.2" y="2.4" width="13.6" height="19.2" rx="2.8"/><circle cx="12" cy="10" r="2.7"/><path d="M9.2 15.4h5.6M9.2 18h5.6"/></symbol><symbol id="li-meat" viewBox="0 0 24 24"><path d="M15 3.8a4.8 4.8 0 0 1 2 9.2l-3.4 3.4-1.2 4.1-3.6-3.6-3.8-3.8 4.1-1.2 3.4-3.4A4.8 4.8 0 0 1 15 3.8z"/><path d="M8.8 15.2l-4.6 4.6"/></symbol><symbol id="li-medal" viewBox="0 0 24 24"><circle cx="12" cy="15" r="5.4"/><path d="M8.4 10.4L6 3.2h12l-2.4 7.2"/><path d="M12 12.6v4.8M10.6 14h2.8"/></symbol><symbol id="li-milk" viewBox="0 0 24 24"><path d="M8.4 3.4h7.2v3.2l2 3.2v10.4H6.4V9.8l2-3.2z"/><path d="M6.4 10.4h11.2M9.6 15h2.4"/></symbol><symbol id="li-moneyBag" viewBox="0 0 24 24"><path d="M9.4 3.6h5.2l-1.4 3H10.8z"/><path d="M12 6.6c-3.2 0-6.6 4.8-6.6 8.6a6.6 6.6 0 0 0 13.2 0c0-3.8-3.4-8.6-6.6-8.6z"/><path d="M12 10.6v6.2M10.4 10.6l1.6 2 1.6-2M10.5 13.4h3M10.5 15.2h3"/></symbol><symbol id="li-monitor" viewBox="0 0 24 24"><rect x="2.8" y="4.2" width="18.4" height="12.6" rx="2"/><path d="M9 20.4h6M12 16.8v3.6"/></symbol><symbol id="li-muscle" viewBox="0 0 24 24"><path d="M4 20v-5.2c0-2 1.4-3 3.4-3h2.8l1.2-4c.4-1.6 2-2.4 3-1.8 1.2.7 1.2 2 .8 3.2l-.8 2.6h3c1.6 0 2.8 1.1 2.8 2.6V20z"/><path d="M4 17h19.2"/></symbol><symbol id="li-neutral" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M8.6 15h6.8"/><path d="M9.2 9.6v.01M14.8 9.6v.01"/></symbol><symbol id="li-palette" viewBox="0 0 24 24"><path d="M12 3.4C7 3.4 3 6.9 3 11.2c0 3.4 2.7 5.2 5.2 5.2h1.2c1.2 0 2 .8 2 1.8 0 1.3-1 1.9-1 2.6 0 .8.8 1.5 2 1.5 4.4 0 8.6-3.5 8.6-8.3S16.9 3.4 12 3.4z"/><circle cx="8.2" cy="9" r="1.1"/><circle cx="12" cy="7.4" r="1.1"/><circle cx="15.8" cy="9.6" r="1.1"/></symbol><symbol id="li-party" viewBox="0 0 24 24"><path d="M3.4 20.6l5.2-12.2 7.2 7.2z"/><path d="M8.6 8.4l1.6 1.6"/><path d="M13.6 3.4v2M18.4 6l-1.5 1.5M20.6 11h-2"/></symbol><symbol id="li-paw" viewBox="0 0 24 24"><circle cx="8" cy="8" r="1.9"/><circle cx="16" cy="8" r="1.9"/><circle cx="5.2" cy="12.5" r="1.6"/><circle cx="18.8" cy="12.5" r="1.6"/><path d="M12 12c3 0 5 2.3 5 4.4 0 1.9-1.6 3.1-3.4 3.1-1 0-1.2-.4-1.6-.4s-.6.4-1.6.4C8.6 19.5 7 18.3 7 16.4 7 14.3 9 12 12 12z"/></symbol><symbol id="li-penguin" viewBox="0 0 24 24"><ellipse cx="12" cy="14.2" rx="5.6" ry="7"/><circle cx="12" cy="6.8" r="3.4"/><path d="M9.2 12.6c0 4.6 1.2 7 2.8 7s2.8-2.4 2.8-7"/><path d="M10.8 6.6v.01M13.2 6.6v.01"/><path d="M11 17.4h2"/></symbol><symbol id="li-printer" viewBox="0 0 24 24"><path d="M7.4 8.2V4.4h9.2v3.8"/><rect x="4" y="8.2" width="16" height="7.4" rx="2"/><path d="M7.4 13.2h9.2v6.4H7.4z"/><path d="M16.9 10.8h.01"/></symbol><symbol id="li-puzzle" viewBox="0 0 24 24"><path d="M10.2 3.6a1.8 1.8 0 0 1 3.6 0V5h3.4a1 1 0 0 1 1 1v3.4h1.4a1.8 1.8 0 0 1 0 3.6h-1.4V16a1 1 0 0 1-1 1h-3.4v1.4a1.8 1.8 0 0 1-3.6 0V17H7a1 1 0 0 1-1-1v-3.4H4.6a1.8 1.8 0 0 1 0-3.6H6V6a1 1 0 0 1 1-1h3.2z"/></symbol><symbol id="li-rabbit" viewBox="0 0 24 24"><path d="M9.2 10.8c-1.6-1.2-2.2-4.2-1.4-5.8S10 4.8 10.6 7.4"/><path d="M14.8 10.8c1.6-1.2 2.2-4.2 1.4-5.8S14 4.8 13.4 7.4"/><ellipse cx="12" cy="15.4" rx="5.2" ry="4.6"/><path d="M10.4 14.4v.01M13.6 14.4v.01"/><path d="M12 16.2v1.2"/></symbol><symbol id="li-receipt" viewBox="0 0 24 24"><path d="M5.8 3.4h12.4v17.2l-2.1-1.4-2 1.4-2.1-1.4-2 1.4-2.1-1.4-2.1 1.4z"/><path d="M9 8h6M9 11.4h6M9 14.8h3.6"/></symbol><symbol id="li-refresh" viewBox="0 0 24 24"><path d="M19.8 12a7.8 7.8 0 1 1-2.3-5.5"/><path d="M19.9 4.4v4.4h-4.4"/></symbol><symbol id="li-rewind" viewBox="0 0 24 24"><path d="M11.4 5.6L4.6 12l6.8 6.4z"/><path d="M20 5.6L13.2 12l6.8 6.4z"/></symbol><symbol id="li-robotArm" viewBox="0 0 24 24"><path d="M12 3.4v6.6"/><circle cx="12" cy="3.4" r="1.5"/><path d="M8 10.4v5a2 2 0 0 0 .6 1.4L12 20l3.4-3.2a2 2 0 0 0 .6-1.4v-5"/><path d="M8 7.4L5.6 5M16 7.4L18.4 5"/></symbol><symbol id="li-save" viewBox="0 0 24 24"><path d="M4 7.2A3.2 3.2 0 0 1 7.2 4h8.2l4.6 4.6v8.2A3.2 3.2 0 0 1 16.8 20H7.2A3.2 3.2 0 0 1 4 16.8z"/><path d="M8.4 4v5.2h6.4V4"/><rect x="7.8" y="13" width="8.4" height="7" rx="1"/></symbol><symbol id="li-scarf" viewBox="0 0 24 24"><path d="M3.8 7.2c3.2 1.6 13.2 1.6 16.4 0"/><path d="M5 7.2l1 4.4c3 1.4 9 1.4 12 0l1-4.4"/><path d="M15.6 11.6l-.9 8.8 2.6.6.9-9"/></symbol><symbol id="li-scroll" viewBox="0 0 24 24"><path d="M7 4.6h11.6a1.8 1.8 0 0 1 1.8 1.8v11a1.8 1.8 0 0 1-1.8 1.8H7"/><path d="M7 4.6a2 2 0 0 0 0 4h1.4M7 19.2a2 2 0 0 0 0-4h1.4"/><path d="M9.8 8.4h7.4M9.8 12h7.4M9.8 15.6h4.4"/></symbol><symbol id="li-skip" viewBox="0 0 24 24"><path d="M5.6 5.6L12.4 12l-6.8 6.4z"/><path d="M18.4 5.6v12.8"/></symbol><symbol id="li-slot" viewBox="0 0 24 24"><rect x="3.2" y="4.6" width="17.6" height="14.8" rx="2.2"/><rect x="6.2" y="7.6" width="3.4" height="5.6" rx=".8"/><rect x="10.3" y="7.6" width="3.4" height="5.6" rx=".8"/><rect x="14.4" y="7.6" width="3.4" height="5.6" rx=".8"/><path d="M9.4 16.4h5.2"/></symbol><symbol id="li-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M8.4 14.2a4.6 4.6 0 0 0 7.2 0"/><path d="M9.2 9.4v.01M14.8 9.4v.01"/></symbol><symbol id="li-sparkle" viewBox="0 0 24 24"><path d="M10.6 3.2l1.5 4.3 4.3 1.5-4.3 1.5-1.5 4.3L9.1 10.5 4.8 9l4.3-1.5z"/><path d="M17.9 14.2l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></symbol><symbol id="li-star" viewBox="0 0 24 24"><path d="M12 3.4l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9z"/></symbol><symbol id="li-starFill" viewBox="0 0 24 24"><path d="M12 3.4l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.8l6-.9z" fill="currentColor" stroke="none"/></symbol><symbol id="li-starGlow" viewBox="0 0 24 24"><path d="M12 7l1.9 3.9 4.3.6-3.1 3 .7 4.3L12 16.7 8.2 18.8l.7-4.3-3.1-3 4.3-.6z"/><path d="M12 2.4v1.6M12 20.6V22M3.6 12H2M22 12h-1.6"/></symbol><symbol id="li-stop" viewBox="0 0 24 24"><rect x="6.2" y="6.2" width="11.6" height="11.6" rx="1.8"/></symbol><symbol id="li-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><circle cx="12" cy="12" r="4.8"/><circle cx="12" cy="12" r="1.3"/></symbol><symbol id="li-ticket" viewBox="0 0 24 24"><path d="M3.4 6.8h17.2v3.1a2.3 2.3 0 0 0 0 4.4v3.1H3.4v-3.1a2.3 2.3 0 0 0 0-4.4z"/><path d="M9.2 7.4v9.6" stroke-dasharray="1.6 2.2"/></symbol><symbol id="li-timer" viewBox="0 0 24 24"><circle cx="12" cy="13.6" r="7.4"/><path d="M12 9.8v3.8l2.6 1.6"/><path d="M9.2 2.8h5.6"/></symbol><symbol id="li-toolbox" viewBox="0 0 24 24"><rect x="3.2" y="8.2" width="17.6" height="11.4" rx="2.2"/><path d="M9 8.2V5.6h6v2.6"/><path d="M3.2 13.2h17.6"/><path d="M10.4 13.2v1.8h3.2v-1.8"/></symbol><symbol id="li-trash" viewBox="0 0 24 24"><path d="M4.2 6.8h15.6M9.6 6.8V4.4h4.8v2.4"/><path d="M6.6 6.8l.9 13h9l.9-13"/><path d="M10.2 10.2v6.4M13.8 10.2v6.4"/></symbol><symbol id="li-undo" viewBox="0 0 24 24"><path d="M9.5 14.5L4.5 9.5l5-5"/><path d="M4.5 9.5h9.5a5 5 0 0 1 5 5v3"/></symbol><symbol id="li-unicorn" viewBox="0 0 24 24"><path d="M6.2 20.4V13c0-4 3-6.8 6.8-6.8.8 0 1.6.2 2.2.5"/><path d="M14.6 4.2l3.6-2.6-1 4.4"/><path d="M6.6 14.4c2.4 0 4-1 5-2.2"/><path d="M13.6 10.2v.01M6.2 20.4h6"/></symbol><symbol id="li-unlock" viewBox="0 0 24 24"><rect x="4.6" y="10.4" width="14.8" height="9.6" rx="2.2"/><path d="M8.2 10.4V7.6a3.8 3.8 0 0 1 7.2-1.6"/></symbol><symbol id="li-volume" viewBox="0 0 24 24"><path d="M4 9.4h3.4L12 5.6v12.8L7.4 14.6H4z"/><path d="M15.6 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4"/></symbol><symbol id="li-volumeOff" viewBox="0 0 24 24"><path d="M4 9.4h3.4L12 5.6v12.8L7.4 14.6H4z"/><path d="M15.4 9.4l5.2 5.2M20.6 9.4l-5.2 5.2"/></symbol><symbol id="li-wheel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><circle cx="12" cy="12" r="2.2"/><path d="M12 3.2v6.6M12 14.2v6.6M3.2 12h6.6M14.2 12h6.6M5.8 5.8l4.6 4.6M13.6 13.6l4.6 4.6M18.2 5.8l-4.6 4.6M10.4 13.6l-4.6 4.6"/></symbol><symbol id="li-window" viewBox="0 0 24 24"><rect x="3.2" y="4.4" width="17.6" height="15.2" rx="2.2"/><path d="M3.2 8.8h17.6"/><path d="M6.4 6.6v.01M9.2 6.6v.01"/></symbol></svg>
+
+<!-- ===== 液态玻璃 Beta：桌面壁纸图层（真透明外壳下自动隐藏，直接透出桌面） ===== -->
+<div id="wpLayer" aria-hidden="true"></div> <!-- 壁纸画布：图片由 JS 注入，固定铺满视口 -->
+
+<!-- ===== 液态玻璃折射滤镜定义（隐藏 SVG，供 CSS filter 引用） ===== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"> <!-- 隐藏容器：只提供滤镜供 CSS 调用，不参与布局 -->
+  <defs> <!-- 定义区：滤镜、渐变等可复用资源 -->
+    <filter id="glass-distortion" x="0%" y="0%" width="100%" height="100%"> <!-- 液态折射滤镜：把背景内容扭出玻璃波纹 -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise" /> <!-- 生成分形噪声，作为位移的驱动源 -->
+      <feGaussianBlur in="noise" stdDeviation="2" result="blurred" /> <!-- 把噪声柔化，避免折射边缘过于锐利 -->
+      <feDisplacementMap in="SourceGraphic" in2="blurred" scale="45" xChannelSelector="R" yChannelSelector="G" /> <!-- 用噪声通道位移像素：scale 越大扭曲越猛，40~50 之间最像液态玻璃 -->
+    </filter> <!-- 滤镜定义结束 -->
+    <filter id="glass-distortion-soft" x="0%" y="0%" width="100%" height="100%"> <!-- 弱化版折射：用于大面积卡片，减少性能开销 -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" seed="37" result="noise" /> <!-- 更细更省的噪声 -->
+      <feGaussianBlur in="noise" stdDeviation="1.5" result="blurred" /> <!-- 柔化 -->
+      <feDisplacementMap in="SourceGraphic" in2="blurred" scale="28" xChannelSelector="R" yChannelSelector="G" /> <!-- 小幅位移，保留平整观感 -->
+    </filter> <!-- 滤镜定义结束 -->
+  </defs> <!-- 定义区结束 -->
+</svg> <!-- 隐藏 SVG 结束 -->
+
+<header data-page-node-id="iRwujDE6YfglOhESwDrxqP"> <!-- 顶栏 -->
+  <h1 data-page-node-id="dVgJ5GSpWkGzZ1HYZGM3RF"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-lantern"/></svg>刮刮乐</h1> <!-- 标题 -->
+  <div class="balance" id="balPill" data-page-node-id="n7QI1rh4zIRJqWjsIFCC9r"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-moneyBag"/></svg>余额 <span id="balNum" data-page-node-id="3H3VUvp4uboyhpztvmCd5w">20.00</span> 元</div> <!-- 余额胶囊 -->
+  <div class="debt" id="debtPill" data-page-node-id="bXj9Mpz1RY4Q2PAHBjWsUO"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-caretDown"/></svg>欠款 <span id="debtVal" data-page-node-id="PnxOGTFHsBvXLRWMbB0Ckb">0</span> 元<div class="debtbar" data-page-node-id="SB5kKCuRc2pzqA2cl4Iw2I"><i id="debtFill" data-page-node-id="wdrY7HG12luCCdN3LPtQ18"></i></div></div> <!-- 欠款 -->
+  <div class="jack" id="jackPill" data-page-node-id="JackPill001"><svg class="icoSvg jackIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="1.6"/><path d="M4 13.5h16M12 10v10"/><path d="M12 10c-1.6 0-4.4-.5-4.4-2.6C7.6 5.9 9 5 10.1 5.4c1.3.4 1.9 2.6 1.9 4.6zm0 0c1.6 0 4.4-.5 4.4-2.6C16.4 5.9 15 5 13.9 5.4 12.6 5.8 12 8 12 10z"/></svg><span class="jackMeter" id="jackMeter" aria-hidden="true"></span> 滚存 <span id="jackNum" data-page-node-id="JackNum001">0.00</span> 元</div> <!-- 滚存头奖池（6.2 图标线条化；6.2 三轮：音量条式金额指示灯，条数随池额递进，近满池变红闪烁） -->
+  <button id="btnBorrow" data-page-node-id="TcRU6NnvdyV2bYD4Cb1Lr2">借钱 ¥5</button> <!-- 借钱 -->
+  <span style="font-size:11px;color:#8a8474;margin-left:auto;white-space:nowrap" data-page-node-id="bskyAsqBEp74lPBlDfZnpV">最多借 <b id="maxDebtNum">10</b> 元 · 中奖优先自动还债 · <button class="reset" id="btnReset" data-page-node-id="HoDqpZ2pbDkTGdZ8aGRbAY">重置账本</button></span> <!-- 说明（缩字号+单行） -->
+    <button id="btnLock" data-page-node-id="BtnLock001" title="锁定全局（再点一次解锁）"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-unlock"/></svg></button> <!-- 全局锁定按钮（第一行，锁定后需再点此键解锁） -->
+</header>
+
+<!-- 视图一：商店 -->
+<section id="viewShop" class="view show" data-page-node-id="OqNAVqe2ickZkn0C7cfIMW">
+  <div id="resumableBar" data-page-node-id="ResumBar001"><span id="resumeText"></span><button id="btnResume">继续这批</button><button id="btnAbandon" style="color:#c0392b">作废这批</button></div> <!-- 上批暂存提示 -->
+  <p class="step" data-page-node-id="O4Y7YvFsxUKUVeLWL2DDAH">STEP 1 · 挑商家选数量</p> <!-- 步骤 -->
+  <div id="orbHost" aria-hidden="true"></div> <!-- 悬浮球挂载点（球体为 fixed 定位，实际渲染在 body 下） --> <!-- 悬浮球挂载点 -->
+  <h2 data-page-node-id="tAgUhZQcFXlfbfUIBX5DBm">今天去哪家刮？</h2> <!-- 标题 -->
+  <div class="panel liquid-glass" data-page-node-id="PanelIssuer001"> <!-- 发行方面板（纯玩乐） -->
+    <h3 data-page-node-id="IssuerH001">彩票发行方（两家独立库存，售完即止）</h3> <!-- 小标题 -->
+    <div class="mswitch two" id="iswitch" data-page-node-id="ISwitch001"> <!-- 两档果冻开关 -->
+      <div class="knob" id="iknob" data-page-node-id="IKnob001"></div> <!-- 滑块 -->
+      <span class="mlabel" data-i="0" data-page-node-id="ILabel001">中国福利彩票</span> <!-- 档一 -->
+      <span class="mlabel on" data-i="1" data-page-node-id="ILabel002">中国体育彩票</span> <!-- 档二 -->
+    </div>
+    <p id="iDesc" data-page-node-id="IDesc001"></p> <!-- 发行方描述 -->
+  </div>
+  <div class="panel liquid-glass" data-page-node-id="YulO3i66kP1yjhosgpsfdt"> <!-- 商家面板 -->
+    <h3 data-page-node-id="du3WiNP2GsL5DFHM2jb6JS">商家风气（点一下切换）</h3> <!-- 小标题 -->
+    <div class="mswitch" id="mswitch" data-page-node-id="9VDgGrGirxoQ8htWfBMcd3"> <!-- 果冻开关 -->
+      <div class="knob" id="knob" data-page-node-id="1nqg3gOUNFDQhUKnIAANQN"></div> <!-- 滑块 -->
+      <span class="mlabel" data-i="0" data-page-node-id="Xf0lIsCgfh68tO56cS5ETF">黑心</span> <!-- 档一 -->
+      <span class="mlabel on" data-i="1" data-page-node-id="8szKZ3pRJTUsHo8Tyq3311">普通</span> <!-- 档二（默认） -->
+      <span class="mlabel" data-i="2" data-page-node-id="2exFZ98lAiq4bOh2TDsxq4">良心</span> <!-- 档三 -->
+    </div>
+    <p id="mDesc" data-page-node-id="D7YN7ZQ76VsLhpW8Vw0gQS"></p> <!-- 描述（不标中奖率） -->
+  </div>
+  <div class="panel liquid-glass" data-page-node-id="UCgxsA1UwYMpEth62A2nbB"> <!-- 价位面板 -->
+    <h3 data-page-node-id="I9hbz0QNtCniDcDsaRdmTE">彩票价位（奖池保密，刮开见分晓）</h3> <!-- 不标奖池 -->
+    <div class="mswitch" id="tswitch" data-page-node-id="K8Jn9Z6u1GR3JbfqadWFZh"> <!-- 果冻价位开关 -->
+      <div class="knob" id="tknob" data-page-node-id="Kn0bTier001"></div> <!-- 价位滑块 -->
+      <span class="mlabel tlabel" data-i="0" data-page-node-id="Tl0Fiuka001"><b>福卡</b><i>¥2 / 张</i></span> <!-- 档一 -->
+      <span class="mlabel tlabel on" data-i="1" data-page-node-id="Tl1Jika001"><b>吉卡</b><i>¥5 / 张</i></span> <!-- 档二（默认） -->
+      <span class="mlabel tlabel" data-i="2" data-page-node-id="Tl2Hongyun001"><b>鸿运卡</b><i>¥10 / 张</i></span> <!-- 档三 -->
+    </div>
+  </div>
+  <div class="panel liquid-glass" data-page-node-id="Ci1N3UtoYU6C28Zt8kDrkB"> <!-- 数量面板 -->
+    <h3 data-page-node-id="9UCjTmiMzcINBznTHohoaw">购买数量（数量不限，售完即止；超 100 张自动分批上桌）</h3> <!-- 说明（含分批规则） -->
+    <div class="arow" style="margin:2px 0 12px" id="stockRow" data-page-node-id="StockRow001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-box"/></svg><span id="stockIssuer" data-page-node-id="StockIssuer001">中国福利彩票</span> 当前库存：<b id="stockNum" data-page-node-id="StockNum001">100,000</b> 张</div> <!-- 当前发行方库存 -->
+    <div class="arow" style="margin:0 0 12px" id="shardRow" data-page-node-id="ShardRow001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-puzzle"/></svg>废票碎片：<b id="shardNum" data-page-node-id="ShardNum001">0</b> / 100<button id="btnSynth" data-page-node-id="BtnSynth001" disabled>合成免费福卡</button><span style="font-size:12px;color:#8a8474" data-page-node-id="ShardTip001">每张未中奖票回收 1 片碎片</span></div> <!-- 碎票回收与合成 -->
+    <div class="qty" data-page-node-id="N5vFBNzDyZ5MeH1aFHsxIK"> <!-- 步进 -->
+      <button id="qtyMinus" data-page-node-id="xwj1DGrsTJODIwJGmyjKwV">−</button> <!-- 减 -->
+      <span id="qtyVal" data-page-node-id="yRSRTmAkMXBJ3ZEh8x3mn1">1</span> <!-- 数量 -->
+      <button id="qtyPlus" data-page-node-id="Hk6lBZtBQW4Hey8pPbQjfS">＋</button> <!-- 加 -->
+      <span id="costPreview" data-page-node-id="8WtzWlIT1QgK4CwOiQYaBp"></span> <!-- 合计 -->
+    </div>
+  </div>
+  <div class="panel liquid-glass" data-page-node-id="PanelHappy001"> <!-- 一键爽刮面板 -->
+    <h3 data-page-node-id="HdHappy001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-bolt"/></svg>一键爽刮（快进抽卡 → 自动逐张刮开）</h3> <!-- 小标题 -->
+    <p style="font-size:12px;color:#8a8474;margin-bottom:4px" data-page-node-id="HappyDesc001">按上面的商家风气、彩票价位与购买数量一键完成；拖动速度滑杆自定义刮开节奏（1.0x ~ 5.9x），拉到最右则直接跳过刮票过程。</p> <!-- 规则说明（含滑杆用法） -->
+    <div class="happySpeed" data-page-node-id="HappySpeedRow001"> <!-- 速度滑杆行 -->
+      <span class="hsEnd">原速</span> <!-- 左端点：原速 1.0x -->
+      <input id="happySpeed" type="range" min="0" max="50" step="1" value="0" data-page-node-id="HappySpeed001"> <!-- 滑杆：0=原速，1~49=1.1x~5.9x，50=跳过 -->
+      <span class="hsEnd">跳过</span> <!-- 右端点：跳过刮票过程 -->
+      <b id="happySpeedVal">1.0x</b> <!-- 当前速度显示 -->
+    </div>
+    <div class="buyArea" style="padding:12px 0 0" data-page-node-id="BuyHappy001"><div class="happyWrap"><div class="happyShadow" aria-hidden="true"></div><button id="btnHappy" data-page-node-id="BtnHappy001"><span><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2c2.7 1.5 4.3 4.3 4.3 7.6 0 1.7-.4 3.3-1.1 4.7H8.8a10.7 10.7 0 0 1-1.1-4.7c0-3.3 1.6-6.1 4.3-7.6z"/><circle cx="12" cy="9.4" r="1.7"/><path d="M8.8 12.5l-2.6 2.2 1.3 2.4M15.2 12.5l2.6 2.2-1.3 2.4"/><path d="M10.5 18.6c0 1.2.6 2.2 1.5 2.2s1.5-1 1.5-2.2"/></svg> <svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-bolt"/></svg>一键爽刮</span></button></div></div> <!-- 按钮（液态玻璃新UI） -->
+    <label class="fxToggle" data-page-node-id="FxToggleRow001"> <!-- 金币与大奖动画开关 -->
+      <input id="fxToggle" type="checkbox" checked data-page-node-id="FxToggle001"> <!-- 原生复选框（隐藏） -->
+      <span class="checkmark" aria-hidden="true"></span> <!-- 自定义复选标 -->
+      <span class="fxText">展示金币与大奖动画</span> <!-- 说明文字 -->
+    </label>
+  </div>
+  <div class="panel liquid-glass itemShop" id="itemShop"> <!-- 道具商店卡（大厅内嵌） -->
+  <div class="itemHead"> <!-- 标题行 -->
+    <b><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-toolbox"/></svg>道具商店</b> <!-- 店名 -->
+    <span id="itemShopState">暂无武装 · 买一件试试水</span> <!-- 当前批次已启用道具 -->
+  </div>
+  <div class="itemGrid" id="itemGrid"></div> <!-- 三张道具卡（JS 渲染） -->
+  <div class="itemBag" id="itemBag"></div> <!-- 背包：库存与待用数量 -->
+  <p class="itemTip">按当前价位计价，作用于<b>本批未刮</b>的票：手电筒买一次＝一次充电（刮奖页点票面 <svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-flashlight"/></svg>照一张，直接看见涂层下的金额）；紫外灯 / 硬币在进入刮奖页时自动生效。未刮的票可在刮奖页按票面 <b>95%</b> 转让回收。</p> <!-- 规则说明 -->
+</div><div class="panel liquid-glass kachaCard" id="kachaCard"> <!-- 集字卡活动卡 -->
+  <div class="kachaHead"><b><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-cards"/></svg>集字卡 · 刮出五个字</b><span id="kachaCount">0 / 5</span></div> <!-- 标题与计数 -->
+  <div class="kachaRow" id="kachaRow"></div> <!-- 五个字格（JS 渲染） -->
+  <p class="kachaTip">每刮一张票有 35% 概率掉一张字牌（优先补缺字）；集齐「刮 出 大 奖 ！」立即清空欠款并额外奖励 ¥888，集齐后自动重新开始。</p> <!-- 规则说明 -->
+</div><div class="panel liquid-glass pickNumPanel" id="pickNumPanel"> <!-- 付费选号：独立模块卡 -->
+  <h3><svg class="icoSvg icoH3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="4.4"/><circle cx="12" cy="12" r="0.7"/></svg> 付费选号</h3> <!-- 模块标题（靶心线条图标） -->
+  <div class="pickNumRow"> <!-- 控件横排 -->
+    <label class="pickNumToggle"><input type="checkbox" id="pickNumToggle"><span>付费选号 <b>+¥2</b>（豹子号再 +¥2）</span></label> <!-- 开关与计价说明 -->
+    <input id="pickNumInput" type="text" inputmode="numeric" maxlength="3" placeholder="如 888" autocomplete="off"> <!-- 三位号码输入 -->
+    <span id="pickNumHint" class="pickNumHint">本批第一张票印你所选号码</span> <!-- 规则提示 -->
+  </div> <!-- 结束控件排 -->
+</div>  <div class="buyArea panel liquid-glass" data-page-node-id="ZgTNpdvX7vgzF2de6uDAF5"><div class="buyGlow"><button id="btnBuy" data-page-node-id="UQqUPT6hQuveqYCvjHfSYU"><svg class="icoSvg btnIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.4" y="8.8" width="17.2" height="11.2" rx="1.8"/><path d="M2.4 8.8h19.2M12 8.8v11.2"/><path d="M12 8.8C10.4 4.8 8.4 3.8 7.2 5s.8 3.8 4.8 3.8zM12 8.8c1.6-4 3.6-5 4.8-3.8S16 8.8 12 8.8z"/></svg> 立即购买<svg class="arrowSvg" aria-hidden="true" viewBox="0 0 10 10"><path class="arrShaft" d="M0 5h7"/><path class="arrHead" d="M1 1l4 4-4 4"/></svg></button></div></div> <!-- 磁力按钮（渐变光晕新UI） -->
+</section>
+
+<!-- 视图二：百张叠票抽取 -->
+<section id="viewWheel" class="view" data-page-node-id="hzRWbfyBmbF0IcdVrnm9Mx">
+  <p class="step" data-page-node-id="7klwGkqn0nfTxJoxCWmKQs">STEP 2 · 从叠票中抽出你买的（每批最多 100 张）</p> <!-- 步骤（分批制：超量自动排队） -->
+  <h2 class="center" data-page-node-id="6ATW4rAuw2LXCJFBapS4eI">单击最上面的彩票，它会往上滑并亮出编号</h2> <!-- 标题 -->
+  <div id="stackStage" data-page-node-id="qiw2Hi71clOxOX96EZVjUv"></div> <!-- 叠票舞台 -->
+  <div id="tray" data-page-node-id="LGRneAMhE24D8zEMRQt2O7"></div> <!-- 已选编号托盘 -->
+  <div class="wbar" data-page-node-id="F9bn0G7on0HqXXBm13qe5x"> <!-- 操作条 -->
+    <span id="stackInfo" data-page-node-id="9CcuaYaM4SWAweGC9aCCTK"></span> <!-- 进度 -->
+    <button id="btnRandom" data-page-node-id="NkelIdc9jMkOFuxGrhSzSD"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.4"/><circle cx="9" cy="9" r="0.4"/><circle cx="15" cy="9" r="0.4"/><circle cx="12" cy="12" r="0.4"/><circle cx="9" cy="15" r="0.4"/><circle cx="15" cy="15" r="0.4"/></svg> 随机抽出一张</button> <!-- 随机（顶票已洗匀） -->
+    <button id="btnBackShop1" data-page-node-id="TmbRpnfh5diO3fGomuNA0J">回商店</button> <!-- 返回 -->
+  </div>
+</section>
+
+<!-- 视图三：刮奖 -->
+<section id="viewScratch" class="view" data-page-node-id="Upjzl6UlgD52SY3U7afnZn">
+  <p class="step" data-page-node-id="I3Vw32H2UCXgj5cM2o9D08">STEP 3 · 刮开你的彩票</p> <!-- 步骤 -->
+  <h2 data-page-node-id="xkZl4JqrhWLrvcg1rei1Z1">点击一张把它顶到最上面，然后刮开涂层</h2> <!-- 标题 -->
+  <div id="pile" data-page-node-id="HgEB0FpCcdbLexooQHQnj8"></div> <!-- 叠放区 -->
+  <div class="center" style="margin-top:16px" data-page-node-id="Qf12W6NaoPPhOxHgq1HY1k"> <!-- 底部 -->
+    <span id="scratchInfo" style="font-size:13px;color:#6f6a5c;display:block;margin-bottom:12px" data-page-node-id="MrO0hB0kKeoDA7FuBMR8Cu"></span> <!-- 进度 -->
+    <div id="streakRow" data-page-node-id="StreakRow001"><span class="slab" data-page-node-id="StreakLab001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-clover"/></svg>转运条</span><div class="strack" data-page-node-id="StreakTrack001"><i id="sfill" data-page-node-id="StreakFill001"></i></div><span id="stext" data-page-node-id="StreakText001">0%（蓄满后下一张必中）</span></div> <!-- 转运保底进度条 -->
+    <button id="btnScratchAll" style="display:none" data-page-node-id="BtScratchAll001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-bolt"/></svg>一键刮开</button> <!-- 一键刮开全部 -->
+    <button id="btnShopAgain" style="display:none" data-page-node-id="MsEkipVOnVd0uq6pHytGzj">再去买一批 <svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-ticket"/></svg></button> <!-- 再买 -->
+  </div>
+</section>
+
+<!-- 管理员系统视图 -->
+<section id="viewAdmin" class="view" data-page-node-id="ViewAdmin001">
+  <p class="step" data-page-node-id="AdmStep001">ADMIN · 改动仅存于本机，实时生效</p> <!-- 步骤 -->
+  <h2 data-page-node-id="AdmH2-001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-gear"/></svg>管理员系统</h2> <!-- 标题 -->
+  <div class="panel liquid-glass" data-page-node-id="AdmMoney001"> <!-- 资金面板 -->
+    <h3 data-page-node-id="AdmMoneyH">资金调整</h3> <!-- 小标题 -->
+    <div class="arow" data-page-node-id="AdmBalRow">当前余额 ¥<input id="admBal" type="number" step="0.01" min="0" data-page-node-id="AdmBalInp"><button id="admBalSet" data-page-node-id="AdmBalBtn">设置余额</button></div> <!-- 余额调整 -->
+    <div class="arow" data-page-node-id="AdmDebtRow">最多可借 ¥<input id="admDebt" type="number" step="1" min="0" data-page-node-id="AdmDebtInp"><button id="admDebtSet" data-page-node-id="AdmDebtBtn">设置借款上限</button></div> <!-- 借款上限 -->
+    <div class="arow" data-page-node-id="AdmJackRow"><span class="jackIcoWrap"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="1.6"/><path d="M4 13.5h16M12 10v10"/><path d="M12 10c-1.6 0-4.4-.5-4.4-2.6C7.6 5.9 9 5 10.1 5.4c1.3.4 1.9 2.6 1.9 4.6zm0 0c1.6 0 4.4-.5 4.4-2.6C16.4 5.9 15 5 13.9 5.4 12.6 5.8 12 8 12 10z"/></svg></span> 头奖池：当前 <b id="admJackNum" data-page-node-id="AdmJackNum001">0</b> 元 · 设 <input id="admJack" type="number" step="1" min="0" style="width:110px" data-page-node-id="AdmJackInp"> 元<button id="admJackSet" data-page-node-id="AdmJackBtn">设置滚存</button></div> <!-- 头奖池设置（6.2 图标线条化） -->
+  </div>
+  <div class="panel liquid-glass" data-page-node-id="AdmStockPanel"> <!-- 库存管理面板 -->
+    <h3 data-page-node-id="AdmStockH"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-box"/></svg>库存管理（两家初始各 100,000 张，售罄需补仓）</h3> <!-- 小标题 -->
+    <div class="arow" data-page-node-id="AdmStockRow0"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-heart"/></svg>中国福利彩票：当前 <b id="admStock0" data-page-node-id="AdmStock0Num">100,000</b> 张 · 补 <input id="admAdd0" type="number" step="1000" min="1" placeholder="补仓张数" style="width:110px" data-page-node-id="AdmAdd0Inp"> 张<button id="admStockAdd0" data-page-node-id="AdmStockAdd0Btn">补仓</button></div> <!-- 福利库存 -->
+    <div class="arow" data-page-node-id="AdmStockRow1"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-medal"/></svg>中国体育彩票：当前 <b id="admStock1" data-page-node-id="AdmStock1Num">100,000</b> 张 · 补 <input id="admAdd1" type="number" step="1000" min="1" placeholder="补仓张数" style="width:110px" data-page-node-id="AdmAdd1Inp"> 张<button id="admStockAdd1" data-page-node-id="AdmStockAdd1Btn">补仓</button></div> <!-- 体育库存 -->
+  </div>
+  <div class="panel liquid-glass" data-page-node-id="AdmPoolPanel"> <!-- 奖池编辑面板 -->
+    <h3 data-page-node-id="AdmPoolH">奖池编辑（商家风气 × 卡类型：各金额档占刮 100 张的百分比）</h3> <!-- 小标题 -->
+    <div class="arow" data-page-node-id="AdmSelRow"> <!-- 选择行 -->
+      <select id="admMer" data-page-node-id="AdmMerSel"></select> <!-- 商家选择 -->
+      <select id="admTier" data-page-node-id="AdmTierSel"></select> <!-- 卡类型选择 -->
+      <button id="admResetOne" data-page-node-id="AdmResetOne">恢复本组默认</button> <!-- 恢复本组 -->
+    </div>
+    <table id="admPool" data-page-node-id="AdmPoolTbl"></table> <!-- 编辑表 -->
+    <div class="arow" data-page-node-id="AdmAddRow"><button id="admAddRow" data-page-node-id="AdmAddBtn">＋ 添加金额档</button><span style="font-size:12px;color:#8a8474" data-page-node-id="AdmPoolTip">填的数字 = 每刮 100 张里该金额出现的张数（%），建议所有档加起来 = 100；实际中奖率 = 该档占比 ÷ 总占比，改动即时生效</span></div> <!-- 添加与说明 -->
+  </div>
+  <div class="panel liquid-glass admCfgPanel" data-page-node-id="AdmSlotPanel001"> <!-- 老虎机配置卡（新增） -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-slot"/></svg>老虎机配置（图案 / 三同奖额与权重 / 单价）</h3> <!-- 小标题 -->
+    <div class="arow">单价 ¥<input id="admSlotCost" type="number" step="0.5" min="0.5" style="width:90px"><button id="admSlotCostSet">设置单价</button></div> <!-- 单价行 -->
+    <table class="cfgTbl" id="admSlotTbl"></table> <!-- 图案与赔率表 -->
+    <div class="arow"><button id="admSlotAdd">＋ 添加图案</button><span style="font-size:12px;color:#8a8474">sym 为数字 0–9，三盘开出相同数字即中奖；weight 为出现权重，amt 三同奖额；改后即时生效</span></div> <!-- 添加与说明 -->
+  </div>
+  <div class="panel liquid-glass admCfgPanel" data-page-node-id="AdmGachaPanel001"> <!-- 扭蛋机配置卡（新增） -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-egg"/></svg>扭蛋机配置（单价 / 彩蛋颜色池 / 免费福卡模式）</h3> <!-- 小标题 -->
+    <div class="arow">单价 ¥<input id="admGachaCost" type="number" step="0.5" min="0.5" style="width:90px"><button id="admGachaCostSet">设置单价</button> · 免费福卡模式
+      <select id="admGachaFreeMode"><option value="real">真免费票（进抽卡页）</option><option value="cash">折现 ¥2</option></select> <!-- 福卡模式选择 -->
+    </div> <!-- 单价与模式行 -->
+    <table class="cfgTbl" id="admGachaTbl"></table> <!-- 彩蛋颜色池表 -->
+    <div class="arow"><button id="admGachaAdd">＋ 添加彩蛋</button><span style="font-size:12px;color:#8a8474">color 为彩蛋颜色；prizeType 取 cash/ticket/empty；amt 现金额；weight 权重可为最大项（空奖合法）</span></div> <!-- 添加与说明 -->
+  </div>
+  <div class="panel liquid-glass admCfgPanel" data-page-node-id="AdmClawPanel001"> <!-- 娃娃机配置卡（新增） -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-bear"/></svg>娃娃机配置（单价 / 概率与保底 / 玩偶池 / 展示架容量）</h3> <!-- 小标题 -->
+    <div class="arow">单价 ¥<input id="admClawCost" type="number" step="0.5" min="0.5" style="width:80px"> · 基础成功率 %<input id="admClawBase" type="number" step="1" min="5" max="95" style="width:70px"> · 保底步长 %<input id="admClawStep" type="number" step="1" min="0" max="50" style="width:64px"> · 保底上限 %<input id="admClawMax" type="number" step="1" min="10" max="100" style="width:64px"> · 展示架容量<input id="admClawCap" type="number" step="1" min="1" max="99" style="width:60px"><button id="admClawSet">全部设置</button></div> <!-- 参数行 -->
+    <table class="cfgTbl" id="admClawTbl"></table> <!-- 玩偶池表 -->
+    <div class="arow"><button id="admClawAdd">＋ 添加玩偶</button><span style="font-size:12px;color:#8a8474">name 玩偶名 · rarity 稀有度 · sellPrice 出售价 · weight 出现权重</span></div> <!-- 添加与说明 -->
+  </div>
+  <div class="panel liquid-glass admCfgPanel" data-page-node-id="AdmPetPanel001"> <!-- 桌宠配置卡（新增） -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-paw"/></svg>桌宠配置（食物价格与好感加成 / 聊天端口）</h3> <!-- 小标题 -->
+    <div class="arow">聊天代理端口 <input id="admPetPort" type="number" step="1" min="1024" max="65535" style="width:90px"><button id="admPetPortSet">设置端口</button><span style="font-size:12px;color:#8a8474">与 backend/server.py 启动端口一致即可聊天</span></div> <!-- 端口行 -->
+    <table class="cfgTbl" id="admPetTbl"></table> <!-- 食物表 -->
+    <div class="arow"><button id="admPetAdd">＋ 添加食物</button><span style="font-size:12px;color:#8a8474">name 食物名 · price 喂食价 · affinity 好感加成</span></div> <!-- 添加与说明 -->
+  </div>
+  <div class="panel liquid-glass admCfgPanel" data-page-node-id="AdmSkipPanel001"> <!-- 跳过时长配置卡（新增，对应第 7 节） -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-skip"/></svg>跳过进度配置（按正常刮票时长走满）</h3> <!-- 小标题 -->
+    <div class="arow">每张计时 <input id="admSkipMs" type="number" step="50" min="100" style="width:90px"> ms · 总时长上限 <input id="admSkipCap" type="number" step="1000" min="3000" style="width:100px"> ms<button id="admSkipSet">设置</button></div> <!-- 参数行 -->
+    <p style="font-size:12px;color:#8a8474">进度总时长 = min(上限, max(3s, 张数 × 每张计时))；默认 950ms/张（与原速刮票一致）、上限 60 秒。</p> <!-- 说明 -->
+  </div>
+  <div class="panel liquid-glass admCfgPanel" data-page-node-id="AdmReliefPanel001"> <!-- 6.2 十三轮：救济券配置卡 -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-lifebuoy"/></svg>救济券配置（每日次数 / 触发阈值 / 补给金额）</h3> <!-- 小标题 -->
+    <div class="arow">每日 <input id="admReliefTimes" type="number" step="1" min="0" max="99" style="width:70px"> 次 · 余额低于 ¥<input id="admReliefThresh" type="number" step="0.5" min="0" style="width:80px"> 可领 · 领取后余额补到 ¥<input id="admReliefAmt" type="number" step="1" min="1" style="width:80px"><button id="admReliefSet">保存配置</button></div> <!-- 三项参数 -->
+    <p style="font-size:12px;color:#8a8474">每日次数填 0 即关闭救济券；次数按自然日 0 点重置，玩家在设置页自助领取，管理员不经手。</p> <!-- 说明 -->
+    <div class="arow" style="justify-content:flex-start">今日已领 <b id="admReliefUsed">0</b> 次 · <button id="admReliefReset">重置今日次数</button></div> <!-- 今日使用与重置 -->
+  </div>
+  <div class="panel liquid-glass center" data-page-node-id="AdmFooter"> <!-- 底部操作 -->
+    <button id="admResetAll" data-page-node-id="AdmResetAllBtn">恢复全部默认奖池</button> <!-- 全部恢复 -->
+    <button id="btnAdminBack" data-page-node-id="AdmBackBtn">返回商店</button> <!-- 返回 -->
+  </div>
+</section>
+
+<div class="mask" id="pwdMask" data-page-node-id="PwdMask001"> <!-- 密码验证遮罩 -->
+  <div class="modal" data-page-node-id="PwdModal001">
+    <h3 data-page-node-id="PwdH001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-lock"/></svg>管理员验证 <svg class="icoSvg btnIcoLine" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="8" r="3.2"/><path d="M3.8 19.5c.5-3.2 2.9-5 5.7-5 1 0 2 .2 2.8.7"/><circle cx="17.2" cy="16.8" r="2.4"/><path d="M19.1 15l2-2M15.9 18.3l-1.4 1.4"/></svg></h3> <!-- 标题 -->
+    <div class="pwdGlass" data-page-node-id="PwdGlass001"> <!-- 毛玻璃输入卡（新UI） -->
+      <label class="input__label" for="pwdInput" data-page-node-id="PwdLabel001">管理员密码</label> <!-- 标签（6.1 中文化，移除原 Admin Password 原文） --> <!-- 标签 -->
+      <input id="pwdInput" type="password" name="scratch-admin-pwd" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="输入管理密码" data-page-node-id="PwdInp001"> <!-- 密码框（6.1 显式关闭自动填充，杜绝残留文本） --> <!-- 密码框 -->
+      <p class="input__description" data-page-node-id="PwdDesc001">仅本机自用 · 输错无副作用</p> <!-- 描述 -->
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end" data-page-node-id="PwdBtns001"><button id="pwdOk" data-page-node-id="PwdOk001">进入</button><button id="pwdCancel" data-page-node-id="PwdCancel001">取消</button></div> <!-- 按钮 -->
+  </div>
+</div>
+
+<!-- 提现页（敬请期待） -->
+<section id="viewWithdraw" class="view" data-page-node-id="ViewWithdraw001">
+  <p class="step" data-page-node-id="WdStep001">WITHDRAW · 余额提现</p> <!-- 步骤 -->
+  <h2 data-page-node-id="WdH2-001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-moneyBag"/></svg>提现</h2> <!-- 标题 -->
+  <div class="panel liquid-glass center" style="padding:70px 20px" data-page-node-id="WdPanel001"> <!-- 占位面板 -->
+    <div style="font-size:46px;margin-bottom:16px" data-page-node-id="WdIcon001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-bank"/></svg></div> <!-- 图标 -->
+    <p style="font-size:19px;font-weight:600;margin-bottom:10px" data-page-node-id="WdTitle001">提现功能敬请期待</p> <!-- 主文案 -->
+    <p style="font-size:13px;color:#8a8474" data-page-node-id="WdSub001">余额先在账本里攒着，功能开通后第一时间通知你～</p> <!-- 副文案 -->
+  </div>
+</section>
+
+<!-- 刮票历史页 -->
+<section id="viewHistory" class="view" data-page-node-id="ViewHistory001">
+  <p class="step" data-page-node-id="HistStep001">HISTORY · 每刮完一批自动记一笔</p> <!-- 步骤 -->
+  <h2 data-page-node-id="HistH2-001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-scroll"/></svg>刮票历史</h2> <!-- 标题 -->
+  <div id="hSummary" class="even" data-page-node-id="HistSummary001"></div> <!-- 总盈亏汇总 -->
+    <div id="playHistCard" style="display:none" data-page-node-id="PlayHistCard001"> <!-- 新玩法战绩卡（新增，独立于 scratch-history） -->
+    <h4><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-joystick"/></svg>新玩法战绩（老虎机 / 扭蛋 / 娃娃）</h4> <!-- 卡标题 -->
+    <div id="playHistList"></div> <!-- 战绩列表（由 scratch-play-history 渲染） -->
+  </div>
+  <div id="weekBillCard" style="display:none" data-page-node-id="WeekBillCard001"> <!-- 6.2 三轮：周结算账单卡（每周一凌晨自动为上一周生成一张收支小票，玻璃票据质感） -->
+    <h4><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-receipt"/></svg>周结算账单（每周一自动生成上周收支）</h4> <!-- 卡标题 -->
+    <div id="weekBillList"></div> <!-- 账单列表（由 scratch-weekbills 渲染） -->
+  </div>
+  <div id="lifeCard" style="display:none" data-page-node-id="LifeCard001"> <!-- 6.2 六轮：生涯数据看板（近 30 天每日盈亏柱状 + 累计收益曲线） -->
+    <h4><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-chart"/></svg>生涯数据看板（近 30 天）</h4> <!-- 卡标题 -->
+    <canvas id="lifeCv" width="1280" height="440"></canvas> <!-- 看板画布（2x 分辨率，CSS 缩放显示） -->
+    <div id="lifeSummary" class="lifeSummary"></div> <!-- 汇总文字行（总投入/总回报/最旺一天） -->
+  </div>
+  <div id="stubCard" style="display:none" data-page-node-id="StubCard001"> <!-- 6.2 九轮：中奖票根册（按玩法分页，每页 12 格，整册可导出 PNG） -->
+    <h4><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-ticket"/></svg>中奖票根册（按玩法分页 · 每页 12 格 · 满页盖钢印）</h4> <!-- 卡标题 -->
+    <div class="stubTabs" id="stubTabs"></div> <!-- 玩法筛选药丸 -->
+    <div class="stubBookWrap"> <!-- 册页容器 -->
+      <div class="stubPageGrid" id="stubPageGrid"></div> <!-- 3 列 × 4 行票格 -->
+      <div class="stubStamp" id="stubStamp">FULL</div> <!-- 满页钢印 -->
+    </div> <!-- 结束册页 -->
+    <div class="stubPager"> <!-- 翻页与导出 -->
+      <button id="stubPrev">‹ 上一页</button> <!-- 上一页 -->
+      <span id="stubPageView">1 / 1</span> <!-- 页码 -->
+      <button id="stubNext">下一页 ›</button> <!-- 下一页 -->
+      <button id="stubExportAll"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-download"/></svg>导出整册 PNG</button> <!-- 导出整册长图 -->
+    </div> <!-- 结束翻页 -->
+  </div>
+<div id="careerCard" style="display:none" data-page-node-id="CareerCard001"></div> <!-- 刮票生涯统计（有记录才显示） -->
+  <div id="hlist" data-page-node-id="HistList001"></div> <!-- 历史列表 -->
+</section>
+
+<!-- 徽章殿堂（独立页面） -->
+<section id="viewHall" class="view" data-page-node-id="jUBLHVXHXzPAZXI5WvhF7A">
+  <h2 data-page-node-id="XfJKx0Yj8qbZkC8LXVVJUN"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-medal"/></svg>徽章殿堂</h2> <!-- 标题 -->
+  <p id="hallStats" data-page-node-id="9uMlqdaXFdQIRx2LxAvyGG"></p> <!-- 统计 -->
+  <div class="bgrid" id="bgrid" data-page-node-id="ErCADaZ5p8Mu83KoFl2vxC"></div> <!-- 网格 -->
+  <p style="font-size:12px;color:#a09a8a;margin-top:14px" data-page-node-id="eEZGTBnkjbRCLEHotAb4Tq">徽章按「累计刮出金额」点亮，点亮后永不熄灭，重置账本也不会清除。</p> <!-- 规则 -->
+</section>
+
+<!-- 视图：老虎机（3D · Three.js） -->
+<section id="viewSlot" class="view" data-page-node-id="ViewSlot001">
+  <p class="step">SLOT · 三转盘 × 数字滚动 · 相同数字即中奖</p> <!-- 步骤 -->
+  <h2><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-slot"/></svg>老虎机</h2> <!-- 标题 -->
+  <div class="panel liquid-glass"> <!-- 玻璃卡包住 3D 画布 -->
+    <div id="slotStage" class="gameStage" data-page-node-id="SlotStage001"></div> <!-- 3D 画布容器（数字滚动直接在机身的白色圆圈滚筒上进行，不再在下方重复显示） -->
+    <div class="gameBar"> <!-- 操作条 -->
+      <span>单注 <b id="slotCostView">1.00</b> 元</span> <!-- 当前单注（随管理员配置；Fever 免单把显示 FREE） -->
+      <span class="betSwitch" id="betSwitch" title="押注档位：单注与奖额同倍放大"><button data-bet="1" class="on">×1</button><button data-bet="2">×2</button><button data-bet="5">×5</button></span> <!-- 6.2 六轮：押注档位切换（持久化） -->
+      <span class="feverChip" id="slotFeverChip"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-flame"/></svg>FEVER · 下把免单</span> <!-- 6.2 五轮：连庄 Fever 徽章（默认隐藏） -->
+      <span>余额 <b id="slotBalView">0.00</b> 元</span> <!-- 实时余额（数字滚动动画） -->
+      <button id="btnSlotSpin">拉动拉杆 <svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-slot"/></svg></button> <!-- 开转按钮 -->
+    </div>
+    <div id="slotResult" class="gameResult"></div> <!-- 结果横幅 -->
+    <p class="gameTip">三盘开出相同数字即按配置表派奖，其余为空奖；数字与赔率由管理员系统「老虎机」卡控制。</p> <!-- 说明 -->
+  </div>
+</section>
+<!-- 视图：扭蛋机（3D · Three.js） -->
+<section id="viewGacha" class="view" data-page-node-id="ViewGacha001">
+  <p class="step">GACHA · 彩蛋颜色定奖 · 空奖合法</p> <!-- 步骤 -->
+  <h2><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-egg"/></svg>扭蛋机</h2> <!-- 标题 -->
+  <div class="panel liquid-glass">
+    <div id="gachaStage" class="gameStage" data-page-node-id="GachaStage001"></div> <!-- 3D 画布 -->
+    <div class="gameBar">
+      <span>单价 <b id="gachaCostView">2.00</b> 元</span> <!-- 当前单价 -->
+      <span>蛋舱 <b id="gachaEggsView">12</b> 颗</span> <!-- 蛋舱余量（扭一颗少一颗） -->
+      <span>余额 <b id="gachaBalView">0.00</b> 元</span> <!-- 实时余额 -->
+      <button id="btnGachaTurn">投币扭一颗 <svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-egg"/></svg></button> <!-- 开蛋按钮 -->
+    </div>
+    <div id="gachaResult" class="gameResult"></div> <!-- 结果横幅 -->
+    <p class="gameTip">彩蛋颜色决定奖品：现金 / 免费福卡 / 空奖；颜色池与权重由管理员系统「扭蛋机」卡控制（免费福卡模式支持真票或折现二选一）。</p> <!-- 说明 -->
+  </div>
+</section>
+<!-- 视图：娃娃机（3D · Three.js） -->
+<section id="viewClaw" class="view" data-page-node-id="ViewClaw001">
+  <p class="step">CLAW · 基础概率 + 连败保底 · 抓到可出售</p> <!-- 步骤 -->
+  <h2><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-bear"/></svg>娃娃机</h2> <!-- 标题 -->
+  <div class="panel liquid-glass">
+    <div id="clawStage" class="gameStage" data-page-node-id="ClawStage001"></div> <!-- 3D 画布 -->
+    <div class="gameBar">
+      <span>单价 <b id="clawCostView">3.00</b> 元</span> <!-- 当前单价 -->
+      <span>余额 <b id="clawBalView">0.00</b> 元</span> <!-- 实时余额 -->
+      <span>保底连败 <b id="clawPityView">0</b></span> <!-- 当前保底计数 -->
+      <span class="goldChip" id="clawGoldChip"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-starGlow"/></svg>金爪 ×2 <b id="clawGoldSec">60</b>s</span> <!-- 6.2 金爪时段倒计时徽章（默认隐藏） -->
+      <span class="goldChip chalChip" id="clawChalChip"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-timer"/></svg><b id="clawChalSec">60</b>s · 已抓 <b id="clawChalGot">0</b>/5</span> <!-- 6.2 三轮：挑战赛倒计时徽章（60 秒连抓进度） -->
+      <button id="btnClawDrop">下爪！<svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-robotArm"/></svg></button> <!-- 下爪按钮（位置由红色摇杆控制） -->
+      <button id="btnClawChal" class="chalBtn"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-target"/></svg>挑战赛 ¥20</button> <!-- 6.2 三轮：挑战赛入口（¥20 入场，60 秒免费连抓，抓满 5 只返双倍） -->
+    </div>
+    <div id="clawResult" class="gameResult"></div> <!-- 结果横幅 -->
+    <h3 style="margin-top:14px"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-bear"/></svg>我的展示架（<span id="clawShelfCount">0</span> / <span id="clawShelfCap">12</span>）</h3> <!-- 展示架标题 -->
+    <div id="clawShelf" class="shelfGrid"></div> <!-- 展示架网格 -->
+    <p class="gameTip">立式街机：按住红色摇杆向某方向拖动，夹爪即朝该方向移动；对准玩偶后点「下爪」抓取。抓取成功进入展示架，可随时出售换现金；连续失败会按「保底步长」递增成功率，抓中即清零。参数由管理员系统「娃娃机」卡控制。</p> <!-- 说明（6.1 摇杆操作） -->
+  </div>
+</section>
+<!-- 视图：幸运大转盘（3D · Three.js） -->
+<section id="viewLucky" class="view" data-page-node-id="ViewLucky001">
+  <p class="step">LUCKY · 八格转盘 · 指针所指即所得</p> <!-- 步骤 -->
+  <h2><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-wheel"/></svg>幸运大转盘</h2> <!-- 标题 -->
+  <div class="panel liquid-glass">
+    <div id="luckyStage" class="gameStage" data-page-node-id="LuckyStage001"></div> <!-- 3D 画布 -->
+    <div class="gameBar">
+      <span>单次 <b id="luckyCostView">2.00</b> 元</span> <!-- 单次费用 -->
+      <span id="luckyNoteView" class="luckyNote"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-gift"/></svg>转到「再来一次」免费续转</span> <!-- 规则小提示 -->
+      <span>余额 <b id="luckyBalView">0.00</b> 元</span> <!-- 实时余额 -->
+      <button id="btnLuckySpin">转动转盘 <svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-wheel"/></svg></button> <!-- 开转按钮 -->
+    </div>
+    <div id="luckyResult" class="gameResult"></div> <!-- 结果横幅 -->
+    <div id="luckyGuess" class="guessBox"> <!-- 6.2 九轮：押格子竞猜（额外 ¥1 押一格，指针停在该格返 ¥5） -->
+      <div class="guessHead"><span class="guessTitle"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-target"/></svg>押格子 · ¥1 押一格，命中返 ¥5</span><span id="luckyGuessView" class="guessState">未押注</span></div> <!-- 标题与状态 -->
+      <div id="luckyGuessRow" class="guessRow"></div> <!-- 八格按钮（JS 按盘面颜色/文字渲染） -->
+    </div>
+    <p class="gameTip">八格奖金 ¥0.5 / ¥1 / ¥2 / ¥5 / ¥10 / ¥20 / 再来一次 / ×10 头彩：指针停在哪格就按哪格派奖；押注与派奖独立结算（押中额外返 ¥5）。</p> <!-- 说明 -->
+  </div>
+</section>
+<!-- 视图：幸运骰子台（3D · Three.js） -->
+<section id="viewDice" class="view" data-page-node-id="ViewDice001">
+  <p class="step">DICE · 押大押小押豹子 · 三颗骰定输赢</p> <!-- 步骤 -->
+  <h2><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-dice"/></svg>幸运骰子台</h2> <!-- 标题 -->
+  <div class="panel liquid-glass">
+    <div id="diceStage" class="gameStage" data-page-node-id="DiceStage001"></div> <!-- 3D 画布 -->
+    <div class="gameBar">
+      <span>押注 <b id="diceBetView">2.00</b> 元</span> <!-- 当前押注额 -->
+      <span class="betSwitch" id="diceBetSwitch"><button data-dbet="1">¥1</button><button data-dbet="2" class="on">¥2</button><button data-dbet="5">¥5</button><button data-dbet="10">¥10</button></span> <!-- 押注档位 -->
+      <span>余额 <b id="diceBalView">0.00</b> 元</span> <!-- 实时余额 -->
+    </div>
+    <div class="diceBtns"> <!-- 三个投注口 -->
+      <button id="btnDiceBig" class="diceBtn dBtnBig">押大 <em>11-18 · 1.8×</em></button> <!-- 押大 -->
+      <button id="btnDiceSmall" class="diceBtn dBtnSmall">押小 <em>3-10 · 1.8×</em></button> <!-- 押小 -->
+      <button id="btnDiceTriple" class="diceBtn dBtnTri">押豹子 <em>三同 · 30×</em></button> <!-- 押豹子 -->
+    </div>
+    <div id="diceResult" class="gameResult"></div> <!-- 结果横幅 -->
+    <p class="gameTip">三颗骰子点数相加：11-18 为大、3-10 为小（1.8 倍）；三颗同点为豹子（30 倍）。开出豹子时押大小通吃，请注意风险。</p> <!-- 说明 -->
+  </div>
+</section>
+<!-- 视图：单人麻将（3D 电动麻将机 · 国标推倒胡） -->
+<section id="viewMahjong" class="view" data-page-node-id="ViewMahjong001">
+  <p class="step">MAHJONG · 你 vs 三家 AI · 国标推倒胡</p> <!-- 步骤 -->
+  <h2><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-mahjong"/></svg>电动麻将机</h2> <!-- 标题 -->
+  <div class="panel liquid-glass">
+    <div class="mjTop"> <!-- 顶栏：局数 / 余牌 / 手牌状态 -->
+      <span id="mjRound" class="mjChip">第 1 局</span> <!-- 当前局 -->
+      <span id="mjWall" class="mjChip">余 70</span> <!-- 剩余可摸张数 -->
+      <span class="mjChip mjDoraChip">状态 <b id="mjHint">--</b></span> <!-- 听牌 / 向听提示 -->
+      <span class="mjViewCtl"> <!-- 6.2 十八轮：视角切换（拖拽旋转 / 滚轮缩放之外的快捷机位） -->
+        <button class="mjViewBtn on" type="button" data-mjview="overview" title="全景：整桌入镜">全景</button> <!-- 默认视角 -->
+        <button class="mjViewBtn" type="button" data-mjview="top" title="俯视：牌河与牌面最清楚">俯视</button> <!-- 垂直俯视 -->
+        <button class="mjViewBtn" type="button" data-mjview="hand" title="手牌：贴近自己一侧放大">手牌</button> <!-- 手牌特写 -->
+      </span> <!-- 结束视角切换 -->
+    </div> <!-- 结束顶栏 -->
+    <div id="mjStage" class="gameStage mjStage" data-page-node-id="MjStage001"></div> <!-- 3D 麻将机画布 -->
+    <div class="mjSeatRow"> <!-- 四家点数 -->
+      <div class="mjSeat me"><b>你</b><span id="mjS0">25000</span><i id="mjT0">庄</i></div> <!-- 玩家 -->
+      <div class="mjSeat"><b>下家</b><span id="mjS1">25000</span><i id="mjT1"></i></div> <!-- 下家 -->
+      <div class="mjSeat"><b>对家</b><span id="mjS2">25000</span><i id="mjT2"></i></div> <!-- 对家 -->
+      <div class="mjSeat"><b>上家</b><span id="mjS3">25000</span><i id="mjT3"></i></div> <!-- 上家 -->
+    </div> <!-- 结束四家 -->
+    <div id="mjActions" class="mjActions"></div> <!-- 操作按钮（JS 渲染：胡/碰/吃/杠/过） -->
+    <div id="mjTip" class="mjTip">点「开局」开始国标推倒胡</div> <!-- 操作提示 -->
+    <p class="gameTip">规则：国标麻将（推倒胡），136 张牌，无花牌、无宝牌。凑齐 4 副 + 1 将即可胡牌，<b>不设起和番数门槛</b>；番种按国标番值累计（清一色 24、七对 24、碰碰和 6、清龙 16、大三元 88 等），零番牌型按平胡 1 番保底。计分按国标换算档：1~7 番逐番翻倍，8 番以上分档；自摸三家各付，点炮由放铳者包三家。点击手牌出牌，金色「胡」为可和牌。<b>拖动画面可环绕转视角、滚轮缩放</b>，顶栏「全景 / 俯视 / 手牌」可一键切到常用机位。</p> <!-- 规则说明（含视角操作） -->
+  </div> <!-- 结束面板 -->
+</section> <!-- 结束视图 -->
+
+<div id="mjResult" class="mjMask"> <!-- 结算遮罩 -->
+  <div class="mjResBox liquid-glass"> <!-- 结算面板 -->
+    <div id="mjResBody"></div> <!-- 结算内容（JS 渲染） -->
+    <div class="mjResOps"> <!-- 操作 -->
+      <button id="mjAgain" class="mjBtn gold">再来一局</button> <!-- 新局 -->
+      <button id="mjClose" class="mjBtn ghost">关掉</button> <!-- 关闭 -->
+    </div> <!-- 结束操作 -->
+  </div> <!-- 结束结算面板 -->
+</div> <!-- 结束遮罩 -->
+<!-- 视图：桌宠模式 -->
+<section id="viewPet" class="view" data-page-node-id="ViewPet001">
+  <p class="step">PET · 喂食加好感 · 右键唤起聊天</p> <!-- 步骤 -->
+  <h2><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-paw"/></svg>桌宠</h2> <!-- 标题 -->
+  <div class="panel liquid-glass">
+    <div class="petLayout"> <!-- 主区 + 食物栏两列 -->
+      <div class="petStage" id="petStage"> <!-- 桌宠舞台 -->
+        <span class="petName" id="petNameView">果冻 · 表情由你决定</span> <!-- 名牌 -->
+        <div id="affinityBar"><i id="affinityFill"></i></div> <!-- 好感度条 -->
+        <span id="affinityText">好感度 0</span> <!-- 好感数值 -->
+        <div id="petBall" title="点我一下 / 右键聊天"></div> <!-- 桌宠球（SVG 由 JS 注入） -->
+        <span id="petJobBadge"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-briefcase"/></svg>打工中 · <b id="petJobLeft">--:--</b></span> <!-- 6.2 七轮：打工中徽章（默认隐藏） -->
+      </div> <!-- 结束舞台 -->
+      <div class="foodCol"> <!-- 右侧栏 -->
+        <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-meat"/></svg>喂食（付款加好感）</h3> <!-- 食物栏标题 -->
+        <div id="foodList"></div> <!-- 食物按钮容器（由配置渲染） -->
+        <h3 style="margin-top:10px"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-bow"/></svg>好感度商店</h3> <!-- 配饰商店标题 -->
+        <div id="accShop" class="accRow"></div> <!-- 配饰胶囊容器 -->
+        <h3 style="margin-top:10px"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-briefcase"/></svg>打工（离开也能赚）</h3> <!-- 6.2 七轮：打工标题 -->
+        <div class="jobBox" id="jobBox"> <!-- 打工人面板 -->
+          <div class="jobRow" id="jobRow"></div> <!-- 时长档位按钮（JS 渲染） -->
+          <p class="jobTip" id="jobTip">派桌宠出门打工，到点回来带回金币和一张小纸条。</p> <!-- 说明/状态 -->
+        </div> <!-- 结束打工人面板 -->
+        <h3 style="margin-top:10px"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-smile"/></svg>表情切换模式</h3> <!-- 模式标题 -->
+        <div class="emoModeRow"> <!-- 三选一（互斥） -->
+          <label><input type="radio" name="emoMode" value="manual"><span>手动</span></label> <!-- 手动模式 -->
+          <label><input type="radio" name="emoMode" value="random"><span>随机 8–15s</span></label> <!-- 随机模式 -->
+          <label><input type="radio" name="emoMode" value="emotion"><span>按聊天情绪</span></label> <!-- 情绪模式 -->
+        </div>
+        <p class="gameTip" style="text-align:left">右键桌宠打开聊天抽屉；聊天回复会返回情绪并驱动表情（需本地聊天代理运行）。</p> <!-- 提示 -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 视图：设置系统（普通区游客可改；受保护区需密码） -->
+<section id="viewSettings" class="view" data-page-node-id="ViewSettings001">
+  <p class="step">SETTINGS · 普通设置游客可改，高级设置需密码</p> <!-- 步骤 -->
+  <h2><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-gear"/></svg>设置</h2> <!-- 标题 -->
+  <div class="panel liquid-glass"> <!-- 外观设置面板 -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-palette"/></svg>外观</h3> <!-- 小标题 -->
+    <div class="setRow"> <!-- 深浅色模式行 -->
+      <span class="sl">深浅色：</span> <!-- 行标签 -->
+      <div class="glass-radio-group" id="modeGroup"> <!-- 三档玻璃单选组（复用主题组样式） -->
+        <input type="radio" name="mode" id="mode-light" value="light"><label for="mode-light">浅色</label> <!-- 浅色 -->
+        <input type="radio" name="mode" id="mode-dark" value="dark"><label for="mode-dark">深色</label> <!-- 深色 -->
+        <input type="radio" name="mode" id="mode-auto" value="auto"><label for="mode-auto">跟随系统</label> <!-- 自动 -->
+        <span class="glass-glider" aria-hidden="true" id="modeGlider"></span> <!-- 滑块（三档与主题组一致） -->
+      </div>
+    </div>
+    <div class="setRow"> <!-- 主题色行（原 viewAdmin 迁移，id/theme 不变） -->
+      <span class="sl">主题色：</span> <!-- 行标签 -->
+      <div class="glass-radio-group" id="themeGroup" data-page-node-id="ThemeGroup001"> <!-- 玻璃单选组（沿用原结构） -->
+        <input type="radio" name="theme" id="glass-gold" value="gold" data-page-node-id="ThemeGold001"><label for="glass-gold" data-page-node-id="ThemeGoldLab">Gold</label> <!-- 金 -->
+        <input type="radio" name="theme" id="glass-green" value="green" data-page-node-id="ThemeGreen001"><label for="glass-green" data-page-node-id="ThemeGreenLab">Green</label> <!-- 绿 -->
+        <input type="radio" name="theme" id="glass-red" value="red" data-page-node-id="ThemeRed001"><label for="glass-red" data-page-node-id="ThemeRedLab">Red</label> <!-- 红 -->
+        <span class="glass-glider" aria-hidden="true" data-page-node-id="ThemeGlider001"></span> <!-- 滑块 -->
+      </div>
+    </div>
+    <div class="liquidCard" id="liquidCard" data-page-node-id="LiquidCard001"> <!-- 液态玻璃 Beta 卡（原 viewAdmin 迁移，id 不变） -->
+      <div class="liquidHead" data-page-node-id="LiquidHead001"> <!-- 标题行 -->
+        <span class="liquidTitle" data-page-node-id="LiquidTitle001">液态玻璃</span> <!-- 功能名 -->
+        <span class="liquidBadge" data-page-node-id="LiquidBadge001">Beta</span> <!-- 徽标 -->
+        <label class="liquidSwitch" data-page-node-id="LiquidSwitch001"> <!-- 开关 -->
+          <input type="checkbox" id="liquidToggle" data-page-node-id="LiquidToggle001"> <!-- 复选框 -->
+          <span class="liquidTrack" data-page-node-id="LiquidTrack001"><span class="liquidKnob" data-page-node-id="LiquidKnob001"></span></span> <!-- 轨道 -->
+        </label>
+      </div>
+      <p class="liquidDesc" data-page-node-id="LiquidDesc001">开启后所有模块变为半透明磨砂，悬浮在桌面壁纸之上；应用会持续检测壁纸变化，换壁纸或换图片都能自动跟上。</p> <!-- 说明 -->
+      <div class="liquidActions" data-page-node-id="LiquidActions001"> <!-- 操作行 -->
+        <button id="liquidPick" data-page-node-id="LiquidPick001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-image"/></svg>选择壁纸</button> <!-- 选图 -->
+        <button id="liquidRescan" data-page-node-id="LiquidRescan001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-refresh"/></svg>立即重新检测</button> <!-- 重检 -->
+      </div>
+      <p id="liquidStatus" data-page-node-id="LiquidStatus001">正在检测壁纸来源…</p> <!-- 状态 -->
+    </div>
+    <div class="liquidCard" id="bgTransCard"> <!-- 背景透明 Beta 卡（新增） -->
+      <div class="liquidHead"> <!-- 标题行 -->
+        <span class="liquidTitle">背景透明</span> <!-- 功能名 -->
+        <span class="liquidBadge">Beta</span> <!-- 徽标 -->
+        <label class="liquidSwitch"> <!-- 开关 -->
+          <input type="checkbox" id="bgTransToggle"> <!-- 复选框 -->
+          <span class="liquidTrack"><span class="liquidKnob"></span></span> <!-- 轨道 -->
+        </label>
+      </div>
+      <p class="liquidDesc">桌面外壳内置实时桌面抓帧（DWM 排除自身 + GDI 抓屏的光学近似方案）：开启后窗口直接透出背后的实时桌面，背景窗口移动、播放视频都能实时跟随；普通浏览器环境会自动回退到液态玻璃壁纸模式。</p> <!-- 说明（6.1 光学近似） -->
+      <p id="bgTransStatus">未检测到外壳 · 将使用壁纸层近似</p> <!-- 状态 -->
+    </div>
+  </div>
+  <div class="panel liquid-glass"> <!-- 6.2 十七轮：启动与提示（免责弹窗开关） -->
+    <h3>🛡 启动与提示</h3> <!-- 小标题 -->
+    <div class="liquidCard" id="dmPrefCard"> <!-- 卡片 -->
+      <div class="liquidHead"> <!-- 标题行 -->
+        <span class="liquidTitle">启动温馨提示</span> <!-- 功能名 -->
+        <span class="liquidBadge">默认开启</span> <!-- 徽标 -->
+        <label class="liquidSwitch"> <!-- 开关 -->
+          <input type="checkbox" id="dmToggle"> <!-- 复选框（默认开启，JS 里回显） -->
+          <span class="liquidTrack"><span class="liquidKnob"></span></span> <!-- 轨道 -->
+        </label>
+      </div>
+      <p class="liquidDesc">每次启动先展示免责说明（页面虚化 + 2 秒冷静期，点「我已知悉」后像彩票屑一样碎掉）。关闭后下次启动不再弹出，需要时可在这里重新开启。</p> <!-- 说明 -->
+      <p id="dmPrefStatus" class="dmPrefStatus">当前：每次启动都会弹出 · 点弹窗右上角 <svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-cross"/></svg>可立即退出程序</p> <!-- 状态 -->
+    </div>
+  </div>
+
+  <div class="panel liquid-glass"> <!-- 6.2 九轮：音效总线（三路音量 + 一键静音） -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-volume"/></svg>音效</h3> <!-- 小标题 -->
+    <p style="font-size:12px;color:#8a8474;margin-bottom:6px">三路独立音量：界面（按钮/提示）、中奖（开奖与庆祝）、环境（机械滴答/机械动作）。按 <b>M</b> 键随时全部静音。</p> <!-- 说明 -->
+    <div class="volRow"><span class="vl">界面音</span><input id="volUi" class="volRange" type="range" min="0" max="100" step="1" value="80"><span class="volVal" id="volUiV">80%</span></div> <!-- 界面音 -->
+    <div class="volRow"><span class="vl">中奖音</span><input id="volWin" class="volRange" type="range" min="0" max="100" step="1" value="100"><span class="volVal" id="volWinV">100%</span></div> <!-- 中奖音 -->
+    <div class="volRow"><span class="vl">环境音</span><input id="volAmb" class="volRange" type="range" min="0" max="100" step="1" value="55"><span class="volVal" id="volAmbV">55%</span></div> <!-- 环境音 -->
+    <div class="saveRow" style="margin-top:8px"><button id="btnMuteAll"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-volumeOff"/></svg>全部静音（M）</button><span class="volState" id="muteState">总音量 100%</span></div> <!-- 静音按钮与状态 -->
+  </div> <!-- 结束音效面板 -->
+  <div class="panel liquid-glass" id="reliefPanel"> <!-- 6.2 十三轮：每日救济券（余额见底时的保底） -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-lifebuoy"/></svg>每日救济券</h3> <!-- 小标题 -->
+    <p style="font-size:12px;color:#8a8474;margin-bottom:10px" id="reliefDesc">余额低于 ¥5 时可领取一张救济券，一次性把余额补到 ¥30；每日次数由管理员设定，自然日 0 点重置。</p> <!-- 规则说明（数值由 JS 按配置刷新） -->
+    <div class="reliefRow"> <!-- 领取行 -->
+      <button id="btnRelief"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-ticket"/></svg>领取救济券</button> <!-- 领取按钮（不满足条件时禁用） -->
+      <span id="reliefState">今日剩余 1 / 1 次</span> <!-- 今日余量 -->
+    </div>
+    <div class="reliefDots" id="reliefDots" aria-hidden="true"></div> <!-- 次数指示灯（已用变灰） -->
+  </div> <!-- 结束救济面板 -->
+  <div class="panel liquid-glass"> <!-- 6.2 新增：存档管理面板（导出/导入，解决换电脑存档不跟随） -->
+    <h3><svg class="icoSvg icoH3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v10.5"/><path d="M8.2 11l3.8 3.8 3.8-3.8"/><path d="M4.5 16.5v2A1.8 1.8 0 0 0 6.3 20.3h11.4a1.8 1.8 0 0 0 1.8-1.8v-2"/></svg> 存档管理</h3> <!-- 小标题（下载托盘线条图标） -->
+    <p style="font-size:12px;color:#8a8474;margin-bottom:10px">导出全部进度（余额、欠款、库存、好感度、各玩法配置与战绩）为 JSON 文件；在新电脑上导入即可无缝续玩。</p> <!-- 说明 -->
+    <div class="saveRow"> <!-- 按钮横排 -->
+      <button id="btnSaveExport"><svg class="icoSvg btnIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v10.5"/><path d="M8.2 11l3.8 3.8 3.8-3.8"/><path d="M4.5 16.5v2A1.8 1.8 0 0 0 6.3 20.3h11.4a1.8 1.8 0 0 0 1.8-1.8v-2"/></svg> 导出存档</button> <!-- 导出按钮（下载线条图标） -->
+      <button id="btnSaveImport"><svg class="icoSvg btnIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 14.5V4"/><path d="M8.2 7.5L12 3.7l3.8 3.8"/><path d="M4.5 16.5v2A1.8 1.8 0 0 0 6.3 20.3h11.4a1.8 1.8 0 0 0 1.8-1.8v-2"/></svg> 导入存档</button> <!-- 导入按钮（上传线条图标） -->
+      <input type="file" id="saveFileInput" accept="application/json,.json" style="display:none"> <!-- 隐藏文件选择器 -->
+    </div> <!-- 结束按钮排 -->
+    <p style="font-size:12px;color:#8a8474;margin:12px 0 6px">硬盘存档座：单击硬盘插入（<b style="color:#1e9e5a">绿灯</b>=当前进度）/ 弹出（<b style="color:#c0392b">红灯</b>，进度自动收进硬盘）；右键硬盘管理存档。</p> <!-- 硬盘座说明 -->
+    <div class="bayWrap"> <!-- 6.2 四轮：3D 硬盘存档座（透视容器） -->
+      <div class="bayPlate">SAVE BAY · 存档阵列（默认 3 盘）</div> <!-- 铭牌 -->
+      <div class="bayBox"><div class="baySlots" id="baySlots"></div></div> <!-- 立体方盒 + 三块硬盘位（JS 渲染） -->
+      <div class="bayPet" aria-hidden="true"><i class="bpBody"></i><i class="bpEye l"></i><i class="bpEye r"></i><i class="bpBlush l"></i><i class="bpBlush r"></i><i class="bpMouth"></i></div> <!-- 6.2 五轮：桌宠趴在存档座顶（眨眼陪伴彩蛋） -->
+    </div>
+    <input type="file" id="bayFileInput" accept="application/json,.json" style="display:none"> <!-- 隐藏文件选择器（右键导入用） -->
+    <div id="bayMenu" class="bayMenu"></div> <!-- 右键菜单（有档=删除 / 空盘=导入、新建） -->
+    <p style="font-size:12px;color:#8a8474;margin:14px 0 6px">自动快照：每天首次启动自动把进度存一份（保留近 7 天），玩崩了可随时回溯：</p> <!-- 6.2 六轮：快照环说明 -->
+    <div class="snapRow"> <!-- 6.2 六轮：快照恢复行 -->
+      <select id="snapSel" title="选择要恢复的自动快照"></select> <!-- 快照下拉（日期 · 项数） -->
+      <button id="btnSnapRestore"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-rewind"/></svg>恢复此快照</button> <!-- 恢复按钮（覆盖当前进度，需确认） -->
+    </div>
+  </div> <!-- 结束存档面板 -->
+  <div class="panel liquid-glass"> <!-- 高级设置入口面板 -->
+    <h3><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-lockKey"/></svg>高级设置（管理员）</h3> <!-- 小标题 -->
+    <p style="font-size:12px;color:#8a8474;margin-bottom:10px">资金调整、库存、奖池、各玩法配置与跳过时长均在高级设置内；密码仍为原管理密码。</p> <!-- 说明 -->
+    <button id="btnAdvSettings"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="8" r="3.2"/><path d="M3.8 19.5c.5-3.2 2.9-5 5.7-5 1 0 2 .2 2.8.7"/><circle cx="17.2" cy="16.8" r="2.4"/><path d="M19.1 15l2-2M15.9 18.3l-1.4 1.4"/></svg> 进入高级设置</button> <!-- 入口按钮（人像钥匙线条图标） -->
+    <p class="protectedHint">改动仅存于本机（localStorage），实时生效。</p> <!-- 受保护区提示 -->
+  </div>
+</section>
+<div id="toast" data-page-node-id="E5FP1Acy56F8Duz2sF6RIG"></div> <!-- 提示条 -->
+
+<div id="petChat"> <!-- 桌宠聊天抽屉：右滑展开 -->
+  <div class="pcHead"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-chat"/></svg>和 <span id="pcPetName">果冻</span> 聊天<button id="pcClose">收起</button></div> <!-- 标题行 -->
+  <div id="petMsgs"></div> <!-- 消息流（最近 50 条） -->
+  <div class="pcInputRow"> <!-- 输入行 -->
+    <input id="pcInput" type="text" maxlength="200" placeholder="说点什么…（8 秒无回应会提示走神）"> <!-- 输入框 -->
+    <button id="pcSend">发送</button> <!-- 发送按钮 -->
+  </div>
+</div>
+<div id="orb" title="游戏模式悬浮球"><span class="orbPing" aria-hidden="true"></span><span id="orbFace"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 8h10a4.5 4.5 0 0 1 4.4 5.4l-.6 2.8a2.6 2.6 0 0 1-4.5 1.1L14.6 15H9.4l-1.7 2.3a2.6 2.6 0 0 1-4.5-1.1l-.6-2.8A4.5 4.5 0 0 1 7 8z"/><path d="M8.2 10.5v2.6M6.9 11.8h2.6"/><circle cx="15.6" cy="10.9" r="0.4"/><circle cx="17.6" cy="12.6" r="0.4"/></svg></span></div> <!-- 悬浮球：可拖拽，位置持久化，图标为线条手柄 -->
+<div id="orbTab"> <!-- 向上弹出的玩法 Tab（6.1：玩法切换唯一入口；6.2 增加今日运势，共五项） -->
+  <span class="orbGlow" aria-hidden="true"></span> <!-- 液体指示器（五等分） -->
+  <span class="orbItem" data-goto="Shop" data-oi="0"><span class="oi"><svg class="icoSvg oiSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="1.6"/><path d="M4 13.5h16M12 10v10"/><path d="M12 10c-1.6 0-4.4-.5-4.4-2.6C7.6 5.9 9 5 10.1 5.4c1.3.4 1.9 2.6 1.9 4.6zm0 0c1.6 0 4.4-.5 4.4-2.6C16.4 5.9 15 5 13.9 5.4 12.6 5.8 12 8 12 10z"/></svg></span>刮彩票</span> <!-- 项一 -->
+  <span class="orbItem" data-goto="Gacha" data-oi="1"><span class="oi"><svg class="icoSvg oiSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.6c3.6 0 6.4 4.6 6.4 9.2a6.4 6.4 0 0 1-12.8 0C5.6 8.2 8.4 3.6 12 3.6z"/><path d="M9.2 11.2c.5-2 1.5-3.4 2.8-4.2"/></svg></span>扭蛋机</span> <!-- 项二（6.2 蛋形线条图标） -->
+  <span class="orbItem" data-goto="Claw" data-oi="2"><span class="oi"><svg class="icoSvg oiSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13.2" r="5.6"/><circle cx="6.8" cy="7.2" r="2.1"/><circle cx="17.2" cy="7.2" r="2.1"/><circle cx="9.9" cy="12.2" r="0.45"/><circle cx="14.1" cy="12.2" r="0.45"/><path d="M10.8 14.6c.7.6 1.7.6 2.4 0"/></svg></span>娃娃机</span> <!-- 项三（6.2 小熊线条图标） -->
+  <span class="orbItem" data-goto="Slot" data-oi="3"><span class="oi"><svg class="icoSvg oiSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.4"/><circle cx="9" cy="9" r="0.4"/><circle cx="15" cy="9" r="0.4"/><circle cx="12" cy="12" r="0.4"/><circle cx="9" cy="15" r="0.4"/><circle cx="15" cy="15" r="0.4"/></svg></span>老虎机</span> <!-- 项四 -->
+  <span class="orbItem" data-goto="Lucky" data-oi="4"><span class="oi"><svg class="icoSvg oiSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12.4" r="8.2"/><circle cx="12" cy="12.4" r="1.3"/><path d="M12 4.2v6.9M12 13.7v6.9M3.8 12.4h6.9M13.3 12.4h6.9"/><path d="M12 1.6l2.1 3.1H9.9z" fill="currentColor" stroke="none"/></svg></span>大转盘</span> <!-- 项五（6.2 七轮：第 4 个 3D 玩法） -->
+  <span class="orbItem" data-goto="Dice" data-oi="5"><span class="oi"><svg class="icoSvg oiSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.4" y="3.4" width="17.2" height="17.2" rx="3.6"/><circle cx="8.2" cy="8.2" r="1.05" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.8" cy="15.8" r="1.05" fill="currentColor" stroke="none"/><circle cx="15.8" cy="8.2" r="1.05" fill="currentColor" stroke="none"/><circle cx="8.2" cy="15.8" r="1.05" fill="currentColor" stroke="none"/></svg></span>骰子台</span> <!-- 项六（6.2 七轮：押大押小押豹子） -->
+  <span class="orbItem" data-act="fortune" data-oi="6"><span class="oi"><svg class="icoSvg oiSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10.2" r="6.6"/><path d="M8.2 16.4L7 21h10l-1.2-4.6"/><path d="M9.4 10.4c.4-1.8 1.3-3 2.6-3.6"/><path d="M12 21v-2.6"/></svg></span>今日运势</span> <!-- 项七（6.2 新增：三数字滚动抽运势） -->
+  <span class="orbItem" data-goto="Mahjong" data-oi="7"><span class="oi"><svg class="icoSvg oiSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5.2" y="2.4" width="13.6" height="19.2" rx="2.8"/><circle cx="12" cy="10" r="2.7"/><path d="M9.2 15.4h5.6M9.2 18h5.6"/></svg></span>麻将</span> <!-- 项八（6.2 十六轮：3D 电动麻将机 · 十九轮改国标推倒胡） -->
+</div>
+<div id="fortuneMask"> <!-- 运势弹窗遮罩（点击空白关闭） -->
+  <div id="fortuneBox" class="liquid-glass" role="dialog" aria-label="今日运势"> <!-- 玻璃弹窗主体 -->
+    <button id="fortuneClose" aria-label="关闭">×</button> <!-- 右上角关闭 -->
+    <h3><svg class="icoSvg icoH3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10.2" r="6.6"/><path d="M8.2 16.4L7 21h10l-1.2-4.6"/><path d="M9.4 10.4c.4-1.8 1.3-3 2.6-3.6"/><path d="M12 21v-2.6"/></svg> 今日运势</h3> <!-- 标题（水晶球线条图标） -->
+    <p class="fortuneSub">三个数字定运势 · 不限次数随心抽</p> <!-- 副标题（6.2 取消每日一抽限制） -->
+    <div id="fortuneWin" aria-label="运势数字滚动窗"><b class="rollNumBox" id="fortuneRoll"></b></div> <!-- 三位数字滚动窗（复用老虎机滚动数字组样式） -->
+    <div id="fortuneLevel">—</div> <!-- 运势等级（大吉/中吉…） -->
+    <p id="fortuneTip" class="fortuneTip">点击下方按钮，滚动抽取今日运势</p> <!-- 提示文案 -->
+    <button id="fortuneGo"><svg class="icoSvg btnIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3.4"/><circle cx="9" cy="9" r="0.4"/><circle cx="15" cy="9" r="0.4"/><circle cx="12" cy="12" r="0.4"/><circle cx="9" cy="15" r="0.4"/><circle cx="15" cy="15" r="0.4"/></svg> 开抽今日运势</button> <!-- 抽取按钮 -->
+  </div> <!-- 结束弹窗主体 -->
+</div>
+<!-- 6.2 十五轮：机打小票（打印机吐纸动画 + 小票导出） -->
+<div class="rcptMask" id="rcptMask" aria-hidden="true"> <!-- 全屏遮罩 -->
+  <div class="rcptBox" role="dialog" aria-modal="true" aria-label="机打小票"> <!-- 打印机 + 小票 -->
+    <div class="rcptMachine" id="rcptMachine"> <!-- 打印机机身 -->
+      <svg class="rcptPrinter" viewBox="0 0 240 104" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <!-- 线条打印机 -->
+        <path d="M80 30V14a5 5 0 0 1 5-5h70a5 5 0 0 1 5 5v16"/> <!-- 顶部纸仓 -->
+        <rect x="26" y="30" width="188" height="58" rx="12"/> <!-- 机身 -->
+        <rect x="150" y="44" width="46" height="20" rx="4"/> <!-- 小屏边框 -->
+        <path d="M158 51h24M158 57h14"/> <!-- 屏内两行 -->
+        <circle class="rcptLedDot" cx="48" cy="54" r="3.6"/> <!-- 指示灯 -->
+        <path d="M42 66h26M42 72h17"/> <!-- 面板横线 -->
+        <path d="M64 88h112"/> <!-- 出纸槽缝 -->
+      </svg>
+      <span class="rcptSlot"></span> <!-- 出纸槽（深色横缝，纸张由此吐出） -->
+      <span class="rcptState" id="rcptState">打印中…</span> <!-- 状态文字 -->
+    </div>
+    <div class="rcptRoll" id="rcptRoll"> <!-- 吐纸区（高度动画） -->
+      <div class="rcptPaper" id="rcptPaper"></div> <!-- 小票纸面（JS 渲染） -->
+    </div>
+    <div class="rcptOps" id="rcptOps"> <!-- 操作条 -->
+      <button class="rcptSave" id="rcptSave" type="button">保存小票</button> <!-- 导出 PNG -->
+      <button class="rcptClose" id="rcptClose" type="button">收好</button> <!-- 关闭 -->
+    </div>
+  </div>
+</div>
+<!-- 6.2 十七轮：启动温馨提示（虚化遮罩 · 2 秒冷却 · 彩屑碎裂 · 叉号退出程序） -->
+<div id="dmMask" class="dmMask" aria-hidden="true"> <!-- 全屏遮罩：backdrop-filter 把整页虚化 -->
+  <div class="dmCard" id="dmCard" role="dialog" aria-modal="true" aria-labelledby="dmTitle" aria-describedby="dmBody"> <!-- 提示卡 -->
+    <button id="dmClose" class="dmX" type="button" title="退出程序（立即关闭）" aria-label="退出程序"> <!-- 右上角叉号：立即退出 -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M6.4 6.4l11.2 11.2M17.6 6.4L6.4 17.6"/></svg> <!-- 交叉线 -->
+    </button> <!-- 结束叉号 -->
+    <div class="dmIco" aria-hidden="true"> <!-- 顶部盾牌图标 -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.3l7 2.6v5.2c0 4.2-2.9 7.7-7 8.8-4.1-1.1-7-4.6-7-8.8V5.9z"/><path d="M12 8.5v4.3"/><circle cx="12" cy="15.9" r=".95" fill="currentColor" stroke="none"/></svg> <!-- 盾牌 + 感叹号 -->
+    </div> <!-- 结束图标 -->
+    <h3 class="dmTitle" id="dmTitle">温馨提示</h3> <!-- 标题 -->
+    <p class="dmBody" id="dmBody">本模拟器仅供游戏规则演示与技巧锻炼用，不涉及任何赌博模式与真实货币交易。本软件完全开源免费，不涉及买断制及订阅制的交易。</p> <!-- 正文（用户指定文案） -->
+    <div class="dmOps"> <!-- 操作区 -->
+      <button id="dmOk" class="dmOk" type="button" disabled>我已知悉<span class="dmCd" id="dmCd">2</span></button> <!-- 确认按钮：2 秒后才可点 -->
+    </div> <!-- 结束操作区 -->
+    <p class="dmFoot">点右上角 <svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-cross"/></svg>可直接退出程序</p> <!-- 退出提示 -->
+  </div> <!-- 结束提示卡 -->
+</div> <!-- 结束遮罩 -->
+
+
+<!-- 全局锁定遮罩（覆盖内容区与底部导航；顶栏抬升至其上，仅锁定键可点） -->
+<div id="lockOverlay" data-page-node-id="LockOverlay001">
+  <div class="lockTip" data-page-node-id="LockTip001"> <!-- 提示卡 -->
+    <div class="ico" data-page-node-id="LockIco001"><svg class="lnIco" viewBox="0 0 24 24" aria-hidden="true"><use href="#li-lock"/></svg></div> <!-- 锁图标 -->
+    <p data-page-node-id="LockMsg001">已锁定 · 点击右上角按钮解锁</p> <!-- 主提示 -->
+    <small data-page-node-id="LockSub001">锁定期间所有页面与按钮均不可操作</small> <!-- 次提示 -->
+  </div>
+</div>
+
+<!-- 跳过模式等待页（白底 + 四环 spinner + 30 秒进度条 + 收益汇总） -->
+<div id="waitPage" data-page-node-id="WaitPage001">
+  <div class="waitBox" data-page-node-id="WaitBox001">
+    <svg class="pl" viewBox="0 0 160 160" data-page-node-id="WaitSpinner001"> <!-- 四环等待动画 -->
+      <circle class="pl__ring pl__ring--a" cx="80" cy="80" r="56" pathLength="660" transform="rotate(-90 80 80)"></circle> <!-- A 环 -->
+      <circle class="pl__ring pl__ring--b" cx="80" cy="80" r="42" pathLength="220" transform="rotate(-90 80 80)"></circle> <!-- B 环 -->
+      <circle class="pl__ring pl__ring--c" cx="80" cy="80" r="30" pathLength="440" transform="rotate(-90 80 80)"></circle> <!-- C 环 -->
+      <circle class="pl__ring pl__ring--d" cx="80" cy="80" r="18" pathLength="440" transform="rotate(-90 80 80)"></circle> <!-- D 环 -->
+    </svg>
+    <p class="waitTitle" data-page-node-id="WaitTitle001">已跳过刮票过程 · 正在为你结算</p> <!-- 标题 -->
+    <p class="waitSub" data-page-node-id="WaitSub001">进度按正常刮票时长走满，不因跳过而加速</p> <!-- 说明 -->
+    <div class="waitBar" data-page-node-id="WaitBar001"><i id="waitFill" data-page-node-id="WaitFill001"></i></div> <!-- 进度条 -->
+    <span id="waitPct" data-page-node-id="WaitPct001">0%</span> <!-- 百分比 -->
+    <div id="waitResult" data-page-node-id="WaitResult001"></div> <!-- 收益汇总卡（30 秒后显示） -->
+    <button id="waitDone" data-page-node-id="WaitDone001">完成</button> <!-- 完成按钮 -->
+  </div>
+</div>
+
+<!-- ===== 底部悬浮 Tab 切换器（Liquid Glass 液态玻璃） ===== -->
+<nav id="mainNav" role="tablist" aria-label="主导航" data-page-node-id="MainNav001"> <!-- 悬浮导航容器：固定于视口底部居中 -->
+  <span class="dockGlow" aria-hidden="true" data-page-node-id="DockGlow001"></span> <!-- 液体指示器：随选中项滑动的玻璃块（六等分） -->
+  <span class="navItem on" data-view="Shop" data-v="0" role="tab" aria-selected="true" tabindex="0" data-page-node-id="NavShop001"> <!-- 大厅 Tab -->
+    <span class="ico" aria-hidden="true"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="13" rx="3"/><path d="M2.5 9.5h19"/><circle cx="17" cy="13" r="1.2"/></svg></span> <!-- 线条图标：钱包 -->
+    <span class="lbl">游玩大厅</span> <!-- 文案：刮票大厅 → 游玩大厅 -->
+  </span>
+  <span class="navItem" data-view="Pet" data-v="1" role="tab" aria-selected="false" tabindex="0" data-page-node-id="NavPet001"> <!-- 桌宠 Tab（新增） -->
+    <span class="ico" aria-hidden="true"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.4c-.5.4-.8.1-.8-.5V16"/></svg></span> <!-- 线条图标：对话气泡 -->
+    <span class="lbl">桌宠</span> <!-- 文字 -->
+  </span>
+  <span class="navItem" data-view="History" data-v="2" role="tab" aria-selected="false" tabindex="0" data-page-node-id="NavHist001"> <!-- 历史 Tab -->
+    <span class="ico" aria-hidden="true"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2.2"/><path d="M20.4 9.5a8.6 8.6 0 0 0-3.2-4"/></svg></span> <!-- 线条图标：时钟回环 -->
+    <span class="lbl">刮票历史</span> <!-- 文字 -->
+  </span>
+  <span class="navItem" data-view="Hall" data-v="3" role="tab" aria-selected="false" tabindex="0" data-page-node-id="NavHall001"> <!-- 殿堂 Tab -->
+    <span class="ico" aria-hidden="true"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5.5a4 4 0 0 1-8 0z"/><path d="M8 5.5H4.8a3.2 3.2 0 0 0 3.3 3.4M16 5.5h3.2a3.2 3.2 0 0 1-3.3 3.4"/><path d="M12 13.5V17m-3.5 3h7M10 20l.6-3h2.8l.6 3"/></svg></span> <!-- 线条图标：奖杯（自行生成补齐） -->
+    <span class="lbl">荣誉殿堂</span> <!-- 文字 -->
+  </span>
+  <span class="navItem" data-view="Withdraw" data-v="4" role="tab" aria-selected="false" tabindex="0" data-page-node-id="NavWithdraw001"> <!-- 提现 Tab -->
+    <span class="ico" aria-hidden="true"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="9.5" r="5.5"/><path d="M7.6 7.8l1.9 2.1 1.9-2.1M9.5 9.9v3.2M8.2 11h2.6"/><path d="M13.2 10.6a5.5 5.5 0 1 1-6.9 6.9"/></svg></span> <!-- 线条图标：双币（自行生成补齐） -->
+    <span class="lbl">提现</span> <!-- 文字 -->
+  </span>
+  <span class="navItem" data-view="Settings" data-v="5" role="tab" aria-selected="false" tabindex="0" data-page-node-id="NavSettings001"> <!-- 设置 Tab（新增） -->
+    <span class="ico" aria-hidden="true"><svg class="icoSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 2.8v2.6M12 18.6v2.6M21.2 12h-2.6M5.4 12H2.8M18.5 5.5l-1.9 1.9M7.4 16.6l-1.9 1.9M18.5 18.5l-1.9-1.9M7.4 7.4L5.5 5.5"/></svg></span> <!-- 线条图标：齿轮 -->
+    <span class="lbl">设置</span> <!-- 文字 -->
+  </span>
+</nav>
+
+<script src="vendor/three/three.min.js"></script>
+<script src="js/core/app.js"></script>
+<script src="js/core/cfg.js"></script>
+<script src="js/core/play-history.js"></script>
+<script src="js/core/view-hooks.js"></script>
+<script src="js/slot/slot.js"></script>
+<script src="js/gacha/gacha.js"></script>
+<script src="js/claw/claw.js"></script>
+<script src="js/pet/engine/rings.js"></script>
+<script src="js/pet/engine/emotions.js"></script>
+<script src="js/pet/engine/ball.js"></script>
+<script src="js/pet/engine/engine.js"></script>
+<script src="js/pet/pet.js"></script>
+<script src="js/settings/orb.js"></script>
+<script src="js/settings/settings.js"></script>
+<script src="js/settings/admin-cfg.js"></script>
+<script src="js/settings/entries.js"></script>
+<script src="js/mahjong/mj_rules.js"></script>
+<script src="js/mahjong/mj_yaku.js"></script>
+<script src="js/mahjong/mj_ai.js"></script>
+<script src="js/mahjong/mj_engine.js"></script>
+<script src="js/mahjong/mj_faces.js"></script>
+<script src="js/mahjong/mj_scene.js"></script>
+<script src="js/mahjong/mj_ui.js"></script>
+<script src="js/core/disclaimer.js"></script>
+<script src="js/core/boot.js"></script>
+</body>
+</html>

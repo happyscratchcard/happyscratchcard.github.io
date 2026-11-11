@@ -1,0 +1,11 @@
+# 桌宠对话用的 API Key（可选功能，不填也能玩）
+
+使用方法：
+1. 复制本文件为 `api_key.txt`（同目录）
+2. 把文件内容替换成你自己的 NVIDIA API Key（形如 `nvapi-xxxxxxxx`），只留一行，不要留注释
+3. 启动后端：`python backend/server.py`
+4. 打开页面后桌宠即可对话
+
+注意：
+- `api_key.txt` 已被 .gitignore 排除，请勿提交到任何公开仓库
+- 如果密钥曾经被提交过，仅删除文件无效，需要去服务商后台吊销并重新生成

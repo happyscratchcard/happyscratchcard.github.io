@@ -1,0 +1,24 @@
+# 构建产物（由 tools/ 下的脚本生成，不入库；dist 例外，保留可直接玩的单文件页）
+/release/
+/build/
+*.spec
+
+# API 密钥：绝不提交
+api_key.txt
+**/api_key.txt
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 本地临时调试页
+dist/_selftest.html

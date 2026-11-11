@@ -1,0 +1,845 @@
+  /* ================================================== 6.0 升级：六 Tab 导航 ================================================== */
+  #mainNav .navItem .icoSvg { /* Tab 线条 SVG 图标（6.1：stroke 继承文字色，无外部资源，exe 打包不丢） */
+    width: 17px; height: 17px; /* 与 emoji 图标视觉等大 */
+    display: block; /* 独立成行 */
+    color: #8a8474; /* 未选中灰褐（与文字同步） */
+    transition: color .3s ease, transform .42s cubic-bezier(.22, 1.5, .36, 1); /* 选中变色与弹跳过渡 */
+  }
+  #mainNav .navItem.on .icoSvg { /* 选中态线条图标 */
+    color: #2c2a26; /* 深墨色（选中文字为深墨色） */
+    transform: translateY(-1px) scale(1.16); /* 与 emoji 图标一致的上浮放大 */
+    animation: icoPop .62s cubic-bezier(.34, 1.6, .64, 1); /* 弹跳动画复用 */
+  }
+  #mainNav .dockGlow { width: calc((100% - 12px) / 6); } /* 液体指示器改六等分 */
+  @media (max-width: 420px) { /* 小屏适配同步 */
+    #mainNav .dockGlow { width: calc((100% - 10px) / 6); } /* 小屏内边距下也六等分 */
+    #mainNav .navItem { font-size: 10px; } /* 六项更挤，字号再缩 */
+    #mainNav .navItem .lbl { font-size: 9.5px; } /* 文字允许更小保持单行 */
+  }
+
+  /* ================================================== 悬浮球与向上 Tab ================================================== */
+  #orb { /* 悬浮球：默认左下角，可拖拽，位置持久化 */
+    position: fixed; left: 16px; bottom: calc(96px + env(safe-area-inset-bottom)); /* 默认落点（底部 Tab 上方） */
+    width: 54px; height: 54px; /* 球体尺寸 */
+    border-radius: 50%; /* 圆形 */
+    background: linear-gradient(150deg, rgba(255,255,255,.85), rgba(255,255,255,.45)); /* 玻璃球底 */
+    backdrop-filter: blur(16px) saturate(180%); /* 磨砂 */
+    -webkit-backdrop-filter: blur(16px) saturate(180%); /* WebKit 兼容 */
+    border: 1px solid rgba(255,255,255,.75); /* 亮边 */
+    box-shadow: 0 10px 26px rgba(74,52,5,.24), inset 0 1px 0 rgba(255,255,255,.95); /* 悬浮投影 + 顶高光 */
+    display: flex; align-items: center; justify-content: center; /* 图标居中 */
+    font-size: 22px; /* 表情字号 */
+    cursor: grab; /* 拖拽光标 */
+    user-select: none; -webkit-user-select: none; /* 禁止选中 */
+    touch-action: none; /* 接管触摸（拖拽） */
+    z-index: 160; /* 高于底部导航(150) */
+  }
+  #orb:active { cursor: grabbing; } /* 拖拽中光标 */
+  #orb .orbPing { /* 呼吸提示环 */
+    position: absolute; inset: -4px; border-radius: 50%; /* 外扩一圈 */
+    border: 2px solid rgba(246,199,117,.55); /* 金色环 */
+    animation: orbPing 2.2s ease-out infinite; /* 循环扩散 */
+    pointer-events: none; /* 不拦截交互 */
+  }
+  @keyframes orbPing { 0% { transform: scale(.9); opacity: .9; } 70% { transform: scale(1.25); opacity: 0; } 100% { transform: scale(1.25); opacity: 0; } } /* 扩散关键帧 */
+  #orbTab { /* 悬浮球向上弹出的 Tab 条 */
+    position: fixed; left: 16px; bottom: calc(158px + env(safe-area-inset-bottom)); /* 球正上方 */
+    display: none; flex-direction: column; /* 纵向四项 */
+    background: rgba(255,252,244,.72); /* 玻璃底 */
+    backdrop-filter: blur(26px) saturate(185%); /* 磨砂 */
+    -webkit-backdrop-filter: blur(26px) saturate(185%); /* WebKit 兼容 */
+    border: 1px solid rgba(255,255,255,.78); /* 亮边 */
+    border-radius: 18px; /* 圆角 */
+    box-shadow: 0 16px 40px rgba(74,52,5,.22), inset 0 1px 0 rgba(255,255,255,.9); /* 悬浮 */
+    padding: 6px; /* 内边距 */
+    z-index: 161; /* 高于球 */
+    transform-origin: left bottom; /* 展开原点：左下 */
+  }
+  #orbTab.show { display: flex; animation: orbTabUp .42s cubic-bezier(.34,1.42,.64,1); } /* 弹簧展开 */
+  @keyframes orbTabUp { from { opacity: 0; transform: translateY(14px) scale(.92); } to { opacity: 1; transform: none; } } /* 上弹关键帧 */
+  #orbTab .orbItem { /* Tab 单项 */
+    position: relative; z-index: 2; /* 浮于指示器上 */
+    display: flex; align-items: center; gap: 9px; /* 图标 + 文字横排 */
+    padding: 9px 16px; border-radius: 13px; /* 热区与圆角 */
+    font-size: 13px; color: #5a5344; cursor: pointer; user-select: none; /* 文字样式 */
+    transition: background .22s ease, color .22s ease; /* 悬停过渡 */
+  }
+  #orbTab .orbItem:hover { background: rgba(255,255,255,.55); color: #2c2a26; } /* 悬停提亮 */
+  #orbTab .orbItem .oi { font-size: 17px; width: 20px; text-align: center; } /* emoji 图标格 */
+  #orbTab .orbGlow { /* 悬浮球 Tab 的液体指示器（复用 dockGlow 视觉语言） */
+    position: absolute; left: 6px; right: 6px; top: 6px; /* 顶部起点 */
+    height: calc((100% - 12px) / 4); /* 四等分 */
+    border-radius: 13px; /* 圆角 */
+    background: linear-gradient(160deg, rgba(255,255,255,.96), rgba(255,255,255,.70)); /* 玻璃滑块 */
+    box-shadow: 0 4px 14px rgba(74,52,5,.16), inset 0 1px 0 rgba(255,255,255,1); /* 凸起 */
+    transform: translateY(calc(var(--orbIdx, 0) * 100%)); /* 按索引滑动 */
+    transition: transform .5s cubic-bezier(.34,1.42,.64,1); /* 弹簧滑动 */
+    pointer-events: none; z-index: 1; /* 不拦截点击 */
+  }
+
+  /* ================================================== 游戏模式入口（商店页新增） ================================================== */
+  .gameEntryRow { display: flex; gap: 10px; flex-wrap: wrap; } /* 三玩法入口按钮行 */
+  .gameEntryRow button { flex: 1 1 30%; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 12px; font-size: 13px; font-weight: 600; } /* 入口按钮 */
+  .btnIco { width: 17px; height: 17px; flex: 0 0 auto; } /* 按钮内图标通用尺寸（SVG/img 通用） */
+  svg.btnIcoLine, button .icoSvg { width: 17px; height: 17px; flex: 0 0 auto; vertical-align: -3px; } /* 按钮内线条 SVG 尺寸与对齐 */
+  #btnHappy .btnIco, #btnHappy .icoSvg { color: inherit; } /* 爽刮按钮内火箭继承文字色 */
+  #btnBuy .icoSvg { color: #fff !important; stroke: #fff !important; } /* 购买按钮深底白字，图标纯白（6.1 加 !important：Uiverse 按钮样式会压制继承的 color，导致黑底黑线不可见） */
+  #orbFace svg { width: 26px; height: 26px; display: block; color: #4a4438; } /* 悬浮球手柄线条图标（6.1 替换 🎮） */
+  html[data-mode="dark"] #orbFace svg { color: #d8d0bd; } /* 深色模式悬浮球图标米白 */
+  #orbTab .oiSvg { width: 15px; height: 15px; color: currentColor; vertical-align: -2.5px; margin-right: 2px; } /* 悬浮球 Tab 内线条图标对齐 */
+  #liveBg { /* 实时透视桌面画布层（外壳光学近似：GDI 抓帧喂入，位于壁纸层之下） */
+    position: fixed; inset: 0; /* 铺满视口 */
+    z-index: -5; /* 沉到壁纸层（-4）之下，仅真透视模式点亮 */
+    width: 100%; height: 100%; /* CSS 拉伸铺满（物理分辨率由 canvas.width/height 对齐） */
+    opacity: 0; /* 默认不可见 */
+    transition: opacity .5s ease; /* 点亮/熄灭平滑 */
+    pointer-events: none; /* 不拦截任何点击 */
+    background: #191410; /* 帧间隙底色，避免白闪 */
+  }
+  #liveBg.on { opacity: 1; } /* 实时透视模式点亮 */
+  html[data-native-transparent="on"] body::before, html[data-native-transparent="on"] body::after { opacity: 0; } /* 真透视时光斑/网格全部让位给实时桌面 */
+
+  /* ================================================== 三大 3D 玩法通用 ================================================== */
+  .gameStage { /* 3D 画布容器 */
+    position: relative; width: 100%; max-width: 560px; height: 340px; /* 固定高度画布 */
+    margin: 0 auto 12px; border-radius: 16px; overflow: hidden; /* 圆角裁切 */
+    background: radial-gradient(120% 120% at 30% 10%, rgba(255,255,255,.5), rgba(244,236,218,.35)); /* 内衬底光 */
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.4), 0 6px 18px rgba(74,52,5,.12); /* 玻璃内框 */
+    touch-action: none; /* 画布内手势交给 OrbitControls */
+  }
+  .gameStage canvas { display: block; width: 100%; height: 100%; } /* 画布铺满容器 */
+  .gameBar { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 6px; } /* 玩法操作条 */
+  .gameBar b { font-variant-numeric: tabular-nums; } /* 数字对齐 */
+  .gameResult { /* 结果横幅 */
+    margin: 10px auto 0; max-width: 560px; text-align: center; padding: 10px 16px; border-radius: 14px; /* 卡形 */
+    background: rgba(255,253,248,.6); border: 1px solid rgba(255,255,255,.7); /* 玻璃卡 */
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); /* 磨砂 */
+    font-size: 14px; font-weight: 600; color: #4a3a18; display: none; /* 默认隐藏 */
+  }
+  .gameResult.show { display: block; animation: viewIn .4s cubic-bezier(.22,1,.36,1); } /* 显示并入场 */
+  /* ================================================== 老虎机数字滚动窗（参考掘金「CSS 老虎机数字滚动」：无缝滚动 + 模糊 + 逐位延迟停止 + 回弹） ================================================== */
+  .slotBoard { display: flex; justify-content: center; gap: 10px; margin-top: 8px; min-height: 46px; } /* 滚动窗横排 */
+  .rollCol { /* 单列滚动格（符号或数字共用） */
+    width: 52px; height: 46px; overflow: hidden; /* 定尺寸：只露一行 */
+    display: flex; align-items: center; justify-content: center; /* 内容居中 */
+    background: rgba(255, 253, 248, .92); border: 1.5px solid #d8cfb8; border-radius: 8px; /* 格子底与描边 */
+    font-size: 24px; line-height: 46px; text-align: center; color: #2c2a26; /* 字号与行高 = 格高（滚动单位） */
+    box-shadow: inset 0 3px 6px rgba(44, 42, 38, .08); /* 内阴影加厚度感 */
+    will-change: transform; /* 滚动用 transform，提示合成层 */
+  }
+  .rollCol.rolling { animation: rollBorderBounce .5s ease-out forwards; } /* 停止时边框跟着抖一下（规格：边框抖动） */
+  @keyframes rollBorderBounce { /* 边框回弹关键帧 */
+    0% { transform: translateY(0); } 25% { transform: translateY(3px); } 50% { transform: translateY(-2px); } 75% { transform: translateY(1px); } 100% { transform: translateY(0); }
+  }
+  .rollStrip { will-change: transform; } /* 滚动条带 */
+  .rollStrip .rollItem { height: 46px; line-height: 46px; } /* 每格一行：滚动步长 = 46px（行高） */
+  .rollNumBox { display: inline-flex; align-items: center; vertical-align: -2px; gap: 1px; } /* 余额数字列组（内嵌到余额 b 标签） */
+  .rollNumBox .rollCol { width: 15px; height: 18px; border: none; background: transparent; box-shadow: none; border-radius: 3px; font-size: 15px; line-height: 18px; font-variant-numeric: tabular-nums; } /* 数字小格：无框透明底 */
+  .rollNumBox .rollStrip .rollItem { height: 18px; line-height: 18px; } /* 数字格滚动步长 */
+  .rollDot { font-variant-numeric: tabular-nums; } /* 小数点占位 */
+  .slotBoard .rollNumBox { margin-left: 18px; } /* 余额数字组与符号列的间距 */
+  .slotBoard .rollNumBox::before { content: "余额"; font-size: 12px; color: #8a8474; margin-right: 6px; } /* 数字组前的「余额」标签 */
+  .gameResult .grBig { font-size: 20px; color: #b98a1c; } /* 大奖字号 */
+  .gameTip { font-size: 12px; color: #8a8474; text-align: center; margin-top: 8px; } /* 玩法说明小字 */
+  .shelfGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; } /* 娃娃展示架网格 */
+  .shelfCard { /* 单个玩偶卡 */
+    background: rgba(255,253,248,.62); border: 1px solid rgba(255,255,255,.7); border-radius: 13px; padding: 10px 12px; text-align: center; /* 玻璃卡 */
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); /* 磨砂 */
+  }
+  .shelfCard .dIco { font-size: 30px; } /* 玩偶 emoji */
+  .shelfCard .dName { font-size: 12.5px; font-weight: 600; margin-top: 4px; } /* 玩偶名 */
+  .shelfCard .dRar { font-size: 10.5px; color: #8a8474; } /* 稀有度 */
+  .shelfCard button { margin-top: 7px; padding: 5px 14px; font-size: 12px; } /* 出售按钮 */
+
+  /* ================================================== 桌宠 viewPet ================================================== */
+  .petLayout { display: grid; grid-template-columns: 1fr 210px; gap: 12px; align-items: start; } /* 主区 + 右侧食物栏 */
+  @media (max-width: 720px) { .petLayout { grid-template-columns: 1fr; } } /* 窄屏改单列 */
+  .petStage { position: relative; height: 380px; border-radius: 16px; overflow: hidden; /* 桌宠舞台 */
+    background: radial-gradient(120% 100% at 50% 18%, rgba(255,255,255,.55), rgba(244,236,218,.30));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.9), inset 0 0 0 1px rgba(255,255,255,.4), 0 6px 18px rgba(74,52,5,.12);
+    display: flex; align-items: flex-end; justify-content: center; /* 球贴底居中 */
+  }
+  #petBall { position: relative; width: 210px; height: 210px; margin-bottom: 26px; cursor: pointer; user-select: none; transition: transform .35s cubic-bezier(.22,1.5,.36,1); } /* 桌宠容器（aora-bot emotion-ball 引擎在其中实时渲染 SVG） */
+  #petBall > svg { width: 100%; height: 100%; display: block; } /* 引擎 SVG 铺满容器（viewBox 自适应缩放） */
+  #petBall.acc::after { content: attr(data-acc); position: absolute; top: -4px; right: 0; font-size: 36px; pointer-events: none; filter: drop-shadow(0 2px 4px rgba(74,52,5,.25)); transform: rotate(12deg); } /* 佩戴配饰角标（不干扰引擎内部 DOM） */
+  #petBall:active { transform: scale(.94); } /* 点按回弹 */
+  .petName { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); font-size: 13px; font-weight: 600; color: #6f6a5c; } /* 顶部名牌 */
+  #affinityBar { position: absolute; top: 34px; left: 50%; transform: translateX(-50%); width: 180px; height: 9px; background: #efe9da; border-radius: 99px; overflow: hidden; } /* 好感度条 */
+  #affinityBar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #ff9a9e, #f6c775); border-radius: 99px; transition: width .5s ease; } /* 好感填充 */
+  #affinityText { position: absolute; top: 46px; left: 50%; transform: translateX(-50%); font-size: 10.5px; color: #8a8474; } /* 好感数值 */
+  .foodCol { display: flex; flex-direction: column; gap: 8px; } /* 右侧食物栏纵向 */
+  .foodCol h3 { font-size: 12.5px; color: #6f6a5c; margin-bottom: 2px; } /* 栏标题 */
+  .foodBtn { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px; border-radius: 12px; background: rgba(255,253,248,.65); border: 1px solid rgba(255,255,255,.7); cursor: pointer; font-size: 12.5px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: transform .2s ease; } /* 食物按钮 */
+  .foodBtn:hover { transform: translateY(-1px); } /* 悬停上浮 */
+  .foodBtn .fPri { font-variant-numeric: tabular-nums; color: #b98a1c; font-weight: 600; } /* 价格 */
+  .accRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; } /* 配饰商店行 */
+  .accChip { padding: 6px 12px; border-radius: 999px; background: rgba(255,253,248,.65); border: 1px solid rgba(255,255,255,.7); font-size: 12px; cursor: pointer; } /* 配饰胶囊 */
+  .accChip.owned { background: rgba(246,199,117,.35); border-color: rgba(185,138,28,.4); } /* 已拥有高亮 */
+  .emoModeRow { display: flex; gap: 8px; margin-top: 8px; } /* 表情模式三选行 */
+  .emoModeRow label { flex: 1; text-align: center; padding: 7px 0; border-radius: 11px; background: rgba(255,253,248,.6); border: 1px solid rgba(255,255,255,.7); font-size: 12px; cursor: pointer; } /* 模式胶囊 */
+  .emoModeRow input { display: none; } /* 隐藏原生单选 */
+  .emoModeRow input:checked + span { font-weight: 700; color: #2c2a26; } /* 选中加粗 */
+  #petChat { /* 桌宠聊天抽屉：右滑展开 */
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(380px, 92vw); z-index: 165; /* 右侧贴边全高 */
+    transform: translateX(100%); transition: transform .56s cubic-bezier(.22,1,.36,1); /* 收起于右侧，丝滑展开 */
+    background: rgba(255,252,244,.78); backdrop-filter: blur(28px) saturate(185%); -webkit-backdrop-filter: blur(28px) saturate(185%); /* 厚磨砂玻璃 */
+    border-left: 1px solid rgba(255,255,255,.8); box-shadow: -18px 0 44px rgba(74,52,5,.22); /* 左亮边 + 投影 */
+    display: flex; flex-direction: column; padding: 14px; /* 纵向布局 */
+  }
+  #petChat.show { transform: translateX(0); } /* 展开态 */
+  #petChat .pcHead { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #4a4436; } /* 抽屉标题行 */
+  #petChat .pcHead button { margin-left: auto; padding: 4px 12px; font-size: 12px; } /* 关闭按钮 */
+  #petMsgs { flex: 1; overflow-y: auto; margin: 10px 0; display: flex; flex-direction: column; gap: 8px; scrollbar-width: none; } /* 消息流 */
+  #petMsgs::-webkit-scrollbar { display: none; } /* 隐藏滚动条 */
+  .pmsg { max-width: 84%; padding: 8px 13px; border-radius: 14px; font-size: 13px; line-height: 1.55; } /* 单条消息气泡 */
+  .pmsg.me { align-self: flex-end; background: #2c2a26; color: #fffdf8; border-bottom-right-radius: 4px; } /* 我方：深色 */
+  .pmsg.bot { align-self: flex-start; background: rgba(255,255,255,.8); color: #2c2a26; border: 1px solid rgba(255,255,255,.9); border-bottom-left-radius: 4px; } /* 桌宠：白色 */
+  .pcInputRow { display: flex; gap: 8px; } /* 输入行 */
+  .pcInputRow input { flex: 1; border: 1px solid #d5cfc0; border-radius: 999px; padding: 9px 16px; font-size: 13px; outline: none; background: rgba(255,255,255,.85); } /* 输入框 */
+  .pcInputRow button { padding: 9px 20px; border-radius: 999px; font-weight: 600; } /* 发送按钮 */
+
+  /* ================================================== 设置页 viewSettings ================================================== */
+  .setRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0; } /* 设置行通用 */
+  .setRow .sl { font-size: 13px; color: #6f6a5c; min-width: 88px; } /* 行标签 */
+  .protectedHint { font-size: 12px; color: #a09a8a; margin-top: 10px; } /* 受保护区提示 */
+  #modeGroup label { min-width: 88px; white-space: nowrap; } /* 深浅色三档标签单行不折行 */
+
+  /* ================================================== 新玩法战绩卡（历史页顶部） ================================================== */
+  #playHistCard { background: #fffdf8; border: 1px solid #e5dfcf; border-radius: 16px; padding: 14px 20px; margin-bottom: 16px; } /* 与生涯卡同族白卡 */
+  #playHistCard h4 { margin: 0 0 10px; font-size: 13px; color: #8a8474; font-weight: 600; letter-spacing: 2px; } /* 卡标题 */
+  #playHistCard .phRow { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; padding: 4px 0; border-bottom: 1px dashed #eee7d6; color: #4a3a18; } /* 单条战绩 */
+  #playHistCard .phRow:last-child { border-bottom: none; } /* 末行去分隔线 */
+  #playHistCard .phRow .phNet { font-weight: 600; font-variant-numeric: tabular-nums; } /* 净额 */
+  #playHistCard .phRow .phNet.pos { color: #2f8f4e; } /* 赚绿 */
+  #playHistCard .phRow .phNet.neg { color: #c0392b; } /* 亏红 */
+
+  /* ================================================== 管理员新配置卡 ================================================== */
+  .cfgTbl { width: 100%; border-collapse: collapse; font-size: 12.5px; } /* 配置编辑表 */
+  .cfgTbl th, .cfgTbl td { border-bottom: 1px solid #eee7d6; padding: 5px 6px; text-align: left; } /* 单元格 */
+  .cfgTbl input { width: 90px; } /* 输入框宽度 */
+  .cfgTbl .delRow { padding: 2px 9px; font-size: 12px; } /* 删除按钮 */
+  .admCfgPanel .arow { margin: 6px 0; } /* 面板内行距 */
+
+  /* ================================================== 深色模式（html[data-mode=dark] / auto 由 JS 切换） ================================================== */
+  html[data-mode="dark"] { background: #171310; } /* 根底色转深 */
+  html[data-mode="dark"] body { color: #e8e2d4; } /* 正文转浅字 */
+  html[data-mode="dark"] body::before { background:
+      radial-gradient(640px 420px at 10% 6%, rgba(120,86,20,.5), transparent 66%),
+      radial-gradient(560px 380px at 92% 12%, rgba(96,66,28,.45), transparent 68%),
+      radial-gradient(680px 460px at 82% 94%, rgba(24,64,44,.4), transparent 70%),
+      radial-gradient(520px 380px at 16% 92%, rgba(92,74,24,.45), transparent 68%),
+      linear-gradient(158deg, #1b1712 0%, #17130f 42%, #14110d 72%, #110e0b 100%); } /* 深色光斑背景 */
+  html[data-mode="dark"] body::after { background-image:
+      linear-gradient(rgba(220,200,150,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(220,200,150,.05) 1px, transparent 1px); } /* 网格转浅线 */
+  html[data-mode="dark"] header { background: rgba(28,24,18,.55); border-bottom-color: rgba(255,255,255,.10); } /* 顶栏深玻璃 */
+  html[data-mode="dark"] .panel, html[data-mode="dark"] .liquid-glass { background: rgba(42,36,28,.5); box-shadow: 0 6px 22px rgba(0,0,0,.4), 0 1px 3px rgba(0,0,0,.3); } /* 卡片深玻璃 */
+  html[data-mode="dark"] .panel::before, html[data-mode="dark"] .liquid-glass::before { background: linear-gradient(158deg, rgba(255,255,255,.09) 0%, rgba(255,255,255,.02) 44%, rgba(255,255,255,.06) 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,.16), inset 0 -1px 0 rgba(255,255,255,.06); } /* 薄雾转暗 */
+  html[data-mode="dark"] h1, html[data-mode="dark"] h2, html[data-mode="dark"] h3, html[data-mode="dark"] h4 { color: #efe9da; } /* 标题浅字 */
+  html[data-mode="dark"] .step, html[data-mode="dark"] .panel h3, html[data-mode="dark"] p { color: #b5ad9a; } /* 说明浅字 */
+  html[data-mode="dark"] button { background: #2e2820; color: #e8e2d4; border-color: #4a4234; } /* 按钮深底 */
+  html[data-mode="dark"] button:hover:not(:disabled) { background: #3a332a; } /* 悬停 */
+  html[data-mode="dark"] .mswitch { background: #241f18; border-color: #3a332a; } /* 开关槽深 */
+  html[data-mode="dark"] .mswitch .knob { background: #3c352a; } /* 滑块深 */
+  html[data-mode="dark"] .mlabel { color: #8f8776; } /* 未选中标签 */
+  html[data-mode="dark"] .mlabel.on { color: #f0e9d8; } /* 选中标签 */
+  html[data-mode="dark"] .balance { background: #8a6a1c; color: #ffe9b0; } /* 余额胶囊深金 */
+  html[data-mode="dark"] .jack { background: #0f0d0a; color: #f6c775; border-color: #6e5310; } /* 滚存牌 */
+  html[data-mode="dark"] .debt { background: #3a2422; color: #e8a99d; } /* 欠款胶囊 */
+  html[data-mode="dark"] #mainNav { background: rgba(30,26,20,.72); border: 1px solid rgba(255,255,255,.10); } /* 底部导航深 */
+  html[data-mode="dark"] #mainNav .dockGlow { background: linear-gradient(160deg, rgba(120,108,88,.9), rgba(84,74,58,.75)); } /* 指示器深 */
+  html[data-mode="dark"] #mainNav .navItem { color: #8f8776; } /* Tab 未选中 */
+  html[data-mode="dark"] #mainNav .navItem.on { color: #f0e9d8; } /* Tab 选中 */
+  html[data-mode="dark"] #mainNav .navItem .icoSvg { color: #8f8776; } /* 深色模式线条图标浅灰 */
+  html[data-mode="dark"] #mainNav .navItem.on .icoSvg { color: #f0e9d8; } /* 深色模式选中米白 */
+  html[data-mode="dark"] #hSummary, html[data-mode="dark"] #careerCard, html[data-mode="dark"] #playHistCard { background: rgba(42,36,28,.6); border-color: #4a4234; } /* 统计卡深 */
+  html[data-mode="dark"] #careerCard .cItem b { color: #f0e9d8; } /* 指标数值 */
+  html[data-mode="dark"] .hrec.even { background: rgba(50,44,34,.5); border-color: #4a4234; } /* 历史卡 */
+  html[data-mode="dark"] #waitResult { background: #241f18; border-color: #3a332a; } /* 等待汇总 */
+  html[data-mode="dark"] #orbTab { background: rgba(30,26,20,.8); border-color: rgba(255,255,255,.12); } /* 悬浮 Tab 深 */
+  html[data-mode="dark"] #orbTab .orbItem { color: #b5ad9a; } /* 悬浮 Tab 文字 */
+  html[data-mode="dark"] #orbTab .orbItem:hover { background: rgba(255,255,255,.08); color: #f0e9d8; } /* 悬停 */
+  html[data-mode="dark"] #orbTab .orbGlow { background: linear-gradient(160deg, rgba(120,108,88,.85), rgba(84,74,58,.7)); } /* 悬浮指示器 */
+  html[data-mode="dark"] #orb { background: linear-gradient(150deg, rgba(64,56,44,.9), rgba(40,34,26,.6)); border-color: rgba(255,255,255,.14); } /* 悬浮球深 */
+  html[data-mode="dark"] .gameResult { background: rgba(42,36,28,.7); border-color: #4a4234; color: #f0e9d8; } /* 结果横幅 */
+  html[data-mode="dark"] .shelfCard, html[data-mode="dark"] .foodBtn, html[data-mode="dark"] .accChip { background: rgba(48,42,32,.7); border-color: #4a4234; color: #e8e2d4; } /* 小卡深 */
+  html[data-mode="dark"] #petChat { background: rgba(30,26,20,.85); border-left-color: rgba(255,255,255,.12); } /* 聊天抽屉深 */
+  html[data-mode="dark"] .pmsg.bot { background: rgba(56,50,40,.85); color: #e8e2d4; border-color: #4a4234; } /* 桌宠气泡 */
+  html[data-mode="dark"] .modal { background: #2a251d; color: #e8e2d4; } /* 弹窗深 */
+  html[data-mode="dark"] #lockOverlay .lockTip { background: #2a251d; color: #e8e2d4; } /* 锁定提示 */
+  html[data-mode="dark"] select, html[data-mode="dark"] input { background: #241f18; color: #e8e2d4; border-color: #4a4234; } /* 表单深 */
+
+  /* ================================================== 3D 降级（prefers-reduced-motion / 低端设备） ================================================== */
+  .gameStage.noWebGL { /* WebGL 不可用时的降级外观 */
+    background: repeating-linear-gradient(45deg, rgba(246,199,117,.25) 0 14px, rgba(255,253,248,.35) 14px 28px); /* 斜纹占位 */
+    display: flex; align-items: center; justify-content: center; font-size: 44px; /* 居中大表情 */
+  }
+  @media (prefers-reduced-motion: reduce) { /* 系统减少动效偏好 */
+    #orb .orbPing, #orbTab.show { animation: none; } /* 关闭呼吸与弹出动画 */
+    #petBall.bounce { animation: none; } /* 关闭桌宠弹跳 */
+  }
+
+  /* ---------- 6.2 液态玻璃迭代（依据 iOS 26 Liquid Glass 设计原则：interactive 交互反馈 / tint 主题着色 / 形变过渡；背景逻辑不变） ---------- */
+  .liquid-glass { --mx: 50%; --my: 50%; /* 高光跟随指针的坐标（JS 写入，默认居中） */
+    position: relative; /* 承载 ::before 高光层 */
+    transition: box-shadow .3s ease, border-color .3s ease; /* tint 与阴影平滑过渡 */
+  } /* 结束玻璃基类增强 */
+  .liquid-glass::before { /* 指针跟随镜面高光（glassEffect interactive 的 Web 等价实现） */
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; /* 覆盖容器不拦截点击 */
+    background: radial-gradient(220px circle at var(--mx) var(--my), rgba(255,255,255,.28), transparent 62%); /* 跟随高光 */
+    opacity: 0; transition: opacity .35s ease; /* 进入才显现 */
+    mix-blend-mode: screen; /* 只提亮不遮内容 */
+  } /* 结束高光层 */
+  .liquid-glass:hover::before { opacity: 1; } /* 悬停显现高光 */
+  html[data-mode="dark"] .liquid-glass::before { background: radial-gradient(220px circle at var(--mx) var(--my), rgba(255,244,214,.12), transparent 62%); } /* 深色模式弱高光 */
+  .liquid-glass > h3 { color: var(--tint-ink, #4a4438); } /* 标题跟随主题 tint（glassEffect tint 的 Web 等价） */
+  html[data-theme="gold"] .liquid-glass { --tint-ink: #7a5a10; } /* 金主题 tint */
+  html[data-theme="green"] .liquid-glass { --tint-ink: #1e6b3a; } /* 绿主题 tint */
+  html[data-theme="red"] .liquid-glass { --tint-ink: #9c2f28; } /* 红主题 tint */
+  button:not(.nobump):active { transform: translateY(0) scale(.975); transition: transform .12s ease; } /* interactive 按压回缩（全局按钮统一触感） */
+  #orbTab { transition: opacity .28s ease, transform .34s cubic-bezier(.34,1.42,.64,1); } /* 形变过渡：收起也平滑（morphing 等价） */
+  #orbTab:not(.show) { opacity: 0; transform: translateY(10px) scale(.94); pointer-events: none; } /* 收起态形变目标 */
+  #orbTab .orbGlow { height: calc((100% - 12px) / 8); } /* 6.2 十六轮：指示器八等分（新增麻将） */
+  #orbTab { max-height: calc(100vh - 190px); overflow-y: auto; scrollbar-width: none; } /* 八项后限高，窄屏可滚 */
+  #orbTab::-webkit-scrollbar { display: none; } /* 隐藏滚动条 */
+  .icoH3 { width: 18px; height: 18px; vertical-align: -3.5px; margin-right: 2px; } /* h3 标题内线条图标 */
+  .jackIco { width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px; } /* 滚存牌内礼物线条图标 */
+  .jackIcoWrap svg { width: 13px; height: 13px; vertical-align: -2px; margin-right: 3px; } /* 管理员头奖池行图标 */
+
+  /* ---------- 6.2 今日运势弹窗 ---------- */
+  #fortuneMask { position: fixed; inset: 0; z-index: 210; display: none; align-items: center; justify-content: center; background: rgba(44,42,38,.34); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); } /* 遮罩 */
+  #fortuneMask.show { display: flex; animation: fadeMask .25s ease; } /* 显示 */
+  @keyframes fadeMask { from { opacity: 0; } to { opacity: 1; } } /* 遮罩淡入 */
+  #fortuneBox { position: relative; width: min(92vw, 380px); border-radius: 22px; padding: 22px 22px 18px; text-align: center; box-shadow: 0 24px 60px rgba(44,32,4,.32), inset 0 1px 0 rgba(255,255,255,.9); animation: fortunePop .45s cubic-bezier(.34,1.5,.64,1); } /* 玻璃卡（弹簧形变入场） */
+  @keyframes fortunePop { from { opacity: 0; transform: translateY(26px) scale(.88); } to { opacity: 1; transform: none; } } /* 形变过渡关键帧 */
+  #fortuneBox h3 { margin: 0 0 4px; font-size: 17px; } /* 标题 */
+  .fortuneSub { margin: 0 0 14px; font-size: 12px; color: #8a8474; } /* 副标题 */
+  #fortuneClose { position: absolute; top: 10px; right: 12px; width: 30px; height: 30px; border: none; background: transparent; font-size: 20px; color: #8a8474; cursor: pointer; border-radius: 50%; } /* 关闭按钮 */
+  #fortuneClose:hover { background: rgba(0,0,0,.06); color: #2c2a26; } /* 悬停 */
+  #fortuneWin { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 6px 0 12px; padding: 12px 0; border-radius: 14px; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.8); box-shadow: inset 0 1px 4px rgba(74,52,5,.08); } /* 数字窗容器 */
+  #fortuneWin .rollCol { width: 44px; height: 56px; border-radius: 10px; background: #2c2a26; box-shadow: inset 0 2px 8px rgba(0,0,0,.45); overflow: hidden; } /* 单个数字窗：黑底仿机械翻牌 */
+  #fortuneWin .rollStrip .rollItem { height: 56px; line-height: 56px; font-size: 30px; font-weight: 700; color: #f6c775; font-variant-numeric: tabular-nums; } /* 大号金色数字（步长 56px） */
+  #fortuneLevel { font-size: 26px; font-weight: 800; letter-spacing: 6px; margin: 2px 0 6px; color: var(--tint-ink, #7a5a10); min-height: 34px; } /* 运势等级大字 */
+  #fortuneLevel.daji { text-shadow: 0 0 18px rgba(246,199,117,.65); } /* 大吉发光 */
+  .fortuneTip { font-size: 12px; color: #8a8474; margin: 0 0 12px; min-height: 18px; } /* 提示文案 */
+  #fortuneGo { width: 100%; justify-content: center; display: inline-flex; align-items: center; gap: 7px; } /* 抽取按钮通栏 */
+  #fortuneGo:disabled { opacity: .55; cursor: not-allowed; } /* 滚动中禁用 */
+  html[data-mode="dark"] #fortuneBox { background: rgba(34,30,24,.86); } /* 深色玻璃卡 */
+  html[data-mode="dark"] #fortuneWin { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); } /* 深色数字窗 */
+  html[data-mode="dark"] #fortuneWin .rollCol { background: #14120e; } /* 深色数字格 */
+
+  /* ---------- 6.2 付费选号（独立模块卡） ---------- */
+  .pickNumPanel { text-align: left; } /* 选号独立卡：内容左对齐 */
+  .pickNumPanel h3 { display: flex; align-items: center; gap: 7px; margin-bottom: 9px; } /* 标题行（图标 + 文字） */
+  .pickNumPanel h3 .icoH3 { width: 17px; height: 17px; } /* 标题图标尺寸 */
+  .pickNumRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 12px; border-radius: 13px; background: rgba(255,255,255,.42); border: 1px dashed rgba(122,90,16,.45); } /* 控件横排（虚线框示意可选） */
+  .pickNumToggle { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: #4a4438; cursor: pointer; user-select: none; } /* 开关标签 */
+  .pickNumToggle input { width: 16px; height: 16px; accent-color: #b98a1c; cursor: pointer; } /* 复选框主题金 */
+  .pickNumToggle b { color: #9c6d08; } /* 价格强调 */
+  #pickNumInput { width: 86px; padding: 7px 10px; font-size: 15px; font-weight: 700; text-align: center; letter-spacing: 3px; border-radius: 10px; border: 1px solid rgba(122,90,16,.4); background: rgba(255,255,255,.7); font-variant-numeric: tabular-nums; } /* 号码输入框 */
+  #pickNumInput:disabled { opacity: .45; } /* 未勾选时禁用 */
+  .pickNumHint { font-size: 11px; color: #8a8474; } /* 规则提示 */
+  html[data-mode="dark"] .pickNumRow { background: rgba(255,255,255,.05); border-color: rgba(246,199,117,.3); } /* 深色选号行 */
+  html[data-mode="dark"] .pickNumToggle { color: #d8d0bd; } /* 深色文字 */
+
+  /* ---------- 6.2 存档管理 ---------- */
+  .saveRow { display: flex; gap: 10px; flex-wrap: wrap; } /* 按钮横排 */
+
+  /* ---------- 6.2 金爪时段徽章 ---------- */
+  .goldChip { display: none; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #7a5a10; background: linear-gradient(135deg, #ffe9a8, #f6c775); border: 1px solid #b98a1c; box-shadow: 0 0 12px rgba(246,199,117,.55); animation: goldPulse 1.1s ease-in-out infinite; white-space: nowrap; } /* 金爪倒计时徽章 */
+  .goldChip.on { display: inline-flex; } /* 激活显示 */
+  @keyframes goldPulse { 0%, 100% { box-shadow: 0 0 8px rgba(246,199,117,.4); } 50% { box-shadow: 0 0 18px rgba(246,199,117,.85); } } /* 呼吸发光 */
+  .goldChip svg { width: 13px; height: 13px; } /* 徽章内图标 */
+
+  /* ---------- 6.2 三轮：滚存头奖音量条指示灯（音频电平表样式，条数随池额递进） ---------- */
+  .jackMeter { display: inline-flex; align-items: flex-end; gap: 2px; height: 13px; margin: 0 6px 0 2px; vertical-align: -2px; } /* 电平表容器（底对齐竖条） */
+  .jackMeter i { width: 3px; height: 100%; border-radius: 1.5px; background: rgba(246,199,117,.16); transition: background .18s, box-shadow .18s; } /* 单条：默认熄灭态（微弱底色） */
+  .jackMeter i.lit { background: #f6c775; box-shadow: 0 0 4px rgba(246,199,117,.6); } /* 点亮条：金色 */
+  .jackMeter i:nth-child(3n) { height: 78%; } /* 每第三根稍矮：模拟音频电平表的错落感 */
+  .jackMeter i:nth-child(4n) { height: 88%; } /* 每第四根次高：打破均匀节奏 */
+  .jackMeter.hot i.lit { background: #ff5f4e; box-shadow: 0 0 6px rgba(255,95,78,.85); animation: meterFlash .55s ease-in-out infinite; } /* 近满池（≥666）：点亮条转红闪烁 */
+  .jackMeter.hot i.lit:nth-child(2n) { animation-delay: .18s; } /* 偶数条错相闪烁更似电平表 */
+  @keyframes meterFlash { 0%, 100% { opacity: 1; } 50% { opacity: .45; } } /* 红条闪烁节奏 */
+  html[data-theme="green"] .jackMeter i.lit { background: #7ee787; box-shadow: 0 0 4px rgba(126,231,135,.6); } /* 绿色主题点亮条同步转绿 */
+  html[data-theme="red"] .jackMeter i.lit { background: #ff8f7e; box-shadow: 0 0 4px rgba(255,107,107,.6); } /* 红色主题点亮条同步转西瓜红 */
+
+  /* ---------- 6.2 三轮：老虎机中奖撒花（复用 .confetti 样式，见基线；补一层玻璃光泽） ---------- */
+  .confetti { position: fixed; z-index: 96; pointer-events: none; border-radius: 2px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.25); } /* 撒花纸屑基础样式（基线已有则覆盖增强） */
+
+  /* ---------- 6.2 三轮：周结算账单（玻璃票据质感） ---------- */
+  #weekBillCard h4 { margin: 0 0 10px; } /* 卡标题间距 */
+  .wbRow { display: flex; align-items: center; gap: 12px; padding: 11px 14px; margin-bottom: 10px; border-radius: 13px; background: linear-gradient(160deg, rgba(255,255,255,.6), rgba(255,255,255,.34)); border: 1px dashed rgba(122,90,16,.4); position: relative; overflow: hidden; } /* 单张小票（虚线撕票边） */
+  .wbRow::before, .wbRow::after { content: ""; position: absolute; left: 0; right: 0; height: 7px; background: radial-gradient(circle at 6px 0, transparent 5px, rgba(255,255,255,.5) 5px) repeat-x; background-size: 12px 7px; } /* 撕票锯齿（上） */
+  .wbRow::before { top: 0; } .wbRow::after { bottom: 0; transform: scaleY(-1); } /* 上下锯齿 */
+  .wbMain { flex: 1; min-width: 0; } /* 主体信息列 */
+  .wbWeek { font-size: 13px; font-weight: 700; color: #4a4438; } /* 周区间标题 */
+  .wbSub { font-size: 11px; color: #8a8474; margin-top: 3px; line-height: 1.5; } /* 摘要行（张数/最欧/最非） */
+  .wbNet { font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; } /* 周净盈亏大字 */
+  .wbNet.pos { color: #1e9e5a; } .wbNet.neg { color: #c0392b; } .wbNet.zero { color: #8a8474; } /* 盈亏配色 */
+  html[data-mode="dark"] .wbRow { background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.03)); border-color: rgba(246,199,117,.3); } /* 深色小票 */
+  html[data-mode="dark"] .wbWeek { color: #d8d0bd; }
+
+  /* ---------- 6.2 三轮：娃娃机挑战赛 ---------- */
+  .chalBtn { white-space: nowrap; } /* 挑战赛按钮不换行 */
+  .chalBtn.on { background: linear-gradient(135deg, #d64541, #a8322e); color: #fff; border-color: #7a1d1a; animation: goldPulse .9s ease-in-out infinite; } /* 进行中按钮变红呼吸 */
+  .chalChip { display: none; background: linear-gradient(135deg, #ffd2cc, #ff8f7e); color: #7a1d1a; border-color: #d64541; box-shadow: 0 0 12px rgba(255,107,107,.5); animation: goldPulse 1s ease-in-out infinite; } /* 挑战赛徽章复用金爪壳换红色系 */
+  .chalChip.on { display: inline-flex; } /* 激活显示 */
+
+  /* ---------- 6.2 三轮：悬浮球形态（闲置休眠 / 好感满级金壳） ---------- */
+  #orb { transition: filter .6s, box-shadow .6s, opacity .6s; } /* 形态切换平滑过渡 */
+  #orb.sleep { filter: saturate(.25) brightness(.82); opacity: .68; animation: orbBreathe 3.4s ease-in-out infinite; } /* 闲置 90 秒：低饱和休眠 + 呼吸 */
+  @keyframes orbBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.055); } } /* 呼吸缩放（轻微不喧宾） */
+  #orb.gold { box-shadow: 0 0 0 2px #f6c775, 0 0 18px rgba(246,199,117,.75), 0 6px 20px rgba(0,0,0,.22); } /* 好感满级：金色描边光环 */
+
+  /* ---------- 6.2 四轮：硬盘插槽存档座（3D 方盒 + 可插拔硬盘，绿灯=插入生效 / 红灯=弹出驻留） ---------- */
+  .bayWrap { perspective: 640px; margin-top: 2px; } /* 透视容器（俯视立体感来源） */
+  .bayPlate { font-size: 9px; font-weight: 700; letter-spacing: 3px; color: #b98a1c; margin: 0 0 5px 4px; opacity: .85; } /* 金属铭牌 */
+  .bayBox { transform: rotateX(9deg); transform-style: preserve-3d; border-radius: 13px; padding: 11px 11px 8px; background: linear-gradient(165deg, #45403a, #2a2620 60%, #1c1914); border: 1px solid rgba(255,255,255,.09); box-shadow: inset 0 2px 0 rgba(255,255,255,.1), inset 0 -3px 6px rgba(0,0,0,.5), 0 16px 26px rgba(0,0,0,.28); } /* 立体方盒（机箱面板质感） */
+  .baySlot { position: relative; height: 44px; border-radius: 8px; background: linear-gradient(180deg, #0e0c09, #17140f); box-shadow: inset 0 3px 8px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,255,255,.05); margin-bottom: 7px; perspective: 320px; } /* 单个插槽（深槽内阴影） */
+  .baySlot:last-child { margin-bottom: 0; } /* 末槽不留底距 */
+  .hdd { position: absolute; left: 4px; right: 4px; top: 3px; bottom: 3px; border-radius: 6px; cursor: pointer; user-select: none; display: flex; align-items: center; gap: 9px; padding: 0 10px; background: linear-gradient(170deg, #ece8de, #cbc6ba 55%, #b2ac9e); color: #3a362e; transition: transform .28s cubic-bezier(.3,.8,.4,1.18), box-shadow .28s; will-change: transform; } /* 硬盘本体（拉丝金属壳） */
+  .hdd.in { transform: translateY(0); box-shadow: 0 0 0 2px rgba(53,208,127,.9), 0 0 16px rgba(53,208,127,.5), 0 2px 5px rgba(0,0,0,.4); } /* 插入态：外圈绿灯 + 停在槽内 */
+  .hdd.out { transform: translateY(-13px) rotateX(18deg); box-shadow: 0 0 0 2px rgba(255,95,78,.85), 0 0 16px rgba(255,95,78,.45), 0 7px 12px rgba(0,0,0,.35); } /* 弹出态：外圈红灯 + 探出槽口前倾 */
+  .hdd:active { filter: brightness(.94); } /* 按下反馈 */
+  .hddLed { width: 9px; height: 9px; border-radius: 50%; background: #8a8577; flex: none; box-shadow: inset 0 1px 2px rgba(0,0,0,.35); } /* 状态 LED（默认熄灭灰） */
+  .hdd.in .hddLed { background: #35d07f; box-shadow: 0 0 9px #35d07f; animation: hddBlink 1.6s ease-in-out infinite; } /* 插入：绿灯读写呼吸 */
+  .hdd.out .hddLed { background: #ff5f4e; box-shadow: 0 0 9px #ff5f4e; } /* 弹出：红灯常亮 */
+  @keyframes hddBlink { 0%, 100% { opacity: 1; } 50% { opacity: .4; } } /* LED 呼吸节奏 */
+  .hddTag { font-weight: 800; font-size: 11px; letter-spacing: 1px; color: #6b6353; flex: none; } /* DISK 编号 */
+  .hddMeta { font-size: 10px; color: #857d6c; flex: 1; min-width: 0; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* 存档元信息（时间/项数） */
+  .hddGrip { width: 24px; height: 6px; border-radius: 3px; flex: none; background: repeating-linear-gradient(90deg, #9a9384 0 4px, transparent 4px 7px); } /* 把手散热纹 */
+  .bayMenu { display: none; position: fixed; z-index: 230; min-width: 172px; padding: 6px; border-radius: 11px; background: rgba(250,248,243,.97); border: 1px solid rgba(122,90,16,.35); box-shadow: 0 10px 26px rgba(0,0,0,.22); backdrop-filter: blur(10px); } /* 右键菜单 */
+  .bayMenu.show { display: block; } /* 显示 */
+  .bayMenuT { font-size: 11px; font-weight: 700; color: #9c6d08; padding: 4px 8px 7px; border-bottom: 1px dashed rgba(122,90,16,.3); margin-bottom: 5px; } /* 菜单标题 */
+  .bayMenu button { display: block; width: 100%; text-align: left; padding: 7px 9px; font-size: 12px; border: 0; background: transparent; border-radius: 7px; cursor: pointer; color: #4a4438; } /* 菜单项 */
+  .bayMenu button:hover { background: rgba(246,199,117,.28); } /* 悬停高亮 */
+  html[data-mode="dark"] .bayMenu { background: rgba(34,30,24,.97); border-color: rgba(246,199,117,.3); } /* 深色菜单 */
+  html[data-mode="dark"] .bayMenu button { color: #d8d0bd; } /* 深色菜单项 */
+
+  /* ---------- 6.2 五轮：头奖电平条历史峰值线 ---------- */
+  .jackMeter { position: relative; } /* 电平表改为定位上下文（金线绝对定位） */
+  .jackMeter .peak { position: absolute; left: -2px; right: -2px; height: 2px; border-radius: 1px; background: linear-gradient(90deg, rgba(214,164,23,.15), #d6a417 30%, #ffe9a8 50%, #d6a417 70%, rgba(214,164,23,.15)); box-shadow: 0 0 5px rgba(214,164,23,.75); pointer-events: none; transition: bottom .4s ease; } /* 峰值细金线（历史最高池额高度） */
+  @keyframes jackNewRec { 0%, 100% { filter: brightness(1); } 30% { filter: brightness(1.9) saturate(1.4); } 60% { filter: brightness(1.3); } } /* 破纪录金色闪光 */
+  .jackMeter.newrec i.lit, .jackMeter.newrec .peak { animation: jackNewRec .9s ease-in-out 1; } /* 破纪录一次闪光（金线与点亮条同闪） */
+
+  /* ---------- 6.2 五轮：Fever 徽章（老虎机操作条） ---------- */
+  .feverChip { display: none; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; color: #fff; background: linear-gradient(135deg, #e0611a, #c43a10); box-shadow: 0 0 10px rgba(224,97,26,.55); animation: feverPulse 1s ease-in-out infinite; } /* FEVER 徽章（橙红呼吸） */
+  .feverChip.on { display: inline-flex; } /* 激活显示 */
+  @keyframes feverPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(224,97,26,.4); } 50% { transform: scale(1.06); box-shadow: 0 0 14px rgba(224,97,26,.75); } } /* 火热呼吸 */
+
+  /* ---------- 6.2 五轮：硬盘插拔物理动画 ---------- */
+  @keyframes hddDrop { 0% { transform: translateY(-26px) rotateX(18deg); } 55% { transform: translateY(3px) rotateX(-2deg); } 80% { transform: translateY(-2px) rotateX(2deg); } 100% { transform: translateY(0); } } /* 插入：下落 → 压槽回弹 → 落座 */
+  .hdd.drop { animation: hddDrop .38s cubic-bezier(.3,.7,.4,1.1); } /* 播放插入动画（类由 JS 渲染后补挂） */
+  @keyframes hddPop { 0% { transform: translateY(0); } 40% { transform: translateY(-20px) rotateX(24deg); } 70% { transform: translateY(-11px) rotateX(15deg); } 100% { transform: translateY(-13px) rotateX(18deg); } } /* 弹出：猛弹 → 回落 → 驻留弹出姿态 */
+  .hdd.pop { animation: hddPop .4s cubic-bezier(.3,.8,.4,1.15); } /* 播放弹出动画 */
+  .hddCap { display: inline-flex; gap: 2px; align-items: center; flex: none; } /* 容量灯组 */
+  .hddCap i { width: 4px; height: 8px; border-radius: 1px; background: rgba(58,54,46,.18); } /* 熄灭格 */
+  .hddCap i.on { background: #35d07f; box-shadow: 0 0 3px rgba(53,208,127,.6); } /* 点亮格（绿） */
+  .hddCap.hot i.on { background: #e0a11a; box-shadow: 0 0 4px rgba(224,161,26,.7); } /* 快满（≥40 项）转琥珀 */
+
+  /* ---------- 6.2 五轮：桌宠入住硬盘座（趴在座顶眨眼陪伴） ---------- */
+  .bayWrap { position: relative; } /* 桌宠定位上下文 */
+  .bayPet { position: absolute; top: -21px; left: 50%; transform: translateX(-50%); width: 42px; height: 30px; z-index: 3; pointer-events: none; filter: drop-shadow(0 3px 4px rgba(0,0,0,.25)); } /* 桌宠整体（趴伏姿态：半圆身体探出盒沿） */
+  .bayPet i { position: absolute; display: block; } /* 部件通用 */
+  .bayPet .bpBody { left: 0; right: 0; bottom: 0; height: 26px; border-radius: 21px 21px 8px 8px; background: radial-gradient(circle at 32% 28%, #ffe9c9, #f3c98b 55%, #d9a45e); border: 1.5px solid rgba(122,84,30,.35); } /* 半圆身体（奶黄球趴伏） */
+  .bayPet .bpEye { top: 9px; width: 5px; height: 7px; border-radius: 3px; background: #4a3616; animation: bpBlink 3.8s ease-in-out infinite; transform-origin: center; } /* 眼睛（周期眨眼） */
+  .bayPet .bpEye.l { left: 11px; } .bayPet .bpEye.r { right: 11px; } /* 双眼位置 */
+  @keyframes bpBlink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.08); } } /* 每 3.8 秒眨一次 */
+  .bayPet .bpBlush { top: 15px; width: 6px; height: 3px; border-radius: 3px; background: rgba(240,130,110,.5); } /* 腮红 */
+  .bayPet .bpBlush.l { left: 5px; } .bayPet .bpBlush.r { right: 5px; } /* 双腮位置 */
+  .bayPet .bpMouth { left: 50%; top: 17px; width: 7px; height: 4px; margin-left: -3.5px; border-radius: 0 0 7px 7px; border: 1.5px solid #4a3616; border-top: 0; } /* 微笑嘴 */
+
+  /* ---------- 6.2 五轮：周账单导出 PNG 按钮 ---------- */
+  .wbExp { flex: none; padding: 5px 10px; font-size: 11px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(122,90,16,.35); background: rgba(255,255,255,.5); color: #7a5a10; cursor: pointer; } /* 导出按钮 */
+  .wbExp:hover { background: rgba(246,199,117,.35); } /* 悬停 */
+  html[data-mode="dark"] .wbExp { background: rgba(255,255,255,.06); color: #f6c775; border-color: rgba(246,199,117,.35); } /* 深色按钮 */
+
+  /* ---------- 6.2 六轮：押注档位切换 ---------- */
+  .betSwitch { display: inline-flex; gap: 3px; padding: 2px; border-radius: 999px; background: rgba(255,255,255,.35); border: 1px solid rgba(122,90,16,.3); } /* 档位容器 */
+  .betSwitch button { padding: 3px 10px; font-size: 12px; font-weight: 800; border: 0; border-radius: 999px; background: transparent; color: #8a8474; cursor: pointer; transition: all .18s; } /* 档位按钮 */
+  .betSwitch button.on { background: linear-gradient(135deg, #d6a417, #b8860b); color: #fff; box-shadow: 0 1px 5px rgba(184,134,11,.5); } /* 当前档金色高亮 */
+  html[data-mode="dark"] .betSwitch { background: rgba(255,255,255,.06); border-color: rgba(246,199,117,.3); } /* 深色容器 */
+  html[data-mode="dark"] .betSwitch button { color: #b0a88f; } /* 深色未选档 */
+
+  /* ---------- 6.2 六轮：生涯数据看板 ---------- */
+  #lifeCv { width: 100%; height: auto; border-radius: 13px; } /* 看板画布（2x 分辨率缩放显示） */
+  .lifeSummary { font-size: 12px; color: #6b6353; margin-top: 8px; } /* 汇总文字行 */
+  .lifeSummary b { color: #9c6d08; } /* 强调数值 */
+
+  /* ---------- 6.2 六轮：中奖票根收藏 ---------- */
+  .stubRow { display: flex; align-items: center; gap: 10px; padding: 9px 12px; margin-bottom: 8px; border-radius: 11px; background: linear-gradient(160deg, rgba(31,27,21,.92), rgba(44,38,28,.88)); border: 1px dashed rgba(246,199,117,.5); } /* 票根行（深色机打票风格） */
+  .stubNo { font: 800 11px Consolas, monospace; color: #b0a88f; letter-spacing: 1px; flex: none; } /* 票号 */
+  .stubSym { font: 800 20px Consolas, monospace; color: #fffdf8; flex: none; letter-spacing: 4px; } /* 三同数字大字 */
+  .stubAmt { font-weight: 800; font-size: 14px; color: #f6c775; flex: none; } /* 奖额 */
+  .stubTime { font-size: 11px; color: #8a8474; flex: 1; text-align: right; } /* 时间 */
+  .stubExp { flex: none; padding: 4px 9px; font-size: 11px; font-weight: 700; border-radius: 8px; border: 1px solid rgba(246,199,117,.45); background: transparent; color: #f6c775; cursor: pointer; } /* 导出按钮 */
+  .stubExp:hover { background: rgba(246,199,117,.18); } /* 悬停 */
+
+  /* ---------- 6.2 六轮：自动快照恢复行 ---------- */
+  .snapRow { display: flex; gap: 8px; align-items: center; } /* 快照行 */
+  .snapRow select { flex: 1; min-width: 0; padding: 7px 9px; font-size: 12px; border-radius: 9px; border: 1px solid rgba(122,90,16,.35); background: rgba(255,255,255,.5); color: #4a4438; } /* 快照下拉 */
+  .snapRow button { padding: 7px 12px; font-size: 12px; white-space: nowrap; } /* 恢复按钮 */
+  html[data-mode="dark"] .snapRow select { background: rgba(255,255,255,.06); border-color: rgba(246,199,117,.3); color: #d8d0bd; } /* 深色下拉 */
+
+  /* ---------- 6.2 七轮：开机 ASCII 双鲸鱼动画 ---------- */
+
+  /* ---------- 6.2 七轮：集字卡活动 ---------- */
+  .kachaCard { margin-bottom: 12px; } /* 卡间距 */
+  .kachaHead { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13px; color: #4a4438; margin-bottom: 10px; } /* 标题行 */
+  .kachaHead b { color: #9c6d08; font-size: 13.5px; letter-spacing: .3px; } /* 标题文字 */
+  #kachaCount { font-weight: 800; color: #9c6d08; font-variant-numeric: tabular-nums; } /* 计数 */
+  .kachaRow { display: flex; align-items: center; justify-content: center; gap: 7px; flex-wrap: wrap; } /* 五字横排 */
+  .kachaCell { position: relative; width: 44px; height: 52px; border-radius: 11px; /* 单字格（虚线=未获得） */
+    border: 1.5px dashed rgba(122,90,16,.38); background: rgba(255,255,255,.42); /* 未获得样式 */
+    display: flex; align-items: center; justify-content: center; /* 居中 */
+    font-size: 23px; font-weight: 800; color: rgba(122,90,16,.3); /* 问号色 */ }
+  .kachaCell.got { border: 1.5px solid rgba(156,109,8,.85); /* 已获得实线金框 */
+    background: linear-gradient(160deg, #fff7df, #f0dcab); color: #8a5c06; /* 金纸底 */
+    box-shadow: 0 5px 14px rgba(156,109,8,.26), inset 0 1px 0 #fff; /* 凸起 */
+    animation: kachaPop .42s cubic-bezier(.34,1.52,.64,1); } /* 获得弹跳 */
+  @keyframes kachaPop { 0% { transform: scale(.62) rotate(-9deg); } 62% { transform: scale(1.14) rotate(4deg); } 100% { transform: scale(1); } } /* 弹跳关键帧 */
+  .kachaCell b { position: absolute; right: 3px; bottom: 1px; font-size: 9px; font-weight: 700; color: #b07d20; } /* 重复数量 */
+  .kachaSep { color: rgba(122,90,16,.28); font-size: 12px; } /* 分隔点 */
+  .kachaTip { font-size: 11.5px; color: #8a8474; margin-top: 9px; line-height: 1.6; } /* 规则说明 */
+  .kachaCard.full { box-shadow: 0 0 0 2px rgba(246,199,117,.9), 0 12px 32px rgba(156,109,8,.24); } /* 集齐高亮 */
+  html[data-mode="dark"] .kachaHead { color: #d8d0bd; } /* 深色标题 */
+  html[data-mode="dark"] .kachaCell { background: rgba(255,255,255,.05); border-color: rgba(246,199,117,.3); color: rgba(246,199,117,.28); } /* 深色空格 */
+  html[data-mode="dark"] .kachaCell.got { background: linear-gradient(160deg, #5a4413, #3a2c0a); color: #f6c775; border-color: rgba(246,199,117,.75); } /* 深色已获得 */
+  html[data-mode="dark"] .kachaTip { color: #9a9280; } /* 深色说明 */
+
+  /* ---------- 6.2 七轮：幸运大转盘 ---------- */
+  .luckyNote { font-size: 11.5px; color: #8a8474; } /* 规则小提示 */
+  html[data-mode="dark"] .luckyNote { color: #9a9280; } /* 深色 */
+
+  /* ---------- 6.2 七轮：幸运骰子台 ---------- */
+  #viewDice .diceBtns { display: flex; gap: 9px; margin-top: 11px; flex-wrap: wrap; } /* 三个投注口横排 */
+  #viewDice .diceBtn { flex: 1 1 30%; min-width: 110px; padding: 13px 10px; border-radius: 14px; /* 投注按钮 */
+    display: flex; flex-direction: column; align-items: center; gap: 3px; /* 上下两行 */
+    font-size: 15px; font-weight: 800; letter-spacing: .5px; border: 0; /* 字重与去边框 */
+    transition: transform .16s cubic-bezier(.34,1.5,.64,1), box-shadow .2s ease; } /* 过渡 */
+  #viewDice .diceBtn:active { transform: scale(.96); } /* 按下回弹 */
+  #viewDice .diceBtn em { font-style: normal; font-size: 11px; font-weight: 600; opacity: .85; } /* 赔率小字 */
+  #viewDice .dBtnBig { background: linear-gradient(160deg, #e8553f, #ad2a1d); color: #fff; box-shadow: 0 8px 22px rgba(173,42,29,.3); } /* 押大红 */
+  #viewDice .dBtnSmall { background: linear-gradient(160deg, #4a8be0, #23549e); color: #fff; box-shadow: 0 8px 22px rgba(35,84,158,.3); } /* 押小蓝 */
+  #viewDice .dBtnTri { background: linear-gradient(160deg, #f8d183, #cf9420); color: #4a3202; box-shadow: 0 8px 22px rgba(207,148,32,.32); } /* 押豹子金 */
+
+  /* ---------- 6.2 七轮：桌宠打工 ---------- */
+  .jobBox { padding: 9px 10px; border-radius: 12px; background: rgba(255,255,255,.42); border: 1px solid rgba(122,90,16,.22); } /* 面板 */
+  .jobRow { display: flex; gap: 6px; flex-wrap: wrap; } /* 三档横排 */
+  .jobRow button { flex: 1 1 28%; min-width: 82px; padding: 7px 6px; font-size: 11.5px; border-radius: 9px; } /* 档位按钮 */
+  .jobRow button:disabled { opacity: .45; cursor: not-allowed; } /* 打工中禁用 */
+  .jobTip { font-size: 11.5px; color: #7a7466; margin-top: 8px; line-height: 1.55; } /* 说明/倒计时 */
+  #petJobBadge { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%) translateY(8px); /* 打工中徽章 */
+    display: inline-block; padding: 5px 13px; border-radius: 999px; /* 胶囊 */
+    background: rgba(47,111,224,.92); color: #fff; font-size: 11.5px; font-weight: 700; /* 蓝底白字 */
+    box-shadow: 0 8px 22px rgba(47,111,224,.36); opacity: 0; pointer-events: none; /* 默认隐藏 */
+    transition: opacity .28s ease, transform .34s cubic-bezier(.34,1.42,.64,1); } /* 过渡 */
+  #petJobBadge.show { opacity: 1; transform: translateX(-50%) translateY(0); } /* 显示态 */
+  html[data-mode="dark"] .jobBox { background: rgba(255,255,255,.05); border-color: rgba(246,199,117,.24); } /* 深色面板 */
+  html[data-mode="dark"] .jobTip { color: #9a9280; } /* 深色说明 */
+
+  /* ---------- 6.2 九轮：转盘押格子 ---------- */
+  .guessBox { margin-top: 12px; padding: 11px 13px; border-radius: 14px; border: 1px solid rgba(246,199,117,.26); background: rgba(255,255,255,.055); } /* 押注盒 */
+  .guessHead { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 9px; font-size: 12px; } /* 标题行 */
+  .guessTitle { color: #9c6d08; font-weight: 800; letter-spacing: .2px; } /* 标题 */
+  .guessState { color: #8a8474; font-size: 11.5px; } /* 状态文字 */
+  .guessState.on { color: #1e9e5a; font-weight: 800; } /* 已押注状态 */
+  .guessRow { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; } /* 八格横排 */
+  .guessChip { padding: 7px 2px; border-radius: 9px; border: 1px solid rgba(0,0,0,.14); background: var(--gc, #d9d3c4); color: #fffdf8; font-size: 11px; font-weight: 800; line-height: 1.2; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: transform .14s ease, box-shadow .18s ease, opacity .18s ease; } /* 格按钮（用盘面同色） */
+  .guessChip:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,.18); } /* 悬停浮起 */
+  .guessChip.on { box-shadow: 0 0 0 2px #f6c775, 0 8px 18px rgba(246,199,117,.45); transform: translateY(-2px); } /* 选中金圈 */
+  .guessChip.on::after { content: "✓"; margin-left: 2px; } /* 选中勾 */
+  .guessChip:disabled { opacity: .45; cursor: not-allowed; transform: none; } /* 锁定态 */
+
+  /* ---------- 6.2 九轮：音效总线 ---------- */
+  .volRow { display: grid; grid-template-columns: 72px 1fr 42px; align-items: center; gap: 10px; margin: 8px 0; font-size: 12.5px; } /* 滑杆行 */
+  .volRow .vl { color: #4a4438; } /* 行标签 */
+  .volRange { width: 100%; accent-color: #b8860b; height: 18px; cursor: pointer; } /* 滑杆 */
+  .volVal { text-align: right; font-variant-numeric: tabular-nums; font-weight: 800; color: #9c6d08; font-size: 11.5px; } /* 数值 */
+  .volState { font-size: 11.5px; color: #8a8474; margin-left: 4px; } /* 状态 */
+  .volState.off { color: #c0392b; font-weight: 800; } /* 静音态 */
+
+  /* ---------- 6.2 九轮：票根册 ---------- */
+  .stubTabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 8px; } /* 玩法筛选 */
+  .stubTab { padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(122,90,16,.22); background: rgba(255,255,255,.5); font-size: 11.5px; cursor: pointer; color: #6a6353; } /* 筛选药丸 */
+  .stubTab.on { background: #b8860b; border-color: #b8860b; color: #fffdf8; font-weight: 800; } /* 选中 */
+  .stubBookWrap { position: relative; padding: 12px; border-radius: 16px; border: 1px solid rgba(122,90,16,.2); background: linear-gradient(180deg, rgba(255,253,248,.72), rgba(238,229,210,.62)); box-shadow: inset 0 1px 0 rgba(255,255,255,.7); } /* 册页 */
+  .stubPageGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; } /* 每页 3 列 × 4 行 */
+  .stubCell { position: relative; aspect-ratio: 3 / 2; border-radius: 10px; overflow: hidden; cursor: pointer; border: 1px dashed rgba(122,90,16,.3); background: rgba(255,255,255,.35); display: flex; align-items: center; justify-content: center; } /* 票格 */
+  .stubCell.filled { flex-direction: column; gap: 1px; border: 1px solid rgba(246,199,117,.5); background: linear-gradient(155deg, #26211a, #1a1713); box-shadow: 0 5px 14px rgba(0,0,0,.22); } /* 有票（内容纵向） */
+  .stubCell.filled:hover { transform: translateY(-2px); transition: transform .16s ease; } /* 悬停 */
+  .stubEmpty { font-size: 11px; color: #a9a292; letter-spacing: .5px; } /* 空位文字 */
+  .stubCell .sbNo { position: absolute; left: 6px; top: 5px; font-size: 9px; color: rgba(246,199,117,.6); letter-spacing: .5px; } /* 编号 */
+  .stubCell .sbSym { font-size: 30px; font-weight: 900; color: #fffdf8; line-height: 1; } /* 号码大字 */
+  .stubCell .sbAmt { font-size: 13px; font-weight: 900; color: #f6c775; } /* 金额 */
+  .stubCell .sbTime { position: absolute; right: 6px; bottom: 5px; font-size: 9px; color: rgba(255,253,248,.45); } /* 时间 */
+  .stubCell .sbKind { position: absolute; left: 6px; bottom: 5px; font-size: 9px; color: rgba(255,253,248,.5); } /* 玩法 */
+  .stubStamp { position: absolute; right: 16px; bottom: 14px; padding: 4px 10px; border: 3px solid #c0392b; border-radius: 6px; color: #c0392b; font: 900 18px Consolas, monospace; letter-spacing: 2px; transform: rotate(-13deg); opacity: 0; pointer-events: none; transition: opacity .25s ease; } /* 满页钢印 */
+  .stubStamp.show { opacity: .82; } /* 显示 */
+  .stubPager { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; } /* 翻页条 */
+  .stubPager button { padding: 6px 12px; border-radius: 9px; font-size: 11.5px; } /* 翻页按钮 */
+  .stubPager #stubPageView { color: #8a8474; font-variant-numeric: tabular-nums; } /* 页码 */
+  .stubPager #stubExportAll { margin-left: auto; } /* 导出靠右 */
+  html[data-mode="dark"] .guessBox { background: rgba(255,255,255,.045); border-color: rgba(246,199,117,.2); } /* 深色押注盒 */
+  html[data-mode="dark"] .volRow .vl { color: #cfc7b4; } /* 深色标签 */
+  html[data-mode="dark"] .stubTab { background: rgba(255,255,255,.06); color: #b9b1a0; border-color: rgba(255,255,255,.12); } /* 深色药丸 */
+  html[data-mode="dark"] .stubBookWrap { background: linear-gradient(180deg, rgba(40,36,30,.7), rgba(24,21,17,.7)); border-color: rgba(246,199,117,.16); } /* 深色册页 */
+  html[data-mode="dark"] .stubCell { background: rgba(255,255,255,.04); } /* 深色空位 */
+  html[data-mode="dark"] .stubEmpty { color: #7a7466; } /* 深色空位文字 */
+
+  /* ===== 6.2 十二轮：快捷键按压反馈（Tab 触发时对应按钮闪一下金光） ===== */
+  @keyframes kbdHitAnim { 0% { transform: scale(1); } 32% { transform: scale(.945); box-shadow: 0 0 0 4px rgba(246,199,117,.55), 0 0 18px rgba(246,199,117,.45); } 100% { transform: scale(1); } } /* 按压 + 金色脉冲 */
+  .kbdHit { animation: kbdHitAnim .34s ease-out; } /* Tab 触发时给对应按钮一次脉冲 */
+  @media (prefers-reduced-motion: reduce) { .kbdHit { animation: none; outline: 2px solid rgba(246,199,117,.7); } } /* 减少动效时改为静态描边 */
+
+  /* ---------- 6.2 十三轮：道具商店（内嵌刮票大厅） ---------- */
+  .itemShop { margin-bottom: 14px; } /* 与下方卡片留出间距 */
+  .itemHead { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 13.5px; color: #3a3427; } /* 标题行 */
+  .itemHead #itemShopState { font-size: 11.5px; font-weight: 700; color: #9c6d08; } /* 本批武装状态 */
+  .itemGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 9px; margin: 11px 0 9px; } /* 四卡自适应网格 */
+  .itemCard { display: flex; flex-direction: column; gap: 6px; padding: 11px 11px 10px; border-radius: 13px; border: 1px solid rgba(122,90,16,.2); background: linear-gradient(160deg, rgba(255,255,255,.66), rgba(246,238,220,.5)); box-shadow: inset 0 1px 0 rgba(255,255,255,.7); } /* 单张道具卡 */
+  .itemCard .icTop { display: flex; align-items: center; gap: 6px; } /* 图标行 */
+  .itemCard .itemIco { width: 21px; height: 21px; color: #9c6d08; flex: none; } /* 线条图标 */
+  .itemCard h4 { margin: 0; font-size: 13px; color: #3a3427; white-space: nowrap; } /* 名称 */
+  .itemCard .itag { font-size: 9.5px; padding: 1px 6px; border-radius: 999px; background: rgba(184,134,11,.14); color: #8a6410; border: 1px solid rgba(184,134,11,.22); white-space: nowrap; } /* 功能标签 */
+  .itemCard .iprice { margin-left: auto; font-size: 12px; font-weight: 800; color: #b8860b; font-variant-numeric: tabular-nums; } /* 价格 */
+  .itemCard p { margin: 0; font-size: 11.5px; line-height: 1.55; color: #7d7666; flex: 1 1 auto; } /* 说明 */
+  .itemCard button { padding: 7px 10px; border-radius: 9px; font-size: 12px; } /* 购买按钮 */
+  .itemCard button.poor { opacity: .55; } /* 买不起时压暗 */
+  .itemBag { display: flex; flex-wrap: wrap; gap: 6px; } /* 背包行 */
+  .bagChip { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: rgba(184,134,11,.13); color: #8a6410; border: 1px solid rgba(184,134,11,.24); font-variant-numeric: tabular-nums; } /* 库存药丸 */
+  .bagEmpty { font-size: 11.5px; color: #a29a88; } /* 空背包提示 */
+  .itemTip { margin: 9px 0 0; font-size: 11.5px; line-height: 1.6; color: #8a8474; } /* 规则说明 */
+  .itemTip b { color: #9c6d08; } /* 强调 */
+  .sellEmptyBtn { margin-left: 6px; } /* 批量转让按钮与一键刮开并排 */
+
+  /* ---------- 6.2 十三轮：涂层透视层（手电筒 / 紫外灯） ---------- */
+  .szone .xr { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; letter-spacing: .4px; pointer-events: none; opacity: 0; transition: opacity .28s ease; } /* 透视覆盖层 */
+  .szone .xr.off { opacity: 0; } /* 未透视 */
+  .szone .xr.amt { opacity: 1; font-size: 25px; color: #fff6d8; text-shadow: 0 0 14px rgba(255,206,92,.95), 0 2px 6px rgba(0,0,0,.6); background: radial-gradient(circle at 50% 46%, rgba(22,18,10,.74), rgba(22,18,10,.34) 62%, rgba(22,18,10,.12)); overflow: hidden; } /* 金额级：暗底 + 金光 */
+  .szone .xr.amt::after { content: ""; position: absolute; inset: 0; background: linear-gradient(102deg, transparent 34%, rgba(255,236,180,.42) 50%, transparent 66%); transform: translateX(-130%); animation: xrSweep 2.1s ease-in-out infinite; } /* 扫描光带 */
+  @keyframes xrSweep { 0% { transform: translateX(-130%); } 62%, 100% { transform: translateX(130%); } } /* 光带走一遍停一拍 */
+  .szone .xr.hint { opacity: 1; font-size: 16px; } /* 有无级 */
+  .szone .xr.hint.win { color: #9df3c0; text-shadow: 0 0 12px rgba(63,174,122,.95), 0 2px 5px rgba(0,0,0,.5); } /* 有奖：薄荷绿 */
+  .szone .xr.hint.lose { color: #d6cfbe; text-shadow: 0 2px 6px rgba(0,0,0,.55); } /* 空票：灰 */
+  .szone .xr.sold { opacity: 1; font-size: 12.5px; letter-spacing: 2px; color: #ffe9b0; transform: rotate(-9deg); border: 2px dashed rgba(255,233,176,.65); margin: 26px 34px; border-radius: 8px; } /* 已转让斜章 */
+  @media (prefers-reduced-motion: reduce) { .szone .xr.amt::after { animation: none; opacity: .25; } } /* 减少动效时不扫光 */
+
+  /* ---------- 6.2 十三轮：票面操作条（照一张 / 转让） ---------- */
+  .scardOps { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; } /* 操作条 */
+  .scardOps button { flex: 1 1 auto; padding: 5px 8px; border-radius: 8px; font-size: 11px; line-height: 1.3; white-space: nowrap; cursor: pointer; color: #6a5320; border: 1px solid rgba(122,90,16,.28); background: rgba(255,255,255,.7); transition: transform .12s ease, box-shadow .16s ease; } /* 小按钮 */
+  .scardOps button:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(90,70,20,.18); } /* 悬停浮起 */
+  .scardOps .opTorch { color: #8a5a00; border-color: rgba(184,134,11,.5); background: linear-gradient(180deg, rgba(255,244,208,.95), rgba(250,230,180,.8)); } /* 手电：暖金 */
+  .scard.sold { opacity: .8; } /* 已转让：整张压暗 */
+  .scard.sold .szone { filter: grayscale(.85); } /* 已转让：刮区去色 */
+  .scard.sold .szone canvas { opacity: .2; } /* 涂层淡出 */
+
+  /* ---------- 6.2 十三轮：每日救济券面板 ---------- */
+  .reliefRow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; } /* 领取行 */
+  #btnRelief { padding: 9px 16px; border-radius: 11px; } /* 领取按钮 */
+  #reliefState { font-size: 12px; color: #8a8474; font-variant-numeric: tabular-nums; } /* 状态 */
+  .reliefDots { display: flex; gap: 5px; margin-top: 11px; } /* 次数灯 */
+  .rdot { width: 9px; height: 9px; border-radius: 50%; background: #3fae7a; box-shadow: 0 0 8px rgba(63,174,122,.65); } /* 可用 */
+  .rdot.used { background: rgba(0,0,0,.16); box-shadow: none; } /* 已用 */
+
+  /* ---------- 6.2 十三轮：深色模式适配 ---------- */
+  html[data-mode="dark"] .itemCard { background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.035)); border-color: rgba(246,199,117,.18); box-shadow: none; } /* 深色道具卡 */
+  html[data-mode="dark"] .itemCard h4 { color: #ece4d2; } /* 深色标题 */
+  html[data-mode="dark"] .itemCard p { color: #a8a08e; } /* 深色说明 */
+  html[data-mode="dark"] .itemHead { color: #ece4d2; } /* 深色面板标题 */
+  html[data-mode="dark"] .itemHead #itemShopState { color: #e0b357; } /* 深色状态 */
+  html[data-mode="dark"] .bagChip { background: rgba(246,199,117,.13); color: #e0b357; border-color: rgba(246,199,117,.26); } /* 深色药丸 */
+  html[data-mode="dark"] .itemTip { color: #9a9280; } /* 深色说明 */
+  html[data-mode="dark"] .scardOps button { background: rgba(255,255,255,.08); color: #d8cdb4; border-color: rgba(255,255,255,.16); } /* 深色操作条（票面底色为浅金，仍可用） */
+  html[data-mode="dark"] .rdot { background: #58c98d; } /* 深色指示灯 */
+  html[data-mode="dark"] .rdot.used { background: rgba(255,255,255,.16); } /* 深色已用 */
+
+  /* ---------- 6.2 十四轮：全站表情包统一为线条图标 ---------- */
+  .lnIco { /* 所有由 emoji 转换来的线条图标：1em 跟随字号，描边继承文字色 */
+    width: 1em; height: 1em; /* 尺寸跟随所在文字字号（标题大、按钮小） */
+    display: inline-block; flex: 0 0 auto; /* 不参与收缩，按钮内不被挤压 */
+    vertical-align: -.14em; /* 与汉字视觉基线对齐（比字母基线低一点更稳） */
+    margin-right: .32em; /* 替代被吞掉的半角空格（统一图标与文字间距） */
+    fill: none; stroke: currentColor; stroke-width: 1.8; /* 与既有 icoSvg 完全一致的线宽 */
+    stroke-linecap: round; stroke-linejoin: round; /* 圆头圆角，柔和不刺眼 */
+    overflow: visible; /* 防止箭类图标超出 24 网格被裁切 */
+  }
+  .lnIco:last-child { margin-right: 0; } /* 行尾图标不留空 */
+  h1 .lnIco, h2 .lnIco { vertical-align: -.1em; } /* 大标题内轻微上提，视觉居中 */
+  .btnIco + .lnIco, .lnIco + .btnIco { margin-left: .1em; } /* 与位图/按钮图标并排时的微调 */
+  button .lnIco { pointer-events: none; } /* 图标不抢按钮点击 */
+  #lineSprite { position: absolute !important; width: 0 !important; height: 0 !important; overflow: hidden !important; } /* sprite 容器永不占位 */
+
+  /* ===== 6.2 十五轮：机打小票（打印机吐纸动画 + 可保存） ===== */
+  .rcptMask { position: fixed; inset: 0; z-index: 99990; display: none; align-items: flex-start; justify-content: center; padding: 26px 16px 40px; background: rgba(26,20,12,.62); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); overflow-y: auto; } /* 遮罩：小票过长时整层可滚 */
+  .rcptMask.show { display: flex; } /* 显示 */
+  .rcptBox { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 380px; animation: rcptIn .34s cubic-bezier(.2,.8,.3,1) both; } /* 主体 */
+  @keyframes rcptIn { from { opacity: 0; transform: translateY(-10px) scale(.96); } to { opacity: 1; transform: none; } } /* 入场 */
+  .rcptMachine { position: relative; width: 254px; color: #4a3a1c; filter: drop-shadow(0 12px 20px rgba(0,0,0,.28)); } /* 打印机机身 */
+  .rcptPrinter { display: block; width: 100%; height: auto; } /* 线条机身 */
+  .rcptLedDot { fill: #b3a894; stroke: none; transition: fill .2s; } /* 指示灯（默认熄） */
+  .rcptMachine.printing .rcptLedDot { fill: #57b96a; animation: rcptBlink .46s steps(1) infinite; } /* 打印中闪绿 */
+  .rcptMachine.done .rcptLedDot { fill: #57b96a; animation: none; } /* 完成常亮 */
+  @keyframes rcptBlink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: .25; } } /* 闪烁 */
+  .rcptSlot { position: absolute; left: 26.5%; right: 26.5%; bottom: 16px; height: 7px; border-radius: 4px; background: linear-gradient(#0f0b07, #2b241a); box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 0 0 1px rgba(0,0,0,.25); } /* 出纸槽（深色横缝） */
+  .rcptState { position: absolute; left: 0; right: 0; bottom: -17px; text-align: center; font-size: 10.5px; letter-spacing: .16em; color: rgba(255,253,248,.72); } /* 状态文字 */
+  .rcptRoll { width: 296px; max-width: 100%; height: 0; margin-top: -6px; overflow: hidden; transition: height 2.05s cubic-bezier(.24,.62,.3,1); border-radius: 0 0 2px 2px; } /* 吐纸区：高度动画 */
+  .rcptRoll.done { overflow-y: auto; scrollbar-width: thin; } /* 打印完成后可滚动查看 */
+  .rcptRoll.instant { transition: none; } /* 跳过模式：不做动画 */
+  .rcptPaper { position: relative; width: 100%; padding: 15px 17px 11px; background: linear-gradient(#fffdf7, #f7f1e2); color: #3b352c; font-family: Consolas, "Courier New", 'Microsoft YaHei', monospace; box-shadow: 0 16px 34px rgba(0,0,0,.26), inset 0 0 26px rgba(180,150,90,.06); } /* 热敏纸面 */
+  .rcptPaper::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(rgba(120,100,70,.05) 1px, transparent 1px); background-size: 5px 5px; opacity: .8; } /* 纸纤维颗粒 */
+  .rcptPaper::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: repeating-linear-gradient(90deg, rgba(120,100,70,.16) 0 7px, transparent 7px 14px); } /* 顶部虚线压痕 */
+  .rcptHead { position: relative; text-align: center; padding-top: 3px; } /* 票头 */
+  .rcptBrand { display: flex; align-items: center; justify-content: center; gap: 6px; font: 800 17px/1.2 'Microsoft YaHei', sans-serif; letter-spacing: .14em; color: #2f2a22; } /* 店名 */
+  .rcptBrand .lnIco { width: 1.05em; height: 1.05em; } /* 店名图标 */
+  .rcptSub { margin-top: 4px; font-size: 8.6px; letter-spacing: .32em; color: #9a907c; text-transform: uppercase; } /* 英文副标 */
+  .rcptRule { position: relative; height: 0; margin: 9px 0; border-top: 1px dashed #cabfa5; } /* 虚线分隔 */
+  .rcptRule.cut::before, .rcptRule.cut::after { content: "✂"; position: absolute; top: -8px; font-size: 10px; color: #c0b394; background: transparent; } /* 剪刀标记 */
+  .rcptRule.cut::before { left: -3px; } /* 左剪 */
+  .rcptRule.cut::after { right: -3px; transform: scaleX(-1); } /* 右剪 */
+  .rcptMetaRow { position: relative; display: flex; justify-content: space-between; gap: 10px; font-size: 10.4px; line-height: 1.75; color: #6b6353; } /* 元信息行 */
+  .rcptMetaRow b { font-weight: 700; color: #443c2f; } /* 强调值 */
+  .rcptTh { position: relative; display: flex; justify-content: space-between; font-size: 9.4px; letter-spacing: .12em; color: #9a907c; padding-bottom: 3px; } /* 明细表头 */
+  .rcptRow { position: relative; display: flex; align-items: baseline; gap: 6px; font-size: 11.2px; line-height: 1.75; } /* 明细行 */
+  .rcptRow .no { color: #5a5346; font-variant-numeric: tabular-nums; } /* 票号 */
+  .rcptRow .tier { color: #a49a85; font-size: 9.6px; } /* 价位 */
+  .rcptRow .val { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 700; } /* 结果 */
+  .rcptRow .val.win { color: #a8331f; } /* 中奖（红） */
+  .rcptRow .val.lose { color: #9b9486; font-weight: 400; } /* 空票 */
+  .rcptRow .val.sold { color: #3d6f86; } /* 转让回收 */
+  .rcptRow .val.boost { color: #a8331f; } /* 保底/翻倍 */
+  .rcptMore { position: relative; font-size: 10px; color: #9a907c; text-align: center; padding: 3px 0 1px; letter-spacing: .08em; } /* 省略行 */
+  .rcptSum { position: relative; display: flex; justify-content: space-between; font-size: 11px; line-height: 1.85; color: #5a5346; } /* 汇总行 */
+  .rcptSum b { font-variant-numeric: tabular-nums; color: #3b352c; } /* 汇总值 */
+  .rcptTotal { position: relative; display: flex; justify-content: space-between; align-items: baseline; margin-top: 5px; padding-top: 7px; border-top: 1px solid #ddd2bb; font-size: 12.4px; font-weight: 800; } /* 净额行 */
+  .rcptTotal .net { font-size: 16px; font-variant-numeric: tabular-nums; letter-spacing: .02em; } /* 净额数字 */
+  .rcptTotal .net.plus { color: #a8331f; } /* 盈利（红：中式涨色） */
+  .rcptTotal .net.minus { color: #3c6b4a; } /* 亏损（绿） */
+  .rcptTotal .net.even { color: #7a7264; } /* 打平 */
+  .rcptBarcode { position: relative; display: flex; align-items: flex-end; justify-content: center; gap: 1.6px; height: 30px; margin: 10px 0 5px; } /* 条形码 */
+  .rcptBarcode i { display: block; width: 2px; background: #3b352c; border-radius: .5px; } /* 单条 */
+  .rcptCode { position: relative; text-align: center; font-size: 8.8px; letter-spacing: .3em; color: #8a8172; } /* 条码号 */
+  .rcptFoot { position: relative; margin-top: 6px; text-align: center; font-size: 9.8px; line-height: 1.7; letter-spacing: .1em; color: #8a8172; } /* 票脚 */
+  .rcptTeeth { position: relative; height: 8px; margin: 9px -17px -11px; background: linear-gradient(45deg, transparent 52%, #f7f1e2 52%) 0 0/12px 8px repeat-x, linear-gradient(-45deg, transparent 52%, #f7f1e2 52%) 6px 0/12px 8px repeat-x; } /* 底部锯齿断口 */
+  .rcptOps { display: flex; gap: 10px; margin-top: 20px; } /* 操作条 */
+  .rcptOps button { padding: 9px 20px; border-radius: 11px; font-size: 12.5px; font-weight: 700; letter-spacing: .04em; } /* 按钮 */
+  .rcptOps .rcptSave { border: 1px solid rgba(184,134,11,.42); background: linear-gradient(180deg, #f7d99a, #e8bf6c); color: #4a3308; box-shadow: 0 6px 16px rgba(120,80,10,.28), inset 0 1px 0 rgba(255,255,255,.6); } /* 保存（金） */
+  .rcptOps .rcptSave:hover { filter: brightness(1.05); } /* 悬停 */
+  .rcptOps .rcptClose { border: 1px solid rgba(255,253,248,.34); background: rgba(255,253,248,.1); color: rgba(255,253,248,.9); } /* 收好（玻璃） */
+  .rcptOps .rcptClose:hover { background: rgba(255,253,248,.18); } /* 悬停 */
+  .rcptOps button:disabled { opacity: .5; pointer-events: none; } /* 打印中禁用 */
+  html[data-mode="dark"] .rcptMask { background: rgba(8,6,4,.72); } /* 深色遮罩更深 */
+  html[data-mode="dark"] .rcptMachine { color: #e6d9bf; } /* 深色机身线条 */
+  html[data-mode="dark"] .rcptSlot { background: linear-gradient(#050403, #191510); } /* 深色槽口 */
+  #toast { z-index: 99995; } /* 提示条浮在小票遮罩之上（保存/打印反馈要看得见） */
+  @media (max-width: 420px) { .rcptRoll { width: 100%; } .rcptMachine { width: 226px; } } /* 窄屏收缩 */
+  @media (prefers-reduced-motion: reduce) { .rcptRoll { transition: none !important; } .rcptBox { animation: none; } } /* 减少动效：直接出票 */
+
+  /* ================================================== 6.2 十六轮：单人麻将（3D 电动麻将机） ================================================== */
+  #viewMahjong .mjStage { max-width: none; height: clamp(340px, 62vh, 600px); border-radius: 18px; overflow: hidden; position: relative; background: radial-gradient(circle at 50% 42%, #1d5e42 0%, #123c2b 62%, #0c2a1e 100%); } /* 3D 画布：解除 560px 限宽并占满卡片（桌面大，需更高视口） */
+  #viewMahjong .mjStage canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; } /* 画布铺满舞台；可拖拽（6.2 十八轮：视角可转） */
+  .mjTop { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; } /* 顶部信息行 */
+  .mjChip { font-size: 12px; padding: 5px 11px; border-radius: 999px; background: rgba(31,107,74,.10); color: #1f6b4a; font-weight: 600; } /* 信息胶囊 */
+  .mjViewCtl { margin-left: auto; display: inline-flex; gap: 2px; padding: 3px; border-radius: 999px; background: rgba(31,107,74,.09); } /* 视角切换组（贴顶栏右侧，不占用画布区域） */
+  .mjViewBtn { appearance: none; -webkit-appearance: none; border: 0; background: transparent; color: #5d6b62; font: inherit; font-size: 11.5px; font-weight: 600; line-height: 1; padding: 5px 10px; border-radius: 999px; cursor: pointer; transition: background .16s ease, color .16s ease; } /* 单个视角按钮 */
+  .mjViewBtn:hover { background: rgba(255,255,255,.72); color: #1f6b4a; } /* 悬停 */
+  .mjViewBtn.on { background: #1f6b4a; color: #fff; box-shadow: 0 2px 8px rgba(31,107,74,.32); } /* 当前视角 */
+  #viewMahjong .mjStage.mjGrab canvas { cursor: grabbing; } /* 拖拽中：抓取光标 */
+  .mjDoraChip b { color: #c0392b; letter-spacing: .5px; } /* 状态文字（听牌 / 向听，6.2 十九轮由宝牌改为手牌状态） */
+  .mjSeatRow { display: flex; gap: 6px; margin-top: 10px; } /* 四家点数行 */
+  .mjSeat { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 7px 4px; border-radius: 12px; background: rgba(0,0,0,.03); font-size: 11px; color: #8a8474; } /* 单个座位块 */
+  .mjSeat b { font-size: 12px; color: #5a5446; font-weight: 600; } /* 座位名 */
+  .mjSeat span { font-size: 13px; font-weight: 700; color: #2c2a26; font-variant-numeric: tabular-nums; } /* 点数 */
+  .mjSeat i { font-style: normal; font-size: 10px; color: #c0392b; min-height: 12px; } /* 庄家标记（国标无立直） */
+  .mjSeat.me { background: rgba(31,107,74,.09); } /* 高亮玩家 */
+  .mjActions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px; } /* 操作按钮区（在画布下方，不遮挡桌面） */
+  .mjBtn { padding: 11px 20px; border-radius: 13px; border: 1px solid rgba(0,0,0,.08); background: #fff; color: #2c2a26; font-size: 14px; font-weight: 600; cursor: pointer; transition: transform .12s ease, box-shadow .12s ease; } /* 通用按钮 */
+  .mjBtn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(80,68,40,.12); } /* 悬停 */
+  .mjBtn:active { transform: scale(.96); } /* 按下 */
+  .mjBtn.gold { background: linear-gradient(135deg,#e2b93b,#c9a227); color: #3a2c05; border-color: transparent; } /* 高亮主操作 */
+  .mjBtn.red { background: #c0392b; color: #fff; border-color: transparent; } /* 备用强调色（国标无立直，保留以防扩展） */
+  .mjBtn.ghost { background: transparent; color: #8a8474; } /* 次要 */
+  .mjTip { text-align: center; font-size: 12px; color: #8a8474; margin-top: 10px; min-height: 17px; } /* 操作提示（固定高度防跳动） */
+  .mjMask { position: fixed; inset: 0; background: rgba(20,18,14,.5); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .22s ease; z-index: 99990; } /* 结算遮罩 */
+  .mjMask.show { opacity: 1; pointer-events: auto; } /* 显示 */
+  .mjResBox { width: min(92vw, 420px); padding: 22px; border-radius: 20px; background: rgba(255,253,247,.97); box-shadow: 0 20px 60px rgba(0,0,0,.28); } /* 结算面板 */
+  .mjResBox h3 { font-size: 18px; margin: 0 0 12px; } /* 标题 */
+  .mjYakuList { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; max-height: 152px; overflow-y: auto; } /* 番种标签组（国标番种多，超高时可滚动） */
+  .mjYk { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(201,162,39,.14); color: #8a6d10; } /* 单个番种标签 */
+  .mjYk em { font-style: normal; font-weight: 700; } /* 番数 */
+  .mjResSub { font-size: 13px; color: #6f6a5f; margin: 6px 0; } /* 番数与支付说明 */
+  .mjResPts { font-size: 12px; color: #8a8474; margin: 6px 0 16px; font-variant-numeric: tabular-nums; } /* 四家点数 */
+  .mjResOps { display: flex; gap: 10px; } /* 结算按钮行 */
+  .mjResOps .mjBtn { flex: 1; } /* 等分 */
+  html[data-mode="dark"] .mjViewCtl { background: rgba(255,255,255,.06); } /* 深色：视角组底色 */
+  html[data-mode="dark"] .mjViewBtn { color: #9bb0a4; } /* 深色：视角按钮 */
+  html[data-mode="dark"] .mjViewBtn:hover { background: rgba(255,255,255,.1); color: #dfeee5; } /* 深色：悬停 */
+  html[data-mode="dark"] .mjViewBtn.on { background: #2f8f63; color: #fff; } /* 深色：当前视角 */
+  html[data-mode="dark"] .mjSeat { background: rgba(255,255,255,.05); color: #9a9487; } /* 深色：座位块 */
+  html[data-mode="dark"] .mjSeat span { color: #eae6da; } /* 深色：点数 */
+  html[data-mode="dark"] .mjSeat.me { background: rgba(80,180,130,.12); } /* 深色：玩家高亮 */
+  html[data-mode="dark"] .mjBtn { background: #23211d; color: #eae6da; border-color: rgba(255,255,255,.1); } /* 深色：按钮 */
+  html[data-mode="dark"] .mjBtn.ghost { background: transparent; } /* 深色：次要按钮 */
+  html[data-mode="dark"] .mjResBox { background: rgba(32,30,26,.97); color: #eae6da; } /* 深色：结算面板 */
+  @media (max-width: 420px) { #viewMahjong .mjStage { height: 44vh; min-height: 260px; } .mjBtn { padding: 10px 14px; font-size: 13px; } } /* 窄屏压缩 */
+
+  /* ---------- 6.2 十七轮：启动温馨提示（虚化遮罩 / 玻璃卡 / 彩屑碎片 / 退出黑幕 / 数量输入框） ---------- */
+  html.dmLock, html.dmLock body { overflow: hidden; } /* 弹窗期间锁滚动，背景不跟着滚 */
+  .dmMask { position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; /* 全屏遮罩 */
+    background: rgba(26,22,16,.34); /* 压暗（让虚化更有层次） */
+    backdrop-filter: blur(16px) saturate(.72) brightness(.94); -webkit-backdrop-filter: blur(16px) saturate(.72) brightness(.94); /* 整页虚化：模糊 + 降饱和 + 微压暗 */
+    opacity: 0; pointer-events: none; transition: opacity .42s ease, backdrop-filter .42s ease, -webkit-backdrop-filter .42s ease; } /* 默认隐藏 */
+  .dmMask.show { opacity: 1; pointer-events: auto; } /* 弹出：淡入并接管点击 */
+  .dmMask.gone { opacity: 0; pointer-events: none; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); } /* 碎裂后：遮罩散开，页面还原 */
+  .dmCard { position: relative; width: min(92vw, 468px); box-sizing: border-box; padding: 34px 30px 22px; border-radius: 22px; /* 提示卡 */
+    background: linear-gradient(168deg, rgba(255,253,247,.985), rgba(249,243,230,.97)); /* 米白玻璃渐变 */
+    border: 1px solid rgba(255,255,255,.8); text-align: center; /* 细白描边 */
+    box-shadow: 0 30px 80px rgba(28,22,12,.36), 0 1px 0 rgba(255,255,255,.9) inset; /* 落地阴影 + 顶部高光 */
+    transform: translateY(16px) scale(.94); opacity: 0; transition: transform .52s cubic-bezier(.18,.9,.28,1.2), opacity .34s ease; } /* 入场：上浮 + 回弹放大 */
+  .dmMask.show .dmCard { transform: none; opacity: 1; } /* 弹出后复位 */
+  .dmIco { width: 54px; height: 54px; margin: 0 auto 12px; border-radius: 16px; display: grid; place-items: center; color: #a8801e; /* 盾牌图标底座 */
+    background: linear-gradient(150deg, rgba(246,199,117,.32), rgba(201,146,42,.16)); border: 1px solid rgba(201,146,42,.28); /* 暖金圆角块 */
+    box-shadow: 0 6px 18px rgba(201,146,42,.18); } /* 柔光 */
+  .dmIco svg { width: 27px; height: 27px; } /* 图标尺寸 */
+  .dmTitle { font-size: 20px; letter-spacing: .12em; margin: 0 0 12px; color: #3a3226; font-weight: 800; } /* 标题 */
+  .dmBody { font-size: 13.5px; line-height: 2; color: #6b6355; margin: 0 0 22px; text-align: justify; text-justify: inter-ideograph; letter-spacing: .01em; } /* 正文：两端对齐，读起来更整 */
+  .dmOps { display: flex; justify-content: center; } /* 按钮居中 */
+  .dmOk { min-width: 176px; padding: 12px 26px; border-radius: 999px; border: 1px solid rgba(255,255,255,.55); cursor: pointer; /* 主按钮 */
+    font-size: 15px; font-weight: 700; letter-spacing: .08em; color: #40300a; /* 深金文字 */
+    background: linear-gradient(135deg, #f0c765, #cf9a2c); box-shadow: 0 12px 26px rgba(201,146,42,.34), 0 1px 0 rgba(255,255,255,.5) inset; /* 金色渐变 + 投影 */
+    transition: transform .18s ease, box-shadow .2s ease, opacity .25s ease, filter .25s ease; } /* 交互过渡 */
+  .dmOk:disabled { opacity: .58; filter: saturate(.55); cursor: progress; box-shadow: none; } /* 冷却期：发灰 + 光标提示等待 */
+  .dmOk:not(:disabled):hover { transform: translateY(-1.5px); box-shadow: 0 16px 30px rgba(201,146,42,.42); } /* 解禁后悬停 */
+  .dmOk:not(:disabled):active { transform: translateY(0) scale(.985); } /* 按下回弹 */
+  .dmOk.hot { animation: dmHot 1s ease; } /* 解禁瞬间的高亮脉冲 */
+  @keyframes dmHot { 0%,100% { box-shadow: 0 12px 26px rgba(201,146,42,.34); } 42% { box-shadow: 0 0 0 8px rgba(240,199,101,.26), 0 14px 30px rgba(201,146,42,.45); } } /* 由内向外扩散的光圈 */
+  .dmCd { margin-left: 7px; font-variant-numeric: tabular-nums; opacity: .72; font-size: 13px; } /* 倒计时数字 */
+  .dmFoot { margin: 14px 0 0; font-size: 11.5px; color: #a49b88; letter-spacing: .04em; } /* 底部小字 */
+  .dmX { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; /* 右上角叉号 */
+    display: grid; place-items: center; cursor: pointer; color: #9c9384; background: rgba(120,105,80,.08); /* 淡淡的圆底 */
+    transition: background .18s ease, color .18s ease, transform .22s ease; } /* 悬停过渡 */
+  .dmX svg { width: 15px; height: 15px; } /* 叉号尺寸 */
+  .dmX:hover { background: rgba(198,64,52,.13); color: #c0392b; transform: rotate(90deg); } /* 悬停变红并旋转（危险操作的提示色） */
+  .dmShard { position: fixed !important; margin: 0 !important; transition: none !important; pointer-events: none !important; } /* 彩屑碎片（其余外观继承 dmCard，保证切碎后仍能认出原文） */
+  .dmBye { position: fixed; inset: 0; z-index: 100003; background: #0b0a08; display: grid; place-items: center; padding: 20px; text-align: center; /* 退出黑幕（浏览器不允许脚本关窗时的兜底） */
+    opacity: 0; transition: opacity .34s ease; } /* 淡入 */
+  .dmBye.show { opacity: 1; } /* 显示 */
+  .dmBye.dim { opacity: 1; } /* 点击关闭按钮后再试一次关窗，保持纯黑 */
+  .dmByeBox { max-width: 400px; } /* 文案块 */
+  .dmByeT { font-size: 22px; font-weight: 800; color: #e8e0cf; letter-spacing: .16em; margin-bottom: 12px; } /* 标题 */
+  .dmByeS { font-size: 13px; line-height: 1.9; color: #8d8578; margin: 0 0 20px; } /* 说明 */
+  .dmByeS b { color: #e8c377; } /* 强调键位 */
+  .dmByeBtn { padding: 10px 24px; border-radius: 999px; border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.06); color: #e8e0cf; font-size: 13px; cursor: pointer; } /* 关闭按钮 */
+  .dmPrefStatus { font-size: 12px; color: #8a8474; margin: 8px 0 0; } /* 设置页状态行 */
+  .qtyInput { width: 64px; height: 26px; padding: 0 6px; box-sizing: border-box; border-radius: 8px; border: 1px solid rgba(201,146,42,.55); /* 数量键盘输入框 */
+    background: #fffdf7; color: inherit; font: inherit; font-variant-numeric: tabular-nums; text-align: center; outline: none; /* 数字等宽居中 */
+    box-shadow: 0 0 0 3px rgba(240,199,101,.22); } /* 聚焦光圈 */
+  html[data-mode="dark"] .dmMask { background: rgba(10,9,7,.52); } /* 深色：遮罩更暗 */
+  html[data-mode="dark"] .dmCard { background: linear-gradient(168deg, rgba(40,37,31,.985), rgba(28,26,22,.98)); border-color: rgba(255,255,255,.08); box-shadow: 0 30px 80px rgba(0,0,0,.6); } /* 深色：卡片 */
+  html[data-mode="dark"] .dmTitle { color: #f2ecdd; } /* 深色：标题 */
+  html[data-mode="dark"] .dmBody { color: #b3a999; } /* 深色：正文 */
+  html[data-mode="dark"] .dmFoot, html[data-mode="dark"] .dmPrefStatus { color: #7d7668; } /* 深色：小字 */
+  html[data-mode="dark"] .dmIco { color: #f0c765; background: linear-gradient(150deg, rgba(240,199,101,.18), rgba(240,199,101,.06)); } /* 深色：图标底座 */
+  html[data-mode="dark"] .dmX { color: #8e8475; background: rgba(255,255,255,.06); } /* 深色：叉号 */
+  html[data-mode="dark"] .qtyInput { background: #23211d; color: #eae6da; border-color: rgba(240,199,101,.4); } /* 深色：数量输入框 */
+  @media (max-width: 420px) { .dmCard { padding: 28px 20px 18px; } .dmTitle { font-size: 18px; } .dmBody { font-size: 13px; line-height: 1.95; } .dmOk { min-width: 150px; padding: 11px 20px; } } /* 窄屏压缩 */
